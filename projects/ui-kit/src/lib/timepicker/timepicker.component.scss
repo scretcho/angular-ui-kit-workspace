@@ -1,0 +1,125 @@
+.uk-tp-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.uk-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.uk-required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.uk-tp-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  padding: 6px 12px;
+  background: #fff;
+  transition: border-color 0.2s;
+
+  &:focus-within {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  }
+
+  &.disabled {
+    background: #f9fafb;
+  }
+}
+
+.uk-tp-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.uk-tp-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  line-height: 1;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover:not(:disabled) {
+    background: #f3f4f6;
+    color: #374151;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+}
+
+.uk-tp-input {
+  width: 36px;
+  text-align: center;
+  border: none;
+  outline: none;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  background: transparent;
+  padding: 4px 2px;
+
+  &:disabled {
+    color: #9ca3af;
+  }
+}
+
+.uk-tp-sep {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #6b7280;
+  align-self: center;
+}
+
+.uk-tp-period {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-left: 8px;
+}
+
+.uk-tp-period-btn {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #6b7280;
+  transition: all 0.15s;
+
+  &.active {
+    background: #6366f1;
+    border-color: #6366f1;
+    color: #fff;
+  }
+
+  &:hover:not(.active):not(:disabled) {
+    background: #e5e7eb;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+}
+
+.uk-hint { font-size: 0.75rem; color: #6b7280; }
+.uk-error { font-size: 0.75rem; color: #ef4444; }

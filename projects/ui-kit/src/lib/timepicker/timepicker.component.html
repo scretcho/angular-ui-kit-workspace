@@ -1,0 +1,72 @@
+<div class="uk-tp-wrapper">
+  @if (label) {
+    <label class="uk-label">
+      {{ label }}
+      @if (required) { <span class="uk-required">*</span> }
+    </label>
+  }
+  <div class="uk-tp-control" [class.disabled]="isDisabled()">
+    <div class="uk-tp-col">
+      <button type="button" class="uk-tp-btn" (click)="increment('hour')" [disabled]="isDisabled()">&#8963;</button>
+      <input
+        type="text"
+        class="uk-tp-input"
+        [value]="padded(displayHour())"
+        [disabled]="isDisabled()"
+        (input)="onHourInput($event)"
+        (blur)="validateHour()"
+        maxlength="2"
+      />
+      <button type="button" class="uk-tp-btn" (click)="decrement('hour')" [disabled]="isDisabled()">&#8964;</button>
+    </div>
+    <span class="uk-tp-sep">:</span>
+    <div class="uk-tp-col">
+      <button type="button" class="uk-tp-btn" (click)="increment('minute')" [disabled]="isDisabled()">&#8963;</button>
+      <input
+        type="text"
+        class="uk-tp-input"
+        [value]="padded(time().minute)"
+        [disabled]="isDisabled()"
+        (input)="onMinuteInput($event)"
+        (blur)="validateMinute()"
+        maxlength="2"
+      />
+      <button type="button" class="uk-tp-btn" (click)="decrement('minute')" [disabled]="isDisabled()">&#8964;</button>
+    </div>
+    @if (showSeconds) {
+      <span class="uk-tp-sep">:</span>
+      <div class="uk-tp-col">
+        <button type="button" class="uk-tp-btn" (click)="increment('second')" [disabled]="isDisabled()">&#8963;</button>
+        <input
+          type="text"
+          class="uk-tp-input"
+          [value]="padded(time().second ?? 0)"
+          [disabled]="isDisabled()"
+          (input)="onSecondInput($event)"
+          maxlength="2"
+        />
+        <button type="button" class="uk-tp-btn" (click)="decrement('second')" [disabled]="isDisabled()">&#8964;</button>
+      </div>
+    }
+    @if (!use24Hour) {
+      <div class="uk-tp-period">
+        <button
+          type="button"
+          class="uk-tp-period-btn"
+          [class.active]="time().period === 'AM'"
+          (click)="setPeriod('AM')"
+          [disabled]="isDisabled()"
+        >AM</button>
+        <button
+          type="button"
+          class="uk-tp-period-btn"
+          [class.active]="time().period === 'PM'"
+          (click)="setPeriod('PM')"
+          [disabled]="isDisabled()"
+        >PM</button>
+      </div>
+    }
+  </div>
+  @if (hint && !errorMessage) { <span class="uk-hint">{{ hint }}</span> }
+  @if (errorMessage) { <span class="uk-error">{{ errorMessage }}</span> }
+</div>

@@ -1,0 +1,174 @@
+.uk-select-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.uk-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.uk-required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.uk-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  background: #fff;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  min-height: 40px;
+
+  &:hover:not(.disabled) {
+    border-color: #6366f1;
+  }
+
+  &.open {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  }
+
+  &.disabled {
+    background: #f9fafb;
+    cursor: not-allowed;
+  }
+}
+
+.uk-select-value {
+  font-size: 0.9375rem;
+  color: #111827;
+
+  &.placeholder {
+    color: #9ca3af;
+  }
+}
+
+.uk-select-arrow {
+  font-size: 0.625rem;
+  color: #6b7280;
+  transition: transform 0.2s;
+
+  &.rotated {
+    transform: rotate(180deg);
+  }
+}
+
+.uk-select-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.uk-select-search-wrap {
+  padding: 8px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.uk-select-search {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0.375rem 0.625rem;
+  font-size: 0.875rem;
+  outline: none;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: #6366f1;
+  }
+}
+
+.uk-select-options {
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.uk-select-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  color: #374151;
+  transition: background 0.15s;
+
+  &:hover:not(.disabled) {
+    background: #f5f3ff;
+    color: #6366f1;
+  }
+
+  &.selected {
+    background: #f5f3ff;
+    color: #6366f1;
+    font-weight: 500;
+  }
+
+  &.disabled {
+    color: #d1d5db;
+    cursor: not-allowed;
+  }
+}
+
+.uk-select-check {
+  width: 16px;
+  font-size: 0.75rem;
+  color: #6366f1;
+  flex-shrink: 0;
+}
+
+.uk-select-empty {
+  padding: 1rem;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.uk-select-wrapper {
+  &.sm .uk-select-trigger {
+    padding: 0.25rem 0.625rem;
+    min-height: 32px;
+    font-size: 0.8125rem;
+  }
+
+  &.lg .uk-select-trigger {
+    padding: 0.75rem 1rem;
+    min-height: 48px;
+    font-size: 1rem;
+  }
+
+  &.error .uk-select-trigger {
+    border-color: #ef4444;
+  }
+}
+
+.uk-hint {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.uk-error {
+  font-size: 0.75rem;
+  color: #ef4444;
+}

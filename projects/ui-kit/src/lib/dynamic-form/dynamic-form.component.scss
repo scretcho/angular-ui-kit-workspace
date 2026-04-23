@@ -1,0 +1,77 @@
+.uk-dform {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.uk-dform-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+
+  &.two-col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  &.three-col {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 640px) {
+    &.two-col,
+    &.three-col {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.uk-dform-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 8px;
+
+  &.center { justify-content: center; }
+  &.right  { justify-content: flex-end; }
+  &.left   { justify-content: flex-start; }
+}
+
+.uk-dform-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 0.5625rem 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.uk-dform-btn-submit {
+  background: #6366f1;
+  color: #fff;
+
+  &:hover:not(:disabled) { background: #4f46e5; }
+  &:disabled { background: #c7d2fe; cursor: not-allowed; }
+}
+
+.uk-dform-btn-reset {
+  background: #f3f4f6;
+  color: #374151;
+
+  &:hover { background: #e5e7eb; }
+}
+
+.uk-dform-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: uk-spin 0.6s linear infinite;
+}
+
+@keyframes uk-spin {
+  to { transform: rotate(360deg); }
+}

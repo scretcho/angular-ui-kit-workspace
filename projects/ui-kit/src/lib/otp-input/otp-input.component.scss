@@ -1,0 +1,60 @@
+.uk-otp-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.uk-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.uk-required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.uk-otp-boxes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.uk-otp-box {
+  width: 44px;
+  height: 52px;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #111827;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #fff;
+
+  &:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  }
+
+  &:disabled {
+    background: #f9fafb;
+    cursor: not-allowed;
+    color: #9ca3af;
+  }
+}
+
+.uk-otp-boxes.error .uk-otp-box {
+  border-color: #ef4444;
+}
+
+.uk-otp-sep {
+  font-size: 1.25rem;
+  color: #9ca3af;
+  font-weight: 600;
+}
+
+.uk-hint { font-size: 0.75rem; color: #6b7280; }
+.uk-error { font-size: 0.75rem; color: #ef4444; }

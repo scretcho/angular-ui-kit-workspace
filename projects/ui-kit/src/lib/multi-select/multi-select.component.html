@@ -1,0 +1,64 @@
+<div class="uk-ms-wrapper" [class]="wrapperClass()">
+  @if (label) {
+    <label class="uk-label">
+      {{ label }}
+      @if (required) { <span class="uk-required">*</span> }
+    </label>
+  }
+  <div class="uk-ms-trigger" [class.open]="isOpen()" [class.disabled]="isDisabled()" (click)="toggle()">
+    <div class="uk-ms-tags">
+      @if (selectedOptions().length === 0) {
+        <span class="uk-ms-placeholder">{{ placeholder }}</span>
+      }
+      @for (opt of selectedOptions(); track opt.value) {
+        <span class="uk-ms-tag">
+          {{ opt.label }}
+          <button type="button" class="uk-ms-tag-remove" (click)="removeOption(opt, $event)">&#x2715;</button>
+        </span>
+      }
+    </div>
+    <span class="uk-ms-arrow" [class.rotated]="isOpen()">&#9660;</span>
+  </div>
+  @if (isOpen()) {
+    <div class="uk-ms-dropdown">
+      <div class="uk-ms-search-wrap">
+        <input
+          type="text"
+          class="uk-ms-search"
+          placeholder="Search..."
+          [value]="searchQuery()"
+          (input)="onSearch($event)"
+          (click)="$event.stopPropagation()"
+        />
+      </div>
+      @if (showSelectAll) {
+        <div class="uk-ms-select-all" (click)="toggleAll()">
+          <span class="uk-ms-check-box" [class.checked]="allSelected()">
+            @if (allSelected()) { ✓ }
+          </span>
+          <span>{{ allSelected() ? 'Deselect All' : 'Select All' }}</span>
+        </div>
+      }
+      <ul class="uk-ms-options">
+        @if (filteredOptions().length === 0) {
+          <li class="uk-ms-empty">No options found</li>
+        }
+        @for (opt of filteredOptions(); track opt.value) {
+          <li
+            class="uk-ms-option"
+            [class.selected]="isSelected(opt)"
+            [class.disabled]="opt.disabled"
+            (click)="toggleOption(opt)"
+          >
+            <span class="uk-ms-check-box" [class.checked]="isSelected(opt)">
+              @if (isSelected(opt)) { ✓ }
+            </span>
+            {{ opt.label }}
+          </li>
+        }
+      </ul>
+    </div>
+  }
+  @if (hint && !errorMessage) { <span class="uk-hint">{{ hint }}</span> }
+  @if (errorMessage) { <span class="uk-error">{{ errorMessage }}</span> }
+</div>

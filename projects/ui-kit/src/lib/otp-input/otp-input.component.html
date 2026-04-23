@@ -1,0 +1,31 @@
+<div class="uk-otp-wrapper">
+  @if (label) {
+    <label class="uk-label">
+      {{ label }}
+      @if (required) { <span class="uk-required">*</span> }
+    </label>
+  }
+  <div class="uk-otp-boxes" [class.error]="!!errorMessage">
+    @for (i of slots; track i) {
+      <input
+        #otpInput
+        [type]="mask ? 'password' : 'text'"
+        class="uk-otp-box"
+        [value]="digits()[i] ?? ''"
+        [disabled]="isDisabled()"
+        maxlength="1"
+        inputmode="numeric"
+        autocomplete="one-time-code"
+        (keydown)="onKeyDown($event, i)"
+        (input)="onInput($event, i)"
+        (paste)="onPaste($event)"
+        (focus)="focusedIndex.set(i)"
+      />
+      @if (separator && i < length - 1 && (i + 1) % separatorAfter === 0) {
+        <span class="uk-otp-sep">{{ separator }}</span>
+      }
+    }
+  </div>
+  @if (hint && !errorMessage) { <span class="uk-hint">{{ hint }}</span> }
+  @if (errorMessage) { <span class="uk-error">{{ errorMessage }}</span> }
+</div>

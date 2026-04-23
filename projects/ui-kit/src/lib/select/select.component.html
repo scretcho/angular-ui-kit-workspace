@@ -1,0 +1,48 @@
+<div class="uk-select-wrapper" [class]="wrapperClass()">
+  @if (label) {
+    <label class="uk-label">
+      {{ label }}
+      @if (required) { <span class="uk-required">*</span> }
+    </label>
+  }
+  <div class="uk-select-trigger" [class.open]="isOpen()" [class.disabled]="isDisabled()" (click)="toggle()">
+    <span class="uk-select-value" [class.placeholder]="!selectedOption()">
+      {{ selectedOption()?.label || placeholder }}
+    </span>
+    <span class="uk-select-arrow" [class.rotated]="isOpen()">&#9660;</span>
+  </div>
+  @if (isOpen()) {
+    <div class="uk-select-dropdown">
+      @if (searchable) {
+        <div class="uk-select-search-wrap">
+          <input
+            type="text"
+            class="uk-select-search"
+            placeholder="Search..."
+            [value]="searchQuery()"
+            (input)="onSearch($event)"
+            (click)="$event.stopPropagation()"
+          />
+        </div>
+      }
+      <ul class="uk-select-options">
+        @if (filteredOptions().length === 0) {
+          <li class="uk-select-empty">No options found</li>
+        }
+        @for (opt of filteredOptions(); track opt.value) {
+          <li
+            class="uk-select-option"
+            [class.selected]="value() === opt.value"
+            [class.disabled]="opt.disabled"
+            (click)="selectOption(opt)"
+          >
+            <span class="uk-select-check">{{ value() === opt.value ? '✓' : '' }}</span>
+            {{ opt.label }}
+          </li>
+        }
+      </ul>
+    </div>
+  }
+  @if (hint && !errorMessage) { <span class="uk-hint">{{ hint }}</span> }
+  @if (errorMessage) { <span class="uk-error">{{ errorMessage }}</span> }
+</div>

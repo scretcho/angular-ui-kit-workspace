@@ -1,0 +1,238 @@
+<div class="demo-shell">
+  <!-- Sidebar nav -->
+  <aside class="demo-nav">
+    <div class="demo-nav-brand">UI Kit</div>
+    @for (s of sections; track s.id) {
+      <button type="button" class="demo-nav-item" [class.active]="activeSection() === s.id" (click)="activeSection.set(s.id)">
+        {{ s.label }}
+      </button>
+    }
+  </aside>
+
+  <!-- Main content -->
+  <main class="demo-main">
+    <h2 class="demo-section-title">{{ sectionLabel }}</h2>
+
+    <!-- ── Input ── -->
+    @if (activeSection() === 'input') {
+      <div class="demo-card">
+        <h3>Default</h3>
+        <uk-input label="Full name" placeholder="John Doe" [(ngModel)]="inputValue" />
+        <p class="demo-value">Value: {{ inputValue || '–' }}</p>
+      </div>
+      <div class="demo-card">
+        <h3>With hint &amp; error message</h3>
+        <uk-input label="Email" placeholder="you@example.com" hint="We'll never share your email" errorMessage="Please enter a valid email" />
+      </div>
+      <div class="demo-card">
+        <h3>Sizes</h3>
+        <uk-input label="Small" size="sm" placeholder="Small input" />
+        <uk-input label="Medium" size="md" placeholder="Medium input" />
+        <uk-input label="Large" size="lg" placeholder="Large input" />
+      </div>
+      <div class="demo-card">
+        <h3>Disabled</h3>
+        <uk-input label="Disabled" [disabled]="true" placeholder="Cannot edit" />
+      </div>
+    }
+
+    <!-- ── Textarea ── -->
+    @if (activeSection() === 'textarea') {
+      <div class="demo-card">
+        <h3>Default</h3>
+        <uk-textarea label="Bio" placeholder="Tell us about yourself…" [(ngModel)]="textareaValue" />
+        <p class="demo-value">Length: {{ textareaValue.length }}</p>
+      </div>
+      <div class="demo-card">
+        <h3>With max length</h3>
+        <uk-textarea label="Notes" [maxlength]="200" [rows]="5" hint="Max 200 characters" />
+      </div>
+      <div class="demo-card">
+        <h3>Disabled</h3>
+        <uk-textarea label="Read only" [disabled]="true" placeholder="Cannot edit" />
+      </div>
+    }
+
+    <!-- ── Select ── -->
+    @if (activeSection() === 'select') {
+      <div class="demo-card">
+        <h3>Searchable select</h3>
+        <uk-select label="Framework" [options]="selectOptions" [searchable]="true" placeholder="Pick one" [(ngModel)]="selectedFramework" />
+        <p class="demo-value">Selected: {{ selectedFramework || '–' }}</p>
+      </div>
+      <div class="demo-card">
+        <h3>Disabled</h3>
+        <uk-select label="Framework" [options]="selectOptions" [disabled]="true" placeholder="Disabled" />
+      </div>
+    }
+
+    <!-- ── Multi-Select ── -->
+    @if (activeSection() === 'multiselect') {
+      <div class="demo-card">
+        <h3>Multi-select with tags</h3>
+        <uk-multi-select label="Tech stack" [options]="msOptions" placeholder="Choose technologies" [(ngModel)]="selectedTech" />
+        <p class="demo-value">Selected: {{ selectedTech.join(', ') || '–' }}</p>
+      </div>
+    }
+
+    <!-- ── Checkbox ── -->
+    @if (activeSection() === 'checkbox') {
+      <div class="demo-card">
+        <h3>Checkboxes</h3>
+        <uk-checkbox label="Accept terms and conditions" [(ngModel)]="checked1" />
+        <p class="demo-value">Checked: {{ checked1 }}</p>
+        <uk-checkbox label="Subscribe to newsletter" [(ngModel)]="checked2" />
+        <p class="demo-value">Checked: {{ checked2 }}</p>
+      </div>
+      <div class="demo-card">
+        <h3>Disabled</h3>
+        <uk-checkbox label="Cannot change" [disabled]="true" [ngModel]="true" />
+      </div>
+    }
+
+    <!-- ── Radio ── -->
+    @if (activeSection() === 'radio') {
+      <div class="demo-card">
+        <h3>Horizontal</h3>
+        <uk-radio-group label="Theme" [options]="radioOptions" [(ngModel)]="radioValue" direction="horizontal" />
+        <p class="demo-value">Selected: {{ radioValue }}</p>
+      </div>
+      <div class="demo-card">
+        <h3>Vertical</h3>
+        <uk-radio-group label="Theme" [options]="radioOptions" [(ngModel)]="radioValue" direction="vertical" />
+      </div>
+    }
+
+    <!-- ── OTP Input ── -->
+    @if (activeSection() === 'otp') {
+      <div class="demo-card">
+        <h3>6-digit OTP</h3>
+        <uk-otp-input label="Verification code" [length]="6" [(ngModel)]="otpValue" />
+        <p class="demo-value">Value: {{ otpValue || '–' }}</p>
+      </div>
+      <div class="demo-card">
+        <h3>4-digit PIN with separator</h3>
+        <uk-otp-input label="PIN" [length]="4" separator="-" [separatorAfter]="2" hint="Enter your 4-digit PIN" />
+      </div>
+    }
+
+    <!-- ── Range ── -->
+    @if (activeSection() === 'range') {
+      <div class="demo-card">
+        <h3>Single range</h3>
+        <uk-range label="Volume" [min]="0" [max]="100" [step]="5" unit="%" [(ngModel)]="rangeValue" />
+        <p class="demo-value">Value: {{ rangeValue }}</p>
+      </div>
+      <div class="demo-card">
+        <h3>Dual range</h3>
+        <uk-range label="Price range" [min]="0" [max]="100" [step]="1" [range]="true" unit="$" [(ngModel)]="dualRange" />
+        <p class="demo-value">Value: {{ dualRange[0] }} – {{ dualRange[1] }}</p>
+      </div>
+    }
+
+    <!-- ── Rating ── -->
+    @if (activeSection() === 'rating') {
+      <div class="demo-card">
+        <h3>Stars</h3>
+        <uk-rating label="Rate this" [max]="5" [(ngModel)]="ratingValue" />
+        <p class="demo-value">Rating: {{ ratingValue }} / 5</p>
+      </div>
+      <div class="demo-card">
+        <h3>Hearts (10-point)</h3>
+        <uk-rating label="How much do you love it?" [max]="10" icon="heart" [showCount]="true" />
+      </div>
+      <div class="demo-card">
+        <h3>Read-only</h3>
+        <uk-rating label="Average rating" [max]="5" [ngModel]="4" [readonly]="true" />
+      </div>
+    }
+
+    <!-- ── Stepper ── -->
+    @if (activeSection() === 'stepper') {
+      <div class="demo-card">
+        <h3>Horizontal stepper</h3>
+        <uk-stepper [steps]="steps" direction="horizontal" [showNavigation]="true">
+          <ng-template [ukStepContent]="0">
+            <div class="step-body">
+              <uk-input label="Username" placeholder="your-handle" />
+              <uk-input label="Password" placeholder="••••••••" />
+            </div>
+          </ng-template>
+          <ng-template [ukStepContent]="1">
+            <div class="step-body">
+              <uk-input label="Display name" placeholder="Your Name" />
+              <uk-textarea label="Bio" placeholder="A short bio…" [rows]="3" />
+            </div>
+          </ng-template>
+          <ng-template [ukStepContent]="2">
+            <div class="step-body">
+              <p>Everything looks great! Click <strong>Finish</strong> to submit.</p>
+            </div>
+          </ng-template>
+        </uk-stepper>
+      </div>
+      <div class="demo-card">
+        <h3>Vertical stepper</h3>
+        <uk-stepper [steps]="steps" direction="vertical" [showNavigation]="true">
+          <ng-template [ukStepContent]="0"><div class="step-body"><uk-input label="Username" /></div></ng-template>
+          <ng-template [ukStepContent]="1"><div class="step-body"><uk-input label="Display name" /></div></ng-template>
+          <ng-template [ukStepContent]="2"><div class="step-body"><p>Ready to submit.</p></div></ng-template>
+        </uk-stepper>
+      </div>
+    }
+
+    <!-- ── Time Picker ── -->
+    @if (activeSection() === 'timepicker') {
+      <div class="demo-card">
+        <h3>12-hour (AM/PM)</h3>
+        <uk-timepicker label="Meeting time" [(ngModel)]="timeValue" />
+        <p class="demo-value">Value: {{ timeValue.hour }}:{{ timeValue.minute | number:'2.0-0' }} {{ timeValue.period }}</p>
+      </div>
+      <div class="demo-card">
+        <h3>24-hour with seconds</h3>
+        <uk-timepicker label="Alarm" [use24Hour]="true" [showSeconds]="true" />
+      </div>
+    }
+
+    <!-- ── Date Range ── -->
+    @if (activeSection() === 'daterange') {
+      <div class="demo-card">
+        <h3>Date range picker</h3>
+        <uk-date-range-picker label="Trip dates" [(ngModel)]="dateRange" [showPresets]="true" />
+        <p class="demo-value">
+          Start: {{ dateRange.start ? (dateRange.start | date:'mediumDate') : '–' }}
+          &nbsp;|&nbsp;
+          End: {{ dateRange.end ? (dateRange.end | date:'mediumDate') : '–' }}
+        </p>
+      </div>
+      <div class="demo-card">
+        <h3>Without presets</h3>
+        <uk-date-range-picker label="Custom range" [showPresets]="false" placeholder="Pick start &amp; end" />
+      </div>
+    }
+
+    <!-- ── Dynamic Form ── -->
+    @if (activeSection() === 'dynform') {
+      <div class="demo-card wide">
+        <h3>Auto-generated form</h3>
+        <uk-dynamic-form
+          [fields]="dynFormFields"
+          [columns]="2"
+          submitLabel="Save"
+          (formSubmit)="dynFormResult.set($event)"
+        />
+        @if (dynFormResult()) {
+          <pre class="demo-json">{{ dynFormResult() | json }}</pre>
+        }
+      </div>
+    }
+
+    <!-- ── Dynamic Table ── -->
+    @if (activeSection() === 'dyntable') {
+      <div class="demo-card wide">
+        <h3>Sortable, searchable, paginated table</h3>
+        <uk-dynamic-table [data]="tableData" [config]="tableConfig" />
+      </div>
+    }
+  </main>
+</div>

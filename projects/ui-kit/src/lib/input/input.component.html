@@ -1,0 +1,47 @@
+<div class="uk-input-wrapper" [class]="wrapperClass()">
+  @if (label) {
+    <label [for]="inputId" class="uk-label">
+      {{ label }}
+      @if (required) { <span class="uk-required">*</span> }
+    </label>
+  }
+  <div class="uk-input-container" [class.uk-input--prefix]="prefixIcon" [class.uk-input--suffix]="suffixIcon || clearable">
+    @if (prefixIcon) {
+      <span class="uk-input-prefix">
+        <ng-content select="[ukPrefix]" />
+      </span>
+    }
+    <input
+      [id]="inputId"
+      [type]="type"
+      [placeholder]="placeholder"
+      [disabled]="isDisabled()"
+      [readonly]="readonly"
+      [value]="value()"
+      [attr.maxlength]="maxlength || null"
+      [attr.minlength]="minlength || null"
+      [attr.autocomplete]="autocomplete"
+      class="uk-input"
+      (input)="onInput($event)"
+      (blur)="onTouched()"
+      (focus)="focused.set(true)"
+    />
+    @if (suffixIcon) {
+      <span class="uk-input-suffix">
+        <ng-content select="[ukSuffix]" />
+      </span>
+    }
+    @if (clearable && value()) {
+      <button type="button" class="uk-input-clear" (click)="clear()">&#x2715;</button>
+    }
+  </div>
+  @if (hint && !errorMessage) {
+    <span class="uk-hint">{{ hint }}</span>
+  }
+  @if (errorMessage) {
+    <span class="uk-error">{{ errorMessage }}</span>
+  }
+  @if (maxlength) {
+    <span class="uk-char-count">{{ value().length }} / {{ maxlength }}</span>
+  }
+</div>

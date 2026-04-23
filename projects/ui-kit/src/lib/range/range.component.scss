@@ -1,0 +1,94 @@
+.uk-range-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.uk-range-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.uk-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.uk-required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+.uk-range-val {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6366f1;
+}
+
+.uk-range-track-wrap {
+  position: relative;
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.uk-range-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+.uk-range-fill {
+  position: absolute;
+  height: 100%;
+  background: #6366f1;
+  border-radius: 3px;
+  transition: width 0.1s, left 0.1s;
+}
+
+.uk-range-input {
+  position: absolute;
+  width: 100%;
+  height: 6px;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.uk-range-track-wrap:not(.disabled)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.uk-range-ticks {
+  display: flex;
+  justify-content: space-between;
+
+  span {
+    font-size: 0.75rem;
+    color: #9ca3af;
+  }
+}
+
+.uk-hint {
+  font-size: 0.75rem;
+  color: #6b7280;
+}

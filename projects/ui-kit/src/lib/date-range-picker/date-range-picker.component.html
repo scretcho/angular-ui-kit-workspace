@@ -1,0 +1,89 @@
+<div class="uk-drp-wrapper">
+  @if (label) {
+    <label class="uk-label">
+      {{ label }}
+      @if (required) { <span class="uk-required">*</span> }
+    </label>
+  }
+  <div class="uk-drp-trigger" [class.open]="isOpen()" [class.disabled]="isDisabled()" (click)="openPicker()">
+    <span class="uk-drp-icon">&#128197;</span>
+    <span class="uk-drp-value" [class.placeholder]="!dateRange().start">
+      {{ displayValue() }}
+    </span>
+    @if (dateRange().start) {
+      <button type="button" class="uk-drp-clear" (click)="clear($event)">&#x2715;</button>
+    }
+  </div>
+  @if (isOpen()) {
+    <div class="uk-drp-panel">
+      <div class="uk-drp-calendars">
+        <div class="uk-drp-cal">
+          <div class="uk-drp-cal-header">
+            <button type="button" class="uk-drp-nav" (click)="prevMonth()">&#8249;</button>
+            <span class="uk-drp-cal-title">{{ formatMonth(leftYear(), leftMonth()) }}</span>
+            <button type="button" class="uk-drp-nav" (click)="nextMonthLeft()">&#8250;</button>
+          </div>
+          <div class="uk-drp-cal-grid">
+            @for (d of weekDays; track d) {
+              <span class="uk-drp-weekday">{{ d }}</span>
+            }
+            @for (day of leftDays(); track day.date.getTime()) {
+              <button
+                type="button"
+                class="uk-drp-day"
+                [class.other-month]="!day.isCurrentMonth"
+                [class.today]="day.isToday"
+                [class.start]="day.isStart"
+                [class.end]="day.isEnd"
+                [class.in-range]="day.isInRange"
+                [class.disabled]="day.isDisabled"
+                [disabled]="day.isDisabled"
+                (click)="selectDay(day.date)"
+                (mouseenter)="hoverDate.set(day.date)"
+              >{{ day.date.getDate() }}</button>
+            }
+          </div>
+        </div>
+        <div class="uk-drp-cal">
+          <div class="uk-drp-cal-header">
+            <button type="button" class="uk-drp-nav" (click)="prevMonthRight()">&#8249;</button>
+            <span class="uk-drp-cal-title">{{ formatMonth(rightYear(), rightMonth()) }}</span>
+            <button type="button" class="uk-drp-nav" (click)="nextMonth()">&#8250;</button>
+          </div>
+          <div class="uk-drp-cal-grid">
+            @for (d of weekDays; track d) {
+              <span class="uk-drp-weekday">{{ d }}</span>
+            }
+            @for (day of rightDays(); track day.date.getTime()) {
+              <button
+                type="button"
+                class="uk-drp-day"
+                [class.other-month]="!day.isCurrentMonth"
+                [class.today]="day.isToday"
+                [class.start]="day.isStart"
+                [class.end]="day.isEnd"
+                [class.in-range]="day.isInRange"
+                [class.disabled]="day.isDisabled"
+                [disabled]="day.isDisabled"
+                (click)="selectDay(day.date)"
+                (mouseenter)="hoverDate.set(day.date)"
+              >{{ day.date.getDate() }}</button>
+            }
+          </div>
+        </div>
+      </div>
+      @if (showPresets) {
+        <div class="uk-drp-presets">
+          @for (p of presets; track p.label) {
+            <button type="button" class="uk-drp-preset" (click)="applyPreset(p)">{{ p.label }}</button>
+          }
+        </div>
+      }
+      <div class="uk-drp-footer">
+        <button type="button" class="uk-drp-btn-cancel" (click)="cancel()">Cancel</button>
+        <button type="button" class="uk-drp-btn-apply" [disabled]="!dateRange().start" (click)="apply()">Apply</button>
+      </div>
+    </div>
+  }
+  @if (errorMessage) { <span class="uk-error">{{ errorMessage }}</span> }
+</div>

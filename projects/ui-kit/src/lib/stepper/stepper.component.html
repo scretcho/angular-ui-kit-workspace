@@ -1,0 +1,70 @@
+<div class="uk-stepper" [class.vertical]="direction === 'vertical'">
+  <!-- Step Headers -->
+  <div class="uk-stepper-header">
+    @for (step of steps; track $index; let i = $index; let last = $last) {
+      <div
+        class="uk-step"
+        [class.active]="currentStep() === i"
+        [class.completed]="i < currentStep()"
+        [class.clickable]="allowNavigation"
+        (click)="allowNavigation ? goTo(i) : null"
+      >
+        <div class="uk-step-indicator">
+          <div class="uk-step-circle">
+            @if (i < currentStep()) {
+              <span class="uk-step-check">✓</span>
+            } @else if (step.icon && currentStep() !== i) {
+              <span>{{ step.icon }}</span>
+            } @else {
+              <span>{{ i + 1 }}</span>
+            }
+          </div>
+          @if (!last && direction !== 'vertical') {
+            <div class="uk-step-line" [class.done]="i < currentStep()"></div>
+          }
+        </div>
+        <div class="uk-step-info">
+          <span class="uk-step-label">{{ step.label }}</span>
+          @if (step.description) {
+            <span class="uk-step-desc">{{ step.description }}</span>
+          }
+          @if (step.optional) {
+            <span class="uk-step-optional">Optional</span>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Step Content -->
+  <div class="uk-stepper-content">
+    <ng-content />
+    @for (tmpl of stepTemplates; track $index) {
+      @if (tmpl.stepIndex === currentStep()) {
+        <ng-container [ngTemplateOutlet]="tmpl.templateRef" />
+      }
+    }
+  </div>
+
+  <!-- Navigation -->
+  @if (showNavigation) {
+    <div class="uk-stepper-nav">
+      <button
+        type="button"
+        class="uk-step-btn uk-step-btn-back"
+        [disabled]="currentStep() === 0"
+        (click)="prev()"
+      >&#8592; Back</button>
+      <div class="uk-step-progress">{{ currentStep() + 1 }} of {{ steps.length }}</div>
+      @if (currentStep() < steps.length - 1) {
+        <button type="button" class="uk-step-btn uk-step-btn-next" (click)="next()">
+          Next &#8594;
+        </button>
+      } @else {
+        <button type="button" class="uk-step-btn uk-step-btn-finish" (click)="finish()">
+          Finish &#10003;
+        </button>
+      }
+    </div>
+  }
+</div>

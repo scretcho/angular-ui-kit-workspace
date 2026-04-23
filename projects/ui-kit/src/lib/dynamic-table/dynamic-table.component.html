@@ -1,0 +1,158 @@
+<div class="uk-table-container">
+  @if (config.searchable || toolbarActions.length > 0) {
+    <div class="uk-table-toolbar">
+      @if (config.searchable) {
+        <div class="uk-table-search">
+          <span class="uk-table-search-icon">&#128269;</span>
+          <input
+            type="text"
+            class="uk-table-search-input"
+            [placeholder]="searchPlaceholder"
+            [value]="searchQuery()"
+            (input)="onSearch($event)"
+          />
+          @if (searchQuery()) {
+            <button class="uk-table-search-clear" (click)="clearSearch()">&#x2715;</button>
+          }
+        </div>
+      }
+      <div class="uk-table-toolbar-actions">
+        <ng-content select="[ukTableActions]" />
+      </div>
+      @if (config.selectable && selectedRows().length > 0) {
+        <div class="uk-table-selection-info">
+          {{ selectedRows().length }} selected
+          <button class="uk-table-clear-sel" (click)="clearSelection()">Clear</button>
+        </div>
+      }
+    </div>
+  }
+
+  <div class="uk-table-scroll">
+    <table class="uk-table" [class.striped]="config.striped" [class.sticky-header]="config.stickyHeader">
+      <thead>
+        <tr>
+          @if (config.selectable) {
+            <th class="uk-th uk-th-check">
+              <span class="uk-check-box" [class.checked]="allSelected()" (click)="toggleAll()">
+                @if (allSelected()) { ✓ } @else if (someSelected()) { — }
+              </span>
+            </th>
+          }
+          @for (col of config.columns; track col.key) {
+            <th
+              class="uk-th"
+              [class.sortable]="col.sortable"
+              [class.sorted-asc]="sortKey() === col.key && sortDir() === 'asc'"
+              [class.sorted-desc]="sortKey() === col.key && sortDir() === 'desc'"
+              [style.width]="col.width ?? null"
+              [style.text-align]="col.align ?? 'left'"
+              (click)="col.sortable && sortByCol(col)"
+            >
+              {{ col.header }}
+              @if (col.sortable) {
+                <span class="uk-sort-icon">
+                  {{ sortKey() === col.key ? (sortDir() === 'asc' ? '↑' : '↓') : '⇅' }}
+                </span>
+              }
+            </th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @if (isLoading()) {
+          <tr>
+            <td [attr.colspan]="config.columns.length + (config.selectable ? 1 : 0)" class="uk-td-center">
+              <div class="uk-table-loading">
+                <div class="uk-spinner"></div>
+                <span>Loading...</span>
+              </div>
+            </td>
+          </tr>
+        } @else if (pagedData().length === 0) {
+          <tr>
+            <td [attr.colspan]="config.columns.length + (config.selectable ? 1 : 0)" class="uk-td-center uk-td-empty">
+              {{ config.emptyText ?? 'No data available' }}
+            </td>
+          </tr>
+        } @else {
+          @for (row of pagedData(); track rowKey(row, $index)) {
+            <tr
+              class="uk-tr"
+              [class.selected]="isSelected(row)"
+              [class.clickable]="rowClickable"
+              (click)="onRowClick(row)"
+            >
+              @if (config.selectable) {
+                <td class="uk-td uk-td-check" (click)="$event.stopPropagation(); toggleRow(row)">
+                  <span class="uk-check-box" [class.checked]="isSelected(row)">
+                    @if (isSelected(row)) { ✓ }
+                  </span>
+                </td>
+              }
+              @for (col of config.columns; track col.key) {
+                <td class="uk-td" [style.text-align]="col.align ?? 'left'">
+                  @switch (col.type) {
+                    @case ('boolean') {
+                      <span class="uk-badge" [class.uk-badge-success]="getCellValue(row, col)" [class.uk-badge-neutral]="!getCellValue(row, col)">
+                        {{ getCellValue(row, col) ? 'Yes' : 'No' }}
+                      </span>
+                    }
+                    @case ('badge') {
+                      <span class="uk-badge" [class]="getBadgeClass(col, getCellValue(row, col))">
+                        {{ getCellValue(row, col) }}
+                      </span>
+                    }
+                    @case ('date') {
+                      {{ formatDate(getCellValue(row, col)) }}
+                    }
+                    @case ('actions') {
+                      <div class="uk-td-actions">
+                        <ng-container *ngTemplateOutlet="$any(col.cellTemplate); context: { $implicit: row }" />
+                      </div>
+                    }
+                    @default {
+                      {{ col.format ? col.format(getCellValue(row, col), row) : getCellValue(row, col) }}
+                    }
+                  }
+                </td>
+              }
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (config.paginate && totalPages() > 1) {
+    <div class="uk-table-pagination">
+      <div class="uk-page-size">
+        <span>Rows per page:</span>
+        <select class="uk-page-size-select" [value]="pageSize()" (change)="onPageSizeChange($event)">
+          @for (size of config.pageSizeOptions ?? [10, 25, 50, 100]; track size) {
+            <option [value]="size">{{ size }}</option>
+          }
+        </select>
+      </div>
+      <span class="uk-page-info">
+        {{ (currentPage() - 1) * pageSize() + 1 }}–{{ Math.min(currentPage() * pageSize(), filteredData().length) }}
+        of {{ filteredData().length }}
+      </span>
+      <div class="uk-page-nav">
+        <button class="uk-page-btn" [disabled]="currentPage() === 1" (click)="goToPage(1)">«</button>
+        <button class="uk-page-btn" [disabled]="currentPage() === 1" (click)="prevPage()">‹</button>
+        @for (p of pageNumbers(); track p) {
+          <button
+            class="uk-page-btn"
+            [class.active]="p === currentPage()"
+            [class.ellipsis]="p === -1"
+            [disabled]="p === -1"
+            (click)="p !== -1 ? goToPage(p) : null"
+          >{{ p === -1 ? '...' : p }}</button>
+        }
+        <button class="uk-page-btn" [disabled]="currentPage() === totalPages()" (click)="nextPage()">›</button>
+        <button class="uk-page-btn" [disabled]="currentPage() === totalPages()" (click)="goToPage(totalPages())">»</button>
+      </div>
+    </div>
+  }
+</div>
