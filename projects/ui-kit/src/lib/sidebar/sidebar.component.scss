@@ -1,0 +1,228 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.uk-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 240px;
+  height: 100%;
+  background: #1e1b4b;
+  transition: width 0.22s ease;
+  overflow: hidden;
+
+  &.collapsed {
+    width: 64px;
+
+    .uk-sidebar-brand-title { display: none; }
+    .uk-sidebar-label       { display: none; }
+    .uk-sidebar-arrow       { display: none; }
+  }
+}
+
+/* ── Brand ── */
+.uk-sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  min-height: 60px;
+}
+
+.uk-sidebar-logo {
+  height: 28px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.uk-sidebar-logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #4f46e5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.uk-sidebar-brand-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+
+/* ── Nav ── */
+.uk-sidebar-nav {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+}
+
+.uk-sidebar-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+  margin: 6px 4px;
+}
+
+/* ── Item ── */
+.uk-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #c7d2fe;
+  font-size: 0.875rem;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+  position: relative;
+
+  &:hover {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+  }
+
+  &.active {
+    background: #4f46e5;
+    color: #fff;
+
+    .uk-sidebar-icon { color: #fff; }
+  }
+
+  &.child-active:not(.active) {
+    background: rgba(99,102,241,0.15);
+    color: #a5b4fc;
+  }
+}
+
+.uk-sidebar-icon {
+  font-size: 1.0625rem;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+  color: #a5b4fc;
+}
+
+.uk-sidebar-label {
+  flex: 1;
+}
+
+.uk-sidebar-arrow {
+  font-size: 0.75rem;
+  color: #6b7280;
+  transition: transform 0.2s;
+}
+
+/* ── Badge ── */
+.uk-sidebar-badge {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 20px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.uk-sidebar-badge-dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.uk-badge-primary { background: #6366f1; color: #fff; }
+.uk-badge-success { background: #22c55e; color: #fff; }
+.uk-badge-danger  { background: #ef4444; color: #fff; }
+.uk-badge-warning { background: #f59e0b; color: #fff; }
+
+/* ── Children ── */
+.uk-sidebar-children {
+  list-style: none;
+  margin: 2px 0 2px 0;
+  padding: 0 0 0 8px;
+  animation: uk-slide-down 0.18s ease;
+}
+
+@keyframes uk-slide-down {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.uk-sidebar-child-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #a5b4fc;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s, color 0.15s;
+
+  i { font-size: 0.875rem; }
+
+  &:hover { background: rgba(255,255,255,0.06); color: #e0e7ff; }
+
+  &.active {
+    color: #fff;
+    background: rgba(99,102,241,0.25);
+  }
+
+  &.disabled { opacity: 0.4; cursor: not-allowed; }
+}
+
+.uk-sidebar-child-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #6b7280;
+  flex-shrink: 0;
+  margin: 0 7px;
+}
+
+/* ── Collapse toggle ── */
+.uk-sidebar-collapse-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  background: transparent;
+  color: #6b7280;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: color 0.15s;
+  white-space: nowrap;
+
+  i { font-size: 0.875rem; flex-shrink: 0; }
+
+  &:hover { color: #c7d2fe; }
+}

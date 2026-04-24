@@ -1,0 +1,56 @@
+<header class="uk-header">
+  <div class="uk-header-left">
+    @if (showMenuToggle) {
+      <button type="button" class="uk-header-toggle" (click)="menuToggle.emit()" [title]="sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'">
+        <i class="bi bi-list"></i>
+      </button>
+    }
+    @if (logo) {
+      <img class="uk-header-logo" [src]="logo" alt="logo" />
+    }
+    @if (title) {
+      <span class="uk-header-title">{{ title }}</span>
+    }
+  </div>
+
+  <div class="uk-header-right">
+    @for (action of actions; track action.id) {
+      <button type="button" class="uk-header-action" [title]="action.label ?? action.id" (click)="onActionClick(action.id)">
+        <i class="bi bi-{{ action.icon }}"></i>
+        @if (action.badge) {
+          <span class="uk-header-badge uk-badge-{{ action.badgeVariant ?? 'danger' }}">{{ action.badge }}</span>
+        }
+      </button>
+    }
+
+    @if (user) {
+      <div class="uk-header-user">
+        <button type="button" class="uk-header-avatar" (click)="toggleUserMenu()">
+          @if (user.avatar) {
+            <img [src]="user.avatar" [alt]="user.name" />
+          } @else {
+            <span class="uk-header-initials">{{ initials }}</span>
+          }
+          <span class="uk-header-username">{{ user.name }}</span>
+          <i class="bi bi-chevron-down uk-header-chevron" [class.open]="userMenuOpen()"></i>
+        </button>
+
+        @if (userMenuOpen()) {
+          <div class="uk-header-dropdown">
+            <div class="uk-header-dropdown-user">
+              <strong>{{ user.name }}</strong>
+              @if (user.email) { <small>{{ user.email }}</small> }
+            </div>
+            <div class="uk-header-dropdown-divider"></div>
+            @for (item of user.menuItems ?? []; track item.id) {
+              <button type="button" class="uk-header-dropdown-item" (click)="onUserMenuClick(item.id)">
+                @if (item.icon) { <i class="bi bi-{{ item.icon }}"></i> }
+                {{ item.label }}
+              </button>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+</header>

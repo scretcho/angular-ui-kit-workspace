@@ -1,0 +1,96 @@
+<div class="uk-dp-wrapper">
+
+  @if (label) {
+    <label class="uk-label">
+      {{ label }}
+      @if (required) { <span class="uk-required">*</span> }
+    </label>
+  }
+
+  <!-- Trigger -->
+  <div class="uk-dp-trigger"
+       [class.open]="isOpen()"
+       [class.has-value]="!!selected()"
+       [class.disabled]="isDisabled()"
+       (click)="open()">
+    <i class="bi bi-calendar3 uk-dp-icon"></i>
+    <span class="uk-dp-value" [class.placeholder]="!selected()">
+      {{ displayValue() || placeholder }}
+    </span>
+    @if (clearable && selected()) {
+      <button type="button" class="uk-dp-clear" (click)="clear($event)" title="Clear">&#x2715;</button>
+    }
+  </div>
+
+  <!-- Popover panel -->
+  @if (isOpen()) {
+    <div class="uk-dp-panel">
+
+      <!-- Month header -->
+      <div class="uk-dp-header">
+        <button type="button" class="uk-dp-nav" (click)="showYearPicker() ? prevYearPage() : prevMonth()">&#8249;</button>
+
+        <button type="button" class="uk-dp-header-label" (click)="showYearPicker.update(v => !v)">
+          {{ headerLabel() }}
+          <i class="bi" [class.bi-chevron-down]="!showYearPicker()" [class.bi-chevron-up]="showYearPicker()"></i>
+        </button>
+
+        <button type="button" class="uk-dp-nav" (click)="showYearPicker() ? nextYearPage() : nextMonth()">&#8250;</button>
+      </div>
+
+      <!-- Year picker grid -->
+      @if (showYearPicker()) {
+        <div class="uk-dp-year-grid">
+          @for (y of yearRange(); track y) {
+            <button
+              type="button"
+              class="uk-dp-year-btn"
+              [class.current]="y === viewYear()"
+              [class.today-year]="y === today.getFullYear()"
+              (click)="selectYear(y)">
+              {{ y }}
+            </button>
+          }
+        </div>
+      }
+
+      <!-- Calendar grid -->
+      @if (!showYearPicker()) {
+        <div class="uk-dp-cal">
+          <div class="uk-dp-weekdays">
+            @for (d of weekDays; track d) {
+              <span>{{ d }}</span>
+            }
+          </div>
+          <div class="uk-dp-days">
+            @for (day of days(); track day.date.getTime()) {
+              <button
+                type="button"
+                class="uk-dp-day"
+                [class.other-month]="!day.isCurrentMonth"
+                [class.today]="day.isToday"
+                [class.selected]="day.isSelected"
+                [class.disabled]="day.isDisabled"
+                [disabled]="day.isDisabled"
+                (click)="selectDay(day.date)">
+                {{ day.date.getDate() }}
+              </button>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Footer -->
+      <div class="uk-dp-footer">
+        @if (showTodayButton) {
+          <button type="button" class="uk-dp-today-btn" (click)="selectToday()">Today</button>
+        }
+        <button type="button" class="uk-dp-close-btn" (click)="isOpen.set(false)">Close</button>
+      </div>
+
+    </div>
+  }
+
+  @if (hint && !errorMessage)    { <span class="uk-hint">{{ hint }}</span> }
+  @if (errorMessage)             { <span class="uk-error">{{ errorMessage }}</span> }
+</div>

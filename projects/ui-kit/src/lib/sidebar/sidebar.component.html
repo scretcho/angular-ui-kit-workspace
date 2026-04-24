@@ -1,0 +1,83 @@
+<nav class="uk-sidebar" [class.collapsed]="collapsed">
+
+  <!-- Brand -->
+  <div class="uk-sidebar-brand">
+    @if (brandLogo) {
+      <img class="uk-sidebar-logo" [src]="brandLogo" alt="logo" />
+    } @else {
+      <span class="uk-sidebar-logo-icon"><i class="bi bi-layers-fill"></i></span>
+    }
+    @if (!collapsed) {
+      <span class="uk-sidebar-brand-title">{{ brandTitle }}</span>
+    }
+  </div>
+
+  <!-- Nav items -->
+  <ul class="uk-sidebar-nav">
+    @for (item of items; track item.id) {
+      @if (item.dividerBefore) {
+        <li class="uk-sidebar-divider"></li>
+      }
+      <li class="uk-sidebar-item" [class.active]="isActive(item)" [class.disabled]="item.disabled" [class.has-children]="item.children?.length">
+        <button
+          type="button"
+          class="uk-sidebar-link"
+          [class.active]="isActive(item)"
+          [class.child-active]="isChildActive(item)"
+          [title]="collapsed ? item.label : ''"
+          (click)="select(item)"
+        >
+          @if (item.icon) {
+            <i class="bi bi-{{ item.icon }} uk-sidebar-icon"></i>
+          }
+          @if (!collapsed) {
+            <span class="uk-sidebar-label">{{ item.label }}</span>
+            @if (item.badge != null) {
+              <span class="uk-sidebar-badge" [class]="badgeClass(item.badgeVariant)">{{ item.badge }}</span>
+            }
+            @if (item.children?.length) {
+              <i class="bi uk-sidebar-arrow" [class.bi-chevron-down]="!isExpanded(item.id)" [class.bi-chevron-up]="isExpanded(item.id)"></i>
+            }
+          } @else {
+            @if (item.badge != null) {
+              <span class="uk-sidebar-badge uk-sidebar-badge-dot" [class]="badgeClass(item.badgeVariant)"></span>
+            }
+          }
+        </button>
+
+        <!-- Children -->
+        @if (item.children?.length && !collapsed && isExpanded(item.id)) {
+          <ul class="uk-sidebar-children">
+            @for (child of item.children!; track child.id) {
+              <li>
+                <button
+                  type="button"
+                  class="uk-sidebar-child-link"
+                  [class.active]="child.id === activeId"
+                  [class.disabled]="child.disabled"
+                  (click)="selectChild(child)"
+                >
+                  @if (child.icon) {
+                    <i class="bi bi-{{ child.icon }}"></i>
+                  } @else {
+                    <span class="uk-sidebar-child-dot"></span>
+                  }
+                  {{ child.label }}
+                  @if (child.badge != null) {
+                    <span class="uk-sidebar-badge" [class]="badgeClass(child.badgeVariant)">{{ child.badge }}</span>
+                  }
+                </button>
+              </li>
+            }
+          </ul>
+        }
+      </li>
+    }
+  </ul>
+
+  <!-- Collapse toggle -->
+  <button type="button" class="uk-sidebar-collapse-btn" (click)="toggleCollapse()" [title]="collapsed ? 'Expand' : 'Collapse'">
+    <i class="bi" [class.bi-chevron-double-left]="!collapsed" [class.bi-chevron-double-right]="collapsed"></i>
+    @if (!collapsed) { <span>Collapse</span> }
+  </button>
+</nav>

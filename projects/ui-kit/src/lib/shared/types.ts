@@ -69,6 +69,32 @@ export interface TableConfig<T = Record<string, unknown>> {
   emptyText?: string;
 }
 
+export interface NavItem {
+  id: string;
+  label: string;
+  icon?: string;
+  children?: NavItem[];
+  badge?: string | number;
+  badgeVariant?: 'primary' | 'success' | 'danger' | 'warning';
+  dividerBefore?: boolean;
+  disabled?: boolean;
+}
+
+export interface HeaderAction {
+  id: string;
+  icon: string;
+  label?: string;
+  badge?: string | number;
+  badgeVariant?: 'primary' | 'success' | 'danger' | 'warning';
+}
+
+export interface LayoutUser {
+  name: string;
+  email?: string;
+  avatar?: string;
+  menuItems?: Array<{ id: string; label: string; icon?: string }>;
+}
+
 export interface DateRange {
   start: Date | null;
   end: Date | null;

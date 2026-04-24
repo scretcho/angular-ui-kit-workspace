@@ -8,6 +8,7 @@
     "build:lib": "ng build ui-kit",
     "build:lib:watch": "ng build ui-kit --watch --configuration development",
     "build:all": "ng build ui-kit && ng build demo",
+    "publish:lib": "bash scripts/publish-lib.sh",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
