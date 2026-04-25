@@ -3,12 +3,13 @@ import {
   ChangeDetectionStrategy, signal
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NavItem } from '../shared/types';
 
 @Component({
   selector: 'uk-sidebar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
@@ -19,14 +20,14 @@ export class UkSidebarComponent {
   @Input() collapsed = false;
   @Input() brandTitle = 'App';
   @Input() brandLogo?: string;
+  @Input() brandRoute?: string;
   @Output() itemClick = new EventEmitter<NavItem>();
   @Output() collapsedChange = new EventEmitter<boolean>();
 
   readonly expanded = signal<Record<string, boolean>>({});
 
-  toggleExpand(item: NavItem, e: Event) {
-    e.stopPropagation();
-    this.expanded.update(s => ({ ...s, [item.id]: !s[item.id] }));
+  toggleExpand(id: string) {
+    this.expanded.update(s => ({ ...s, [id]: !s[id] }));
   }
 
   isExpanded(id: string): boolean {
@@ -45,7 +46,7 @@ export class UkSidebarComponent {
   select(item: NavItem) {
     if (item.disabled) return;
     if (item.children?.length) {
-      this.expanded.update(s => ({ ...s, [item.id]: !s[item.id] }));
+      this.toggleExpand(item.id);
     } else {
       this.itemClick.emit(item);
     }

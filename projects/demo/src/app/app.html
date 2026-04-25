@@ -30,7 +30,7 @@
         />
       </div>
 
-      <h3 class="section-heading">Sidebar — standalone (expanded)</h3>
+      <h3 class="section-heading">Sidebar — click-based navigation (no route)</h3>
       <div class="demo-card no-pad sidebar-preview">
         <uk-sidebar
           brandTitle="MyApp"
@@ -41,7 +41,22 @@
         />
         <div class="sidebar-preview-content">
           <p>Active: <strong>{{ previewActiveId() }}</strong></p>
-          <p>Click any nav item to change the active state.</p>
+          <p>Items use <code>(itemClick)</code> — no router needed.</p>
+        </div>
+      </div>
+
+      <h3 class="section-heading">Sidebar — route-based navigation</h3>
+      <div class="demo-card no-pad sidebar-preview">
+        <uk-sidebar
+          brandTitle="MyApp"
+          brandRoute="/"
+          [items]="previewNavRouted"
+          [collapsed]="false"
+        />
+        <div class="sidebar-preview-content">
+          <p>Items use <code>route: '/path'</code> on each <code>NavItem</code>.</p>
+          <p><code>routerLinkActive</code> sets the active class automatically.</p>
+          <p>Brand logo navigates to <code>/</code> via <code>brandRoute</code>.</p>
         </div>
       </div>
 
@@ -55,7 +70,7 @@
           (itemClick)="previewActiveId.set($event.id)"
         />
         <div class="sidebar-preview-content">
-          <p>Hover icons to see tooltips.</p>
+          <p>Hover icons to see label tooltips.</p>
         </div>
       </div>
 
@@ -63,6 +78,101 @@
       <div class="demo-card code-block">
         <pre>{{ layoutSnippet }}</pre>
       </div>
+    }
+
+    <!-- ══════════════════════════════════════════════════════
+         Button
+    ═══════════════════════════════════════════════════════ -->
+    @if (activeSection() === 'button') {
+
+      <div class="demo-card">
+        <h4>Variants</h4>
+        <div class="btn-row">
+          <uk-button variant="primary">Primary</uk-button>
+          <uk-button variant="secondary">Secondary</uk-button>
+          <uk-button variant="success">Success</uk-button>
+          <uk-button variant="danger">Danger</uk-button>
+          <uk-button variant="warning">Warning</uk-button>
+          <uk-button variant="ghost">Ghost</uk-button>
+          <uk-button variant="outline">Outline</uk-button>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h4>Sizes</h4>
+        <div class="btn-row btn-row-align">
+          <uk-button size="xs">Extra Small</uk-button>
+          <uk-button size="sm">Small</uk-button>
+          <uk-button size="md">Medium</uk-button>
+          <uk-button size="lg">Large</uk-button>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h4>Icon left</h4>
+        <div class="btn-row">
+          <uk-button variant="primary"   icon="plus-circle">Add Item</uk-button>
+          <uk-button variant="success"   icon="check-circle">Confirm</uk-button>
+          <uk-button variant="danger"    icon="trash">Delete</uk-button>
+          <uk-button variant="secondary" icon="pencil">Edit</uk-button>
+          <uk-button variant="ghost"     icon="arrow-left">Back</uk-button>
+          <uk-button variant="outline"   icon="download">Export</uk-button>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h4>Icon right</h4>
+        <div class="btn-row">
+          <uk-button variant="primary"   icon="arrow-right" iconPosition="right">Next</uk-button>
+          <uk-button variant="secondary" icon="box-arrow-up-right" iconPosition="right">Open</uk-button>
+          <uk-button variant="outline"   icon="send" iconPosition="right">Send</uk-button>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h4>Icon only</h4>
+        <div class="btn-row btn-row-align">
+          <uk-button variant="primary"   icon="plus"        [iconOnly]="true" size="xs" />
+          <uk-button variant="primary"   icon="plus"        [iconOnly]="true" size="sm" />
+          <uk-button variant="primary"   icon="plus"        [iconOnly]="true" size="md" />
+          <uk-button variant="primary"   icon="plus"        [iconOnly]="true" size="lg" />
+          <uk-button variant="secondary" icon="pencil"      [iconOnly]="true" />
+          <uk-button variant="danger"    icon="trash"       [iconOnly]="true" />
+          <uk-button variant="success"   icon="check-lg"    [iconOnly]="true" />
+          <uk-button variant="ghost"     icon="bell"        [iconOnly]="true" />
+          <uk-button variant="outline"   icon="gear"        [iconOnly]="true" />
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h4>Loading state</h4>
+        <div class="btn-row">
+          <uk-button variant="primary"   [loading]="btnLoading" icon="cloud-upload" (clicked)="simulateLoad()">
+            {{ btnLoading ? 'Saving…' : 'Save' }}
+          </uk-button>
+          <uk-button variant="secondary" [loading]="btnLoading">Processing</uk-button>
+          <uk-button variant="outline"   [loading]="btnLoading">Outline</uk-button>
+        </div>
+        <p class="val-tag">Click "Save" to simulate a 2 s loading state.</p>
+      </div>
+
+      <div class="demo-card">
+        <h4>Disabled</h4>
+        <div class="btn-row">
+          <uk-button variant="primary"   [disabled]="true" icon="lock">Primary</uk-button>
+          <uk-button variant="secondary" [disabled]="true">Secondary</uk-button>
+          <uk-button variant="danger"    [disabled]="true" icon="trash" [iconOnly]="true" />
+          <uk-button variant="outline"   [disabled]="true">Outline</uk-button>
+          <uk-button variant="ghost"     [disabled]="true">Ghost</uk-button>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h4>Full width</h4>
+        <uk-button variant="primary"   icon="box-arrow-in-right" [fullWidth]="true">Sign in</uk-button>
+        <uk-button variant="secondary" [fullWidth]="true">Cancel</uk-button>
+      </div>
+
     }
 
     <!-- ══════════════════════════════════════════════════════
@@ -340,6 +450,95 @@
         <uk-dynamic-table [data]="tableData" [config]="tableConfig" />
       </div>
     }
+
+    <!-- ══════════════════════════════════════════════════════
+         Offcanvas
+    ═══════════════════════════════════════════════════════ -->
+    @if (activeSection() === 'offcanvas') {
+      <p class="page-desc">
+        <code>uk-offcanvas</code> slides a panel in from any edge. Use <code>[(open)]</code> for
+        two-way binding. The body accepts any content via <code>&lt;ng-content&gt;</code>;
+        add <code>ukOffcanvasFooter</code> to project into the footer slot.
+      </p>
+
+      <h3 class="section-heading">Right (with Dynamic Form)</h3>
+      <div class="demo-card">
+        <div class="btn-row">
+          <uk-button variant="primary" icon="layout-sidebar-reverse" (clicked)="ocFormOpen = true">
+            Open Form
+          </uk-button>
+        </div>
+        @if (ocFormResult()) {
+          <pre class="json-out">{{ ocFormResult() | json }}</pre>
+        }
+      </div>
+
+      <h3 class="section-heading">Left panel</h3>
+      <div class="demo-card">
+        <div class="btn-row">
+          <uk-button variant="secondary" icon="layout-sidebar" (clicked)="ocLeftOpen = true">
+            Open Left
+          </uk-button>
+        </div>
+      </div>
+
+      <h3 class="section-heading">Top panel</h3>
+      <div class="demo-card">
+        <div class="btn-row">
+          <uk-button variant="outline" icon="layout-split" (clicked)="ocTopOpen = true">
+            Open Top
+          </uk-button>
+        </div>
+      </div>
+
+      <h3 class="section-heading">Bottom panel</h3>
+      <div class="demo-card">
+        <div class="btn-row">
+          <uk-button variant="ghost" icon="layout-split" (clicked)="ocBottomOpen = true">
+            Open Bottom
+          </uk-button>
+        </div>
+      </div>
+    }
   </div>
+
+  <!-- ── Offcanvas panels (always in DOM so transitions work) ── -->
+
+  <uk-offcanvas
+    title="New User"
+    position="right"
+    [(open)]="ocFormOpen"
+  >
+    <uk-dynamic-form
+      [fields]="ocFormFields"
+      submitLabel="Save User"
+      (formSubmit)="ocFormResult.set($event); ocFormOpen = false"
+    />
+    <div ukOffcanvasFooter>
+      <div class="btn-row">
+        <uk-button variant="ghost" (clicked)="ocFormOpen = false">Cancel</uk-button>
+      </div>
+    </div>
+  </uk-offcanvas>
+
+  <uk-offcanvas title="Left Panel" position="left" [(open)]="ocLeftOpen">
+    <p class="oc-body-text">
+      This panel slides in from the <strong>left</strong>. Great for navigation drawers or
+      filter panels.
+    </p>
+  </uk-offcanvas>
+
+  <uk-offcanvas title="Top Panel" position="top" [(open)]="ocTopOpen">
+    <p class="oc-body-text">
+      This panel slides in from the <strong>top</strong>. Handy for search overlays or
+      notification trays.
+    </p>
+  </uk-offcanvas>
+
+  <uk-offcanvas title="Bottom Panel" position="bottom" [(open)]="ocBottomOpen">
+    <p class="oc-body-text">
+      This panel slides in from the <strong>bottom</strong>. Common for mobile action sheets.
+    </p>
+  </uk-offcanvas>
 
 </uk-layout>

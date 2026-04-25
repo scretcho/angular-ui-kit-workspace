@@ -2,13 +2,28 @@
 
   <!-- Brand -->
   <div class="uk-sidebar-brand">
-    @if (brandLogo) {
-      <img class="uk-sidebar-logo" [src]="brandLogo" alt="logo" />
+    @if (brandRoute) {
+      <a class="uk-sidebar-brand-inner" [routerLink]="brandRoute">
+        @if (brandLogo) {
+          <img class="uk-sidebar-logo" [src]="brandLogo" alt="logo" />
+        } @else {
+          <span class="uk-sidebar-logo-icon"><i class="bi bi-layers-fill"></i></span>
+        }
+        @if (!collapsed) {
+          <span class="uk-sidebar-brand-title">{{ brandTitle }}</span>
+        }
+      </a>
     } @else {
-      <span class="uk-sidebar-logo-icon"><i class="bi bi-layers-fill"></i></span>
-    }
-    @if (!collapsed) {
-      <span class="uk-sidebar-brand-title">{{ brandTitle }}</span>
+      <div class="uk-sidebar-brand-inner">
+        @if (brandLogo) {
+          <img class="uk-sidebar-logo" [src]="brandLogo" alt="logo" />
+        } @else {
+          <span class="uk-sidebar-logo-icon"><i class="bi bi-layers-fill"></i></span>
+        }
+        @if (!collapsed) {
+          <span class="uk-sidebar-brand-title">{{ brandTitle }}</span>
+        }
+      </div>
     }
   </div>
 
@@ -18,55 +33,106 @@
       @if (item.dividerBefore) {
         <li class="uk-sidebar-divider"></li>
       }
-      <li class="uk-sidebar-item" [class.active]="isActive(item)" [class.disabled]="item.disabled" [class.has-children]="item.children?.length">
-        <button
-          type="button"
-          class="uk-sidebar-link"
+      <li class="uk-sidebar-item"
           [class.active]="isActive(item)"
-          [class.child-active]="isChildActive(item)"
-          [title]="collapsed ? item.label : ''"
-          (click)="select(item)"
-        >
-          @if (item.icon) {
-            <i class="bi bi-{{ item.icon }} uk-sidebar-icon"></i>
-          }
-          @if (!collapsed) {
-            <span class="uk-sidebar-label">{{ item.label }}</span>
-            @if (item.badge != null) {
-              <span class="uk-sidebar-badge" [class]="badgeClass(item.badgeVariant)">{{ item.badge }}</span>
+          [class.disabled]="item.disabled"
+          [class.has-children]="item.children?.length">
+
+        <!-- Route link (no children) -->
+        @if (item.route && !item.children?.length) {
+          <a
+            class="uk-sidebar-link"
+            [routerLink]="item.route"
+            routerLinkActive="active"
+            [title]="collapsed ? item.label : ''"
+            [class.disabled]="item.disabled"
+            (click)="itemClick.emit(item)">
+            @if (item.icon) {
+              <i class="bi bi-{{ item.icon }} uk-sidebar-icon"></i>
             }
-            @if (item.children?.length) {
-              <i class="bi uk-sidebar-arrow" [class.bi-chevron-down]="!isExpanded(item.id)" [class.bi-chevron-up]="isExpanded(item.id)"></i>
+            @if (!collapsed) {
+              <span class="uk-sidebar-label">{{ item.label }}</span>
+              @if (item.badge != null) {
+                <span class="uk-sidebar-badge" [class]="badgeClass(item.badgeVariant)">{{ item.badge }}</span>
+              }
+            } @else {
+              @if (item.badge != null) {
+                <span class="uk-sidebar-badge uk-sidebar-badge-dot" [class]="badgeClass(item.badgeVariant)"></span>
+              }
             }
-          } @else {
-            @if (item.badge != null) {
-              <span class="uk-sidebar-badge uk-sidebar-badge-dot" [class]="badgeClass(item.badgeVariant)"></span>
+          </a>
+        }
+
+        <!-- Button (no route, or has children) -->
+        @if (!item.route || item.children?.length) {
+          <button
+            type="button"
+            class="uk-sidebar-link"
+            [class.active]="isActive(item)"
+            [class.child-active]="isChildActive(item)"
+            [title]="collapsed ? item.label : ''"
+            (click)="select(item)">
+            @if (item.icon) {
+              <i class="bi bi-{{ item.icon }} uk-sidebar-icon"></i>
             }
-          }
-        </button>
+            @if (!collapsed) {
+              <span class="uk-sidebar-label">{{ item.label }}</span>
+              @if (item.badge != null) {
+                <span class="uk-sidebar-badge" [class]="badgeClass(item.badgeVariant)">{{ item.badge }}</span>
+              }
+              @if (item.children?.length) {
+                <i class="bi uk-sidebar-arrow"
+                   [class.bi-chevron-down]="!isExpanded(item.id)"
+                   [class.bi-chevron-up]="isExpanded(item.id)"></i>
+              }
+            } @else {
+              @if (item.badge != null) {
+                <span class="uk-sidebar-badge uk-sidebar-badge-dot" [class]="badgeClass(item.badgeVariant)"></span>
+              }
+            }
+          </button>
+        }
 
         <!-- Children -->
         @if (item.children?.length && !collapsed && isExpanded(item.id)) {
           <ul class="uk-sidebar-children">
             @for (child of item.children!; track child.id) {
               <li>
-                <button
-                  type="button"
-                  class="uk-sidebar-child-link"
-                  [class.active]="child.id === activeId"
-                  [class.disabled]="child.disabled"
-                  (click)="selectChild(child)"
-                >
-                  @if (child.icon) {
-                    <i class="bi bi-{{ child.icon }}"></i>
-                  } @else {
-                    <span class="uk-sidebar-child-dot"></span>
-                  }
-                  {{ child.label }}
-                  @if (child.badge != null) {
-                    <span class="uk-sidebar-badge" [class]="badgeClass(child.badgeVariant)">{{ child.badge }}</span>
-                  }
-                </button>
+                @if (child.route) {
+                  <a
+                    class="uk-sidebar-child-link"
+                    [routerLink]="child.route"
+                    routerLinkActive="active"
+                    [class.disabled]="child.disabled"
+                    (click)="itemClick.emit(child)">
+                    @if (child.icon) {
+                      <i class="bi bi-{{ child.icon }}"></i>
+                    } @else {
+                      <span class="uk-sidebar-child-dot"></span>
+                    }
+                    {{ child.label }}
+                    @if (child.badge != null) {
+                      <span class="uk-sidebar-badge" [class]="badgeClass(child.badgeVariant)">{{ child.badge }}</span>
+                    }
+                  </a>
+                } @else {
+                  <button
+                    type="button"
+                    class="uk-sidebar-child-link"
+                    [class.active]="child.id === activeId"
+                    [class.disabled]="child.disabled"
+                    (click)="selectChild(child)">
+                    @if (child.icon) {
+                      <i class="bi bi-{{ child.icon }}"></i>
+                    } @else {
+                      <span class="uk-sidebar-child-dot"></span>
+                    }
+                    {{ child.label }}
+                    @if (child.badge != null) {
+                      <span class="uk-sidebar-badge" [class]="badgeClass(child.badgeVariant)">{{ child.badge }}</span>
+                    }
+                  </button>
+                }
               </li>
             }
           </ul>

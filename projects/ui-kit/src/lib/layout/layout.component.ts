@@ -18,6 +18,7 @@ import { UkSidebarComponent } from '../sidebar/sidebar.component';
 export class UkLayoutComponent implements OnInit {
   @Input() title = '';
   @Input() logo?: string;
+  @Input() brandRoute?: string;
   @Input() navItems: NavItem[] = [];
   @Input() headerActions: HeaderAction[] = [];
   @Input() user?: LayoutUser;

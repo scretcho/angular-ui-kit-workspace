@@ -4,6 +4,7 @@
 
 export * from './lib/shared/types';
 
+export * from './lib/button/button.component';
 export * from './lib/input/input.component';
 export * from './lib/textarea/textarea.component';
 export * from './lib/select/select.component';
@@ -22,3 +23,4 @@ export * from './lib/dynamic-table/dynamic-table.component';
 export * from './lib/header/header.component';
 export * from './lib/sidebar/sidebar.component';
 export * from './lib/layout/layout.component';
+export * from './lib/offcanvas/offcanvas.component';

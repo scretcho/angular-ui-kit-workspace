@@ -1,0 +1,131 @@
+$transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+.uk-offcanvas-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  z-index: 1040;
+  transition: background $transition;
+
+  &--visible {
+    background: rgba(0, 0, 0, 0.45);
+  }
+}
+
+.uk-offcanvas-panel {
+  position: fixed;
+  z-index: 1050;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  transition: transform $transition;
+
+  /* ── Side panels ── */
+  &--right {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 420px;
+    transform: translateX(100%);
+    border-left: 1px solid #e5e7eb;
+
+    &.uk-offcanvas-panel--open {
+      transform: translateX(0);
+    }
+  }
+
+  &--left {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 420px;
+    transform: translateX(-100%);
+    border-right: 1px solid #e5e7eb;
+
+    &.uk-offcanvas-panel--open {
+      transform: translateX(0);
+    }
+  }
+
+  /* ── Top / Bottom panels ── */
+  &--top {
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 320px;
+    transform: translateY(-100%);
+    border-bottom: 1px solid #e5e7eb;
+
+    &.uk-offcanvas-panel--open {
+      transform: translateY(0);
+    }
+  }
+
+  &--bottom {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 320px;
+    transform: translateY(100%);
+    border-top: 1px solid #e5e7eb;
+
+    &.uk-offcanvas-panel--open {
+      transform: translateY(0);
+    }
+  }
+}
+
+/* ── Header ── */
+.uk-offcanvas-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  flex-shrink: 0;
+}
+
+.uk-offcanvas-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.uk-offcanvas-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  font-size: 1rem;
+
+  &:hover {
+    background: #f3f4f6;
+    color: #111827;
+  }
+}
+
+/* ── Body ── */
+.uk-offcanvas-body {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* ── Footer ── */
+.uk-offcanvas-footer {
+  padding: 14px 20px;
+  border-top: 1px solid #e5e7eb;
+  flex-shrink: 0;
+
+  &:empty {
+    display: none;
+  }
+}

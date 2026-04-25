@@ -1,0 +1,28 @@
+<button
+  [type]="type"
+  [class]="hostClass()"
+  [disabled]="disabled || loading"
+  [attr.aria-label]="iconOnly ? icon : null"
+  (click)="onClick($event)">
+
+  <!-- Loading spinner -->
+  @if (loading) {
+    <span class="uk-btn-spinner" aria-hidden="true"></span>
+  }
+
+  <!-- Left icon (not loading) -->
+  @if (!loading && icon && iconPosition === 'left') {
+    <i class="bi bi-{{ icon }}" aria-hidden="true"></i>
+  }
+
+  <!-- Label text (hidden when icon-only) -->
+  @if (!iconOnly) {
+    <span class="uk-btn-label"><ng-content /></span>
+  }
+
+  <!-- Right icon (not loading) -->
+  @if (!loading && icon && iconPosition === 'right') {
+    <i class="bi bi-{{ icon }}" aria-hidden="true"></i>
+  }
+
+</button>

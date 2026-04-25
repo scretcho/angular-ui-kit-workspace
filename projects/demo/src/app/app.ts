@@ -17,9 +17,11 @@ import {
   UkDatepickerComponent,
   UkDynamicFormComponent,
   UkDynamicTableComponent,
+  UkButtonComponent,
   UkLayoutComponent,
   UkHeaderComponent,
   UkSidebarComponent,
+  UkOffcanvasComponent,
   StepperStep, DynamicFormField, TableConfig,
   NavItem, HeaderAction, LayoutUser,
 } from 'ui-kit';
@@ -44,7 +46,9 @@ const PEOPLE = Array.from({ length: 32 }, (_, i) => ({
     UkStepperComponent, UkStepContentDirective,
     UkTimepickerComponent, UkDateRangePickerComponent, UkDatepickerComponent,
     UkDynamicFormComponent, UkDynamicTableComponent,
+    UkButtonComponent,
     UkLayoutComponent, UkHeaderComponent, UkSidebarComponent,
+    UkOffcanvasComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
@@ -55,8 +59,9 @@ export class App {
   readonly activeSection = signal('layout');
 
   readonly appNav: NavItem[] = [
-    { id: 'layout',      label: 'Layout',       icon: 'layout-sidebar', dividerBefore: false },
-    { id: 'input',       label: 'Input',         icon: 'input-cursor-text', dividerBefore: true },
+    { id: 'layout',      label: 'Layout',       icon: 'layout-sidebar' },
+    { id: 'button',      label: 'Button',        icon: 'hand-index-thumb', dividerBefore: true },
+    { id: 'input',       label: 'Input',         icon: 'input-cursor-text' },
     { id: 'textarea',    label: 'Textarea',      icon: 'text-paragraph' },
     { id: 'select',      label: 'Select',        icon: 'chevron-bar-down' },
     { id: 'multiselect', label: 'Multi-Select',  icon: 'list-check' },
@@ -69,8 +74,23 @@ export class App {
     { id: 'timepicker',  label: 'Time Picker',   icon: 'clock' },
     { id: 'datepicker',  label: 'Date Picker',   icon: 'calendar-date' },
     { id: 'daterange',   label: 'Date Range',    icon: 'calendar-range' },
-    { id: 'dynform',     label: 'Dynamic Form',  icon: 'ui-checks-grid',  dividerBefore: true },
+    { id: 'dynform',     label: 'Dynamic Form',  icon: 'ui-checks-grid', dividerBefore: true },
     { id: 'dyntable',    label: 'Dynamic Table', icon: 'table' },
+    { id: 'offcanvas',   label: 'Offcanvas',     icon: 'layout-sidebar-reverse', dividerBefore: true },
+  ];
+
+  /* Items used in the Layout preview — mix of routed and non-routed */
+  readonly previewNavRouted: NavItem[] = [
+    { id: 'home',     label: 'Home',      icon: 'house',        route: '/' },
+    { id: 'about',    label: 'About',     icon: 'info-circle',  route: '/about' },
+    { id: 'team',     label: 'Team',      icon: 'people',
+      children: [
+        { id: 'team-eng',  label: 'Engineering', icon: 'code-slash',  route: '/team/engineering' },
+        { id: 'team-des',  label: 'Design',      icon: 'palette',     route: '/team/design' },
+      ]
+    },
+    { id: 'contact',  label: 'Contact',   icon: 'envelope',     route: '/contact', dividerBefore: true },
+    { id: 'settings', label: 'Settings',  icon: 'gear',         route: '/settings' },
   ];
 
   readonly appHeaderActions: HeaderAction[] = [
@@ -137,6 +157,13 @@ export class App {
   <!-- your page content goes here -->
   <router-outlet />
 </uk-layout>`;
+
+  /* ── Button ── */
+  btnLoading = false;
+  simulateLoad() {
+    this.btnLoading = true;
+    setTimeout(() => this.btnLoading = false, 2000);
+  }
 
   /* ── Input ── */
   inputValue = '';
@@ -212,6 +239,19 @@ export class App {
     { key: 'agree', type: 'checkbox', label: 'I agree to the terms', required: true, order: 5 },
   ];
   dynFormResult = signal<Record<string, unknown> | null>(null);
+
+  /* ── Offcanvas ── */
+  ocFormOpen = false;
+  ocLeftOpen = false;
+  ocTopOpen = false;
+  ocBottomOpen = false;
+  ocFormResult = signal<Record<string, unknown> | null>(null);
+  readonly ocFormFields: DynamicFormField[] = [
+    { key: 'name',  type: 'input',    label: 'Full Name', required: true, placeholder: 'John Doe', order: 1 },
+    { key: 'email', type: 'input',    label: 'Email',     required: true, placeholder: 'you@example.com', validators: [{ type: 'email' }], order: 2 },
+    { key: 'role',  type: 'select',   label: 'Role',      options: [{ value: 'admin', label: 'Admin' }, { value: 'editor', label: 'Editor' }, { value: 'viewer', label: 'Viewer' }], order: 3 },
+    { key: 'bio',   type: 'textarea', label: 'Bio',       placeholder: 'A short bio…', rows: 3, order: 4 },
+  ];
 
   /* ── Dynamic Table ── */
   tableData = PEOPLE;

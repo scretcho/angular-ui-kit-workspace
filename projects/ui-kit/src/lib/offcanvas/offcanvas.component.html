@@ -1,0 +1,33 @@
+@if (isVisible()) {
+  <div
+    class="uk-offcanvas-backdrop"
+    [class.uk-offcanvas-backdrop--visible]="backdrop && isAnimating()"
+    (click)="onBackdropClick()"
+  ></div>
+}
+
+@if (isVisible()) {
+  <div
+    class="uk-offcanvas-panel uk-offcanvas-panel--{{ position }}"
+    [class.uk-offcanvas-panel--open]="isAnimating()"
+    [ngStyle]="panelStyle"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="title || 'Offcanvas panel'"
+  >
+    <div class="uk-offcanvas-header">
+      <span class="uk-offcanvas-title">{{ title }}</span>
+      <button class="uk-offcanvas-close" type="button" (click)="close()" aria-label="Close">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <div class="uk-offcanvas-body">
+      <ng-content />
+    </div>
+
+    <div class="uk-offcanvas-footer">
+      <ng-content select="[ukOffcanvasFooter]" />
+    </div>
+  </div>
+}

@@ -60,3 +60,5 @@ For more information on using the Angular CLI, including detailed command refere
 
 
 <!-- bash scripts/publish-lib.sh origin v1.0.0 -->
+
+npm install git+https://github.com/scretcho/angular-ui-kit-workspace.git#release

@@ -15,6 +15,9 @@
       [items]="navItems"
       [activeId]="activeNavId"
       [collapsed]="sidebarCollapsed()"
+      [brandTitle]="title"
+      [brandLogo]="logo"
+      [brandRoute]="brandRoute"
       (itemClick)="navItemClick.emit($event)"
       (collapsedChange)="sidebarCollapsed.set($event)"
     />
