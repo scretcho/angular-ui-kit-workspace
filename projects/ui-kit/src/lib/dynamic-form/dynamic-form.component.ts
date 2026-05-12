@@ -96,6 +96,16 @@ export class UkDynamicFormComponent implements OnInit, OnChanges {
     }
   }
 
+  readonly INPUT_TYPES = new Set(['input', 'email', 'password', 'number', 'tel', 'url']);
+
+  isInputField(type: string): boolean {
+    return this.INPUT_TYPES.has(type);
+  }
+
+  inputType(type: string): 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' {
+    return (type === 'input' ? 'text' : type) as 'text' | 'email' | 'password' | 'number' | 'tel' | 'url';
+  }
+
   getError(key: string): string {
     const ctrl = this.form?.get(key);
     if (!ctrl || !ctrl.touched || !ctrl.errors) return '';

@@ -12,6 +12,11 @@ export interface DynamicFormField {
   key: string;
   type:
     | 'input'
+    | 'email'
+    | 'password'
+    | 'number'
+    | 'tel'
+    | 'url'
     | 'textarea'
     | 'select'
     | 'multiselect'
