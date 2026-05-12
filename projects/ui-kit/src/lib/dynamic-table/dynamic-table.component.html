@@ -39,7 +39,7 @@
               </span>
             </th>
           }
-          @for (col of config.columns; track col.header) {
+          @for (col of visibleColumns(); track col.header) {
             <th
               class="uk-th"
               [class.sortable]="col.sortable && typeof col.key !== 'function'"
@@ -65,7 +65,7 @@
       <tbody>
         @if (isLoading()) {
           <tr>
-            <td [attr.colspan]="config.columns.length + (config.selectable ? 1 : 0) + (config.rowActions?.length ? 1 : 0)" class="uk-td-center">
+            <td [attr.colspan]="visibleColumns().length + (config.selectable ? 1 : 0) + (config.rowActions?.length ? 1 : 0)" class="uk-td-center">
               <div class="uk-table-loading">
                 <div class="uk-spinner"></div>
                 <span>Loading...</span>
@@ -74,7 +74,7 @@
           </tr>
         } @else if (pagedData().length === 0) {
           <tr>
-            <td [attr.colspan]="config.columns.length + (config.selectable ? 1 : 0) + (config.rowActions?.length ? 1 : 0)" class="uk-td-center uk-td-empty">
+            <td [attr.colspan]="visibleColumns().length + (config.selectable ? 1 : 0) + (config.rowActions?.length ? 1 : 0)" class="uk-td-center uk-td-empty">
               {{ config.emptyText ?? 'No data available' }}
             </td>
           </tr>
@@ -93,7 +93,7 @@
                   </span>
                 </td>
               }
-              @for (col of config.columns; track col.header) {
+              @for (col of visibleColumns(); track col.header) {
                 <td class="uk-td" [style.text-align]="col.align ?? 'left'">
                   @switch (col.type) {
                     @case ('boolean') {

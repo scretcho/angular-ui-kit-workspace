@@ -40,10 +40,18 @@ export class UkDynamicTableComponent<T extends Record<string, unknown>> implemen
   readonly selectedRows = signal<T[]>([]);
   readonly _loading = signal(false);
   readonly _data = signal<T[]>([]);
+  readonly _config = signal<TableConfig<T>>({ columns: [] });
+
+  readonly visibleColumns = computed(() =>
+    this._config().columns.filter(c => c.show !== false)
+  );
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['loading']) this._loading.set(this.loading);
-    if (changes['config']) this.pageSize.set(this.config.pageSize ?? 10);
+    if (changes['config']) {
+      this._config.set(this.config);
+      this.pageSize.set(this.config.pageSize ?? 10);
+    }
     if (changes['data']) {
       this._data.set([...this.data]);
       this.currentPage.set(1);

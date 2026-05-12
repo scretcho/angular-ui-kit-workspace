@@ -68,6 +68,7 @@ export interface TableColumn<T = Record<string, unknown>> {
   cellTemplate?: unknown;
   format?: (value: unknown, row: T) => string;
   badgeMap?: Record<string, string>;
+  show?: boolean;
 }
 
 export interface TableConfig<T = Record<string, unknown>> {
