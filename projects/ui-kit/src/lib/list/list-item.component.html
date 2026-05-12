@@ -1,0 +1,15 @@
+<li
+  class="uk-list-item"
+  [class.uk-list-item--active]="active"
+  [class.uk-list-item--disabled]="disabled"
+  [class.uk-list-item--action]="action"
+  (click)="onClick()"
+>
+  @if (icon) {
+    <i class="bi bi-{{ icon }} uk-list-item-icon"></i>
+  }
+  <span class="uk-list-item-label"><ng-content /></span>
+  @if (badge != null) {
+    <span class="uk-badge uk-badge--{{ badgeVariant }}">{{ badge }}</span>
+  }
+</li>

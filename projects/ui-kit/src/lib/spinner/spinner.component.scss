@@ -1,0 +1,32 @@
+@keyframes uk-spin {
+  to { transform: rotate(360deg); }
+}
+
+.uk-spinner {
+  display: inline-block;
+  border-radius: 50%;
+  border: 3px solid currentColor;
+  border-right-color: transparent;
+  animation: uk-spin 0.65s linear infinite;
+  flex-shrink: 0;
+
+  &--xs { width: 14px; height: 14px; border-width: 2px; }
+  &--sm { width: 20px; height: 20px; border-width: 2px; }
+  &--md { width: 28px; height: 28px; border-width: 3px; }
+  &--lg { width: 40px; height: 40px; border-width: 4px; }
+  &--xl { width: 56px; height: 56px; border-width: 5px; }
+
+  &--primary   { color: #6366f1; }
+  &--secondary { color: #6b7280; }
+  &--success   { color: #22c55e; }
+  &--danger    { color: #ef4444; }
+  &--warning   { color: #f59e0b; }
+  &--light     { color: #e5e7eb; }
+  &--dark      { color: #111827; }
+}
+
+.uk-sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0, 0, 0, 0); border: 0;
+}

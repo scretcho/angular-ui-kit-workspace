@@ -1,0 +1,116 @@
+.uk-accordion {
+  /* ── override-able tokens ── */
+  --uk-accordion-radius:         10px;
+  --uk-accordion-border-color:   #e5e7eb;
+  --uk-accordion-hover-bg:       #f9fafb;
+  --uk-accordion-open-bg:        #f9fafb;
+
+  --uk-accordion-padding-x:      18px;
+  --uk-accordion-trigger-py:     15px;
+  --uk-accordion-trigger-font:   0.9375rem;
+  --uk-accordion-trigger-color:  #111827;
+  --uk-accordion-body-pt:        4px;
+  --uk-accordion-body-pb:        18px;
+  --uk-accordion-body-font:      0.9rem;
+  --uk-accordion-body-color:     #4b5563;
+  --uk-accordion-icon-font:      1rem;
+  --uk-accordion-icon-color:     #6b7280;
+  --uk-accordion-chevron-font:   0.875rem;
+  --uk-accordion-chevron-color:  #9ca3af;
+  --uk-accordion-gap:            10px;
+
+  /* ── size variants ── */
+  &.uk-accordion--sm {
+    --uk-accordion-padding-x:      14px;
+    --uk-accordion-trigger-py:     10px;
+    --uk-accordion-trigger-font:   0.8125rem;
+    --uk-accordion-body-pt:        2px;
+    --uk-accordion-body-pb:        12px;
+    --uk-accordion-body-font:      0.8125rem;
+    --uk-accordion-icon-font:      0.875rem;
+    --uk-accordion-chevron-font:   0.75rem;
+    --uk-accordion-gap:            8px;
+  }
+
+  &.uk-accordion--lg {
+    --uk-accordion-padding-x:      24px;
+    --uk-accordion-trigger-py:     20px;
+    --uk-accordion-trigger-font:   1.0625rem;
+    --uk-accordion-body-pt:        6px;
+    --uk-accordion-body-pb:        24px;
+    --uk-accordion-body-font:      1rem;
+    --uk-accordion-icon-font:      1.125rem;
+    --uk-accordion-chevron-font:   1rem;
+    --uk-accordion-gap:            12px;
+  }
+
+  /* ── layout ── */
+  border: 1px solid var(--uk-accordion-border-color);
+  border-radius: var(--uk-accordion-radius);
+  overflow: hidden;
+}
+
+.uk-accordion-item {
+  border-bottom: 1px solid var(--uk-accordion-border-color);
+
+  &:last-child { border-bottom: none; }
+
+  &--disabled .uk-accordion-trigger {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
+.uk-accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--uk-accordion-gap);
+  padding: var(--uk-accordion-trigger-py) var(--uk-accordion-padding-x);
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: var(--uk-accordion-trigger-font);
+  font-weight: 500;
+  color: var(--uk-accordion-trigger-color);
+  transition: background 0.12s;
+
+  &:hover { background: var(--uk-accordion-hover-bg); }
+
+  .uk-accordion-item--open & { background: var(--uk-accordion-open-bg); }
+}
+
+.uk-accordion-icon {
+  font-size: var(--uk-accordion-icon-font);
+  color: var(--uk-accordion-icon-color);
+  flex-shrink: 0;
+}
+
+.uk-accordion-title {
+  flex: 1;
+}
+
+.uk-accordion-chevron {
+  font-size: var(--uk-accordion-chevron-font);
+  color: var(--uk-accordion-chevron-color);
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+
+  .uk-accordion-item--open & { transform: rotate(180deg); }
+}
+
+.uk-accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &--open { max-height: 600px; }
+}
+
+.uk-accordion-body-inner {
+  padding: var(--uk-accordion-body-pt) var(--uk-accordion-padding-x) var(--uk-accordion-body-pb);
+  font-size: var(--uk-accordion-body-font);
+  color: var(--uk-accordion-body-color);
+  line-height: 1.6;
+}

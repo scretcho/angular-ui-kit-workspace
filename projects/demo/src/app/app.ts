@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {
@@ -22,8 +22,21 @@ import {
   UkHeaderComponent,
   UkSidebarComponent,
   UkOffcanvasComponent,
+  UkSpinnerComponent,
+  UkToasterComponent,
+  UkToastService,
+  UkProgressComponent,
+  UkModalComponent,
+  UkListGroupComponent,
+  UkListItemComponent,
+  UkAvatarComponent,
+  UkAvatarGroupComponent,
+  UkAlertComponent,
+  UkAccordionComponent,
+  UkAccordionItemComponent,
+  UkChartComponent,
   StepperStep, DynamicFormField, TableConfig,
-  NavItem, HeaderAction, LayoutUser,
+  NavItem, HeaderAction, LayoutUser, ChartConfig,
 } from 'ui-kit';
 
 const PEOPLE = Array.from({ length: 32 }, (_, i) => ({
@@ -49,11 +62,22 @@ const PEOPLE = Array.from({ length: 32 }, (_, i) => ({
     UkButtonComponent,
     UkLayoutComponent, UkHeaderComponent, UkSidebarComponent,
     UkOffcanvasComponent,
+    UkSpinnerComponent,
+    UkToasterComponent,
+    UkProgressComponent,
+    UkModalComponent,
+    UkListGroupComponent, UkListItemComponent,
+    UkAvatarComponent, UkAvatarGroupComponent,
+    UkAlertComponent,
+    UkAccordionComponent, UkAccordionItemComponent,
+    UkChartComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App {
+
+  readonly toastService = inject(UkToastService);
 
   /* ── App shell navigation (drives uk-layout) ── */
   readonly activeSection = signal('layout');
@@ -77,6 +101,15 @@ export class App {
     { id: 'dynform',     label: 'Dynamic Form',  icon: 'ui-checks-grid', dividerBefore: true },
     { id: 'dyntable',    label: 'Dynamic Table', icon: 'table' },
     { id: 'offcanvas',   label: 'Offcanvas',     icon: 'layout-sidebar-reverse', dividerBefore: true },
+    { id: 'spinner',     label: 'Spinner',       icon: 'arrow-repeat',           dividerBefore: true },
+    { id: 'toast',       label: 'Toast',         icon: 'bell-fill' },
+    { id: 'progress',    label: 'Progress',      icon: 'bar-chart-steps' },
+    { id: 'modal',       label: 'Modal',         icon: 'window-stack' },
+    { id: 'list',        label: 'List Group',    icon: 'list-ul' },
+    { id: 'avatar',      label: 'Avatar',        icon: 'person-circle' },
+    { id: 'alert',       label: 'Alert',         icon: 'exclamation-triangle' },
+    { id: 'accordion',   label: 'Accordion',     icon: 'chevron-bar-expand' },
+    { id: 'chart',       label: 'Chart',         icon: 'graph-up-arrow' },
   ];
 
   /* Items used in the Layout preview — mix of routed and non-routed */
@@ -240,6 +273,38 @@ export class App {
   ];
   dynFormResult = signal<Record<string, unknown> | null>(null);
 
+  /* ── Modal ── */
+  modalOpen = false;
+  modalLgOpen = false;
+
+  /* ── Chart ── */
+  readonly barChartCfg: ChartConfig = {
+    type: 'bar',
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    datasets: [
+      { label: 'Revenue', data: [42, 58, 37, 75, 63, 89] },
+      { label: 'Expenses', data: [28, 35, 44, 31, 52, 47] },
+    ],
+  };
+  readonly lineChartCfg: ChartConfig = {
+    type: 'line',
+    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    datasets: [
+      { label: 'Visitors', data: [120, 145, 98, 167, 203, 178, 134] },
+      { label: 'Signups', data: [18, 22, 15, 31, 27, 24, 19] },
+    ],
+  };
+  readonly donutChartCfg: ChartConfig = {
+    type: 'donut',
+    labels: ['Angular', 'React', 'Vue', 'Svelte', 'Other'],
+    datasets: [{ label: 'Usage', data: [38, 42, 12, 5, 3] }],
+  };
+  readonly pieChartCfg: ChartConfig = {
+    type: 'pie',
+    labels: ['Desktop', 'Mobile', 'Tablet'],
+    datasets: [{ label: 'Sessions', data: [54, 36, 10] }],
+  };
+
   /* ── Offcanvas ── */
   ocFormOpen = false;
   ocLeftOpen = false;
@@ -260,12 +325,33 @@ export class App {
       { key: 'id',     header: 'ID',     sortable: true, width: '60px' },
       { key: 'name',   header: 'Name',   sortable: true },
       { key: 'role',   header: 'Role',   type: 'badge', badgeMap: { Admin: 'uk-badge-admin', Editor: 'uk-badge-editor', Viewer: 'uk-badge-viewer' } },
-      { key: 'active', header: 'Active', type: 'boolean', sortable: true },
-      { key: 'joined', header: 'Joined', type: 'date',    sortable: true },
-      { key: 'score',  header: 'Score',  sortable: true,  align: 'right' },
+      { key: 'active', header: 'Active', type: 'toggle' },
+      { key: 'joined', header: 'Joined', type: 'date',   sortable: true },
+      { key: 'score',  header: 'Score',  sortable: true, align: 'right' },
+    ],
+    rowActions: [
+      { id: 'view',   label: 'View',   icon: 'eye',    variant: 'default' },
+      { id: 'edit',   label: 'Edit',   icon: 'pencil', variant: 'primary' },
+      { id: 'delete', label: 'Delete', icon: 'trash',  variant: 'danger' },
     ],
     searchable: true, selectable: true, paginate: true,
     pageSize: 8, pageSizeOptions: [8, 16, 32], striped: true,
     emptyText: 'No people found.',
   };
+
+  onTableAction(event: { action: string; row: typeof PEOPLE[0] }) {
+    const msgs: Record<string, string> = {
+      view:   `Viewing ${event.row.name}`,
+      edit:   `Editing ${event.row.name}`,
+      delete: `Deleting ${event.row.name}`,
+    };
+    const variants: Record<string, 'info' | 'warning' | 'error'> = {
+      view: 'info', edit: 'warning', delete: 'error',
+    };
+    const msg = msgs[event.action] ?? event.action;
+    const v = variants[event.action] ?? 'info';
+    if (v === 'error') this.toastService.error(msg);
+    else if (v === 'warning') this.toastService.warning(msg);
+    else this.toastService.info(msg);
+  }
 }

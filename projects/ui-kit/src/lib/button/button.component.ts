@@ -21,6 +21,7 @@ export class UkButtonComponent {
   @Input() icon?: string;
   @Input() iconPosition: 'left' | 'right' = 'left';
   @Input() iconOnly = false;
+  @Input() label?: string;
   @Input() disabled = false;
   @Input() loading = false;
   @Input() fullWidth = false;

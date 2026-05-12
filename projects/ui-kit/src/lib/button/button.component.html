@@ -17,7 +17,9 @@
 
   <!-- Label text (hidden when icon-only) -->
   @if (!iconOnly) {
-    <span class="uk-btn-label"><ng-content /></span>
+    <span class="uk-btn-label">
+      @if (label) { {{ label }} } @else { <ng-content /> }
+    </span>
   }
 
   <!-- Right icon (not loading) -->

@@ -28,6 +28,8 @@ export class UkDynamicTableComponent<T extends Record<string, unknown>> implemen
   @Output() selectionChange = new EventEmitter<T[]>();
   @Output() sortChange = new EventEmitter<{ key: string; dir: SortDir }>();
   @Output() pageChange = new EventEmitter<number>();
+  @Output() actionClick = new EventEmitter<{ action: string; row: T }>();
+  @Output() toggleChange = new EventEmitter<{ key: string; value: boolean; row: T }>();
 
   readonly Math = Math;
   readonly searchQuery = signal('');
@@ -37,30 +39,36 @@ export class UkDynamicTableComponent<T extends Record<string, unknown>> implemen
   readonly pageSize = signal(this.config.pageSize ?? 10);
   readonly selectedRows = signal<T[]>([]);
   readonly _loading = signal(false);
+  readonly _data = signal<T[]>([]);
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['loading']) this._loading.set(this.loading);
     if (changes['config']) this.pageSize.set(this.config.pageSize ?? 10);
-    if (changes['data']) { this.currentPage.set(1); this.clearSelection(); }
+    if (changes['data']) {
+      this._data.set([...this.data]);
+      this.currentPage.set(1);
+      this.clearSelection();
+    }
   }
 
   readonly filteredData = computed(() => {
+    const data = this._data();
     const q = this.searchQuery().toLowerCase();
     let d = q
-      ? this.data.filter(row =>
+      ? data.filter(row =>
           this.config.columns.some(col => {
             const v = this.getCellValue(row, col);
             return v != null && String(v).toLowerCase().includes(q);
           })
         )
-      : [...this.data];
+      : [...data];
 
     const key = this.sortKey();
     const dir = this.sortDir();
     if (key && dir) {
       d = d.slice().sort((a, b) => {
-        const av = a[key] as string | number;
-        const bv = b[key] as string | number;
+        const av = this.getValueByPath(a, key) as string | number;
+        const bv = this.getValueByPath(b, key) as string | number;
         if (av == null) return 1;
         if (bv == null) return -1;
         return dir === 'asc' ? (av < bv ? -1 : av > bv ? 1 : 0) : (av > bv ? -1 : av < bv ? 1 : 0);
@@ -99,8 +107,12 @@ export class UkDynamicTableComponent<T extends Record<string, unknown>> implemen
   });
 
   getCellValue(row: T, col: TableColumn<T>): unknown {
-    const key = col.key as string;
-    return key.split('.').reduce((o: unknown, k) => (o as Record<string, unknown>)?.[k], row);
+    if (typeof col.key === 'function') return col.key(row);
+    return this.getValueByPath(row, col.key as string);
+  }
+
+  getValueByPath(row: T, path: string): unknown {
+    return path.split('.').reduce((o: unknown, k) => (o as Record<string, unknown>)?.[k], row);
   }
 
   getBadgeClass(col: TableColumn<T>, val: unknown): string {
@@ -123,7 +135,9 @@ export class UkDynamicTableComponent<T extends Record<string, unknown>> implemen
     this.currentPage.set(1);
   }
 
-  sortByCol(col: TableColumn<T>) { this.sort(String(col.key)); }
+  sortByCol(col: TableColumn<T>) {
+    if (typeof col.key !== 'function') this.sort(col.key as string);
+  }
 
   isLoading() { return this._loading(); }
 
@@ -164,6 +178,24 @@ export class UkDynamicTableComponent<T extends Record<string, unknown>> implemen
   }
 
   onRowClick(row: T) { this.rowClick.emit(row); }
+
+  onActionClick(actionId: string, row: T, event: MouseEvent) {
+    event.stopPropagation();
+    this.actionClick.emit({ action: actionId, row });
+  }
+
+  onToggle(col: TableColumn<T>, row: T, event: Event) {
+    event.stopPropagation();
+    if (typeof col.key === 'function') return;
+    const checked = (event.target as HTMLInputElement).checked;
+    const parts = (col.key as string).split('.');
+    let obj = row as Record<string, unknown>;
+    for (let i = 0; i < parts.length - 1; i++) {
+      obj = obj[parts[i]] as Record<string, unknown>;
+    }
+    obj[parts[parts.length - 1]] = checked;
+    this.toggleChange.emit({ key: col.key as string, value: checked, row });
+  }
 
   goToPage(p: number) {
     this.currentPage.set(Math.max(1, Math.min(p, this.totalPages())));

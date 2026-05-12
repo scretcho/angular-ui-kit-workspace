@@ -133,6 +133,22 @@
   padding: 8px 0;
 }
 
+/* Modal body paragraph */
+.modal-body-text {
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0 0 12px;
+}
+
+/* Inline spinner + text combo */
+.spinner-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
 /* Offcanvas panel body text */
 .oc-body-text {
   color: #6b7280;
@@ -146,3 +162,89 @@
 .uk-badge-admin   { background: #dbeafe; color: #1d4ed8; }
 .uk-badge-editor  { background: #fef3c7; color: #92400e; }
 .uk-badge-viewer  { background: #f3f4f6; color: #6b7280; }
+
+/* ── Accordion CSS variable overrides ───────────────────────────── */
+
+.accordion-purple {
+  --uk-accordion-radius:         14px;
+  --uk-accordion-border-color:   #a5b4fc;
+  --uk-accordion-hover-bg:       #eef2ff;
+  --uk-accordion-open-bg:        #eef2ff;
+  --uk-accordion-padding-x:      20px;
+  --uk-accordion-trigger-py:     14px;
+  --uk-accordion-trigger-font:   0.9375rem;
+  --uk-accordion-trigger-color:  #3730a3;
+  --uk-accordion-body-pt:        4px;
+  --uk-accordion-body-pb:        18px;
+  --uk-accordion-body-font:      0.875rem;
+  --uk-accordion-body-color:     #4338ca;
+  --uk-accordion-icon-font:      1rem;
+  --uk-accordion-icon-color:     #6366f1;
+  --uk-accordion-chevron-font:   0.875rem;
+  --uk-accordion-chevron-color:  #818cf8;
+  --uk-accordion-gap:            10px;
+}
+
+.accordion-green {
+  --uk-accordion-radius:         10px;
+  --uk-accordion-border-color:   #6ee7b7;
+  --uk-accordion-hover-bg:       #ecfdf5;
+  --uk-accordion-open-bg:        #ecfdf5;
+  --uk-accordion-padding-x:      18px;
+  --uk-accordion-trigger-py:     12px;
+  --uk-accordion-trigger-font:   0.9375rem;
+  --uk-accordion-trigger-color:  #064e3b;
+  --uk-accordion-body-pt:        4px;
+  --uk-accordion-body-pb:        14px;
+  --uk-accordion-body-font:      0.9375rem;
+  --uk-accordion-body-color:     #065f46;
+  --uk-accordion-icon-font:      1rem;
+  --uk-accordion-icon-color:     #059669;
+  --uk-accordion-chevron-font:   0.875rem;
+  --uk-accordion-chevron-color:  #059669;
+  --uk-accordion-gap:            10px;
+}
+
+.accordion-dark {
+  --uk-accordion-radius:         0px;
+  --uk-accordion-border-color:   #374151;
+  --uk-accordion-hover-bg:       #1f2937;
+  --uk-accordion-open-bg:        #1f2937;
+  --uk-accordion-padding-x:      18px;
+  --uk-accordion-trigger-py:     15px;
+  --uk-accordion-trigger-font:   0.9375rem;
+  --uk-accordion-trigger-color:  #f9fafb;
+  --uk-accordion-body-pt:        4px;
+  --uk-accordion-body-pb:        18px;
+  --uk-accordion-body-font:      0.9rem;
+  --uk-accordion-body-color:     #d1d5db;
+  --uk-accordion-icon-font:      1rem;
+  --uk-accordion-icon-color:     #9ca3af;
+  --uk-accordion-chevron-font:   0.875rem;
+  --uk-accordion-chevron-color:  #6b7280;
+  --uk-accordion-gap:            10px;
+
+  background: #111827;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.accordion-card {
+  --uk-accordion-radius:         20px;
+  --uk-accordion-border-color:   #e5e7eb;
+  --uk-accordion-hover-bg:       #f3f4f6;
+  --uk-accordion-open-bg:        #f3f4f6;
+  --uk-accordion-padding-x:      28px;
+  --uk-accordion-trigger-py:     18px;
+  --uk-accordion-trigger-font:   1rem;
+  --uk-accordion-trigger-color:  #111827;
+  --uk-accordion-body-pt:        6px;
+  --uk-accordion-body-pb:        22px;
+  --uk-accordion-body-font:      0.9375rem;
+  --uk-accordion-body-color:     #374151;
+  --uk-accordion-icon-font:      1.25rem;
+  --uk-accordion-icon-color:     #6b7280;
+  --uk-accordion-chevron-font:   1.125rem;
+  --uk-accordion-chevron-color:  #9ca3af;
+  --uk-accordion-gap:            14px;
+}

@@ -10,7 +10,6 @@
                 [label]="field.label"
                 [placeholder]="field.placeholder ?? ''"
                 [required]="!!field.required"
-                [disabled]="!!field.disabled"
                 [hint]="field.hint ?? ''"
                 [errorMessage]="getError(field.key)"
               />
@@ -21,7 +20,6 @@
                 [label]="field.label"
                 [placeholder]="field.placeholder ?? ''"
                 [required]="!!field.required"
-                [disabled]="!!field.disabled"
                 [rows]="field.rows ?? 4"
                 [hint]="field.hint ?? ''"
                 [errorMessage]="getError(field.key)"
@@ -34,7 +32,6 @@
                 [placeholder]="field.placeholder ?? 'Select'"
                 [options]="field.options ?? []"
                 [required]="!!field.required"
-                [disabled]="!!field.disabled"
                 [searchable]="true"
                 [hint]="field.hint ?? ''"
                 [errorMessage]="getError(field.key)"
@@ -47,7 +44,6 @@
                 [placeholder]="field.placeholder ?? 'Select options'"
                 [options]="field.options ?? []"
                 [required]="!!field.required"
-                [disabled]="!!field.disabled"
                 [hint]="field.hint ?? ''"
                 [errorMessage]="getError(field.key)"
               />
@@ -57,7 +53,6 @@
                 [formControlName]="field.key"
                 [label]="field.label"
                 [required]="!!field.required"
-                [disabled]="!!field.disabled"
                 [hint]="field.hint ?? ''"
                 [errorMessage]="getError(field.key)"
               />
@@ -68,7 +63,6 @@
                 [label]="field.label"
                 [options]="field.options ?? []"
                 [required]="!!field.required"
-                [disabled]="!!field.disabled"
                 [hint]="field.hint ?? ''"
                 [errorMessage]="getError(field.key)"
               />
@@ -79,7 +73,6 @@
                 [label]="field.label"
                 [placeholder]="field.placeholder ?? 'Select date range'"
                 [required]="!!field.required"
-                [disabled]="!!field.disabled"
                 [errorMessage]="getError(field.key)"
               />
             }
@@ -89,7 +82,6 @@
                 [label]="field.label"
                 [length]="field.otpLength ?? 6"
                 [required]="!!field.required"
-                [disabled]="!!field.disabled"
                 [hint]="field.hint ?? ''"
                 [errorMessage]="getError(field.key)"
               />
@@ -101,7 +93,6 @@
                 [min]="field.min ?? 0"
                 [max]="field.max ?? 100"
                 [step]="field.step ?? 1"
-                [disabled]="!!field.disabled"
                 [hint]="field.hint ?? ''"
               />
             }
@@ -109,7 +100,6 @@
               <uk-rating
                 [formControlName]="field.key"
                 [label]="field.label"
-                [disabled]="!!field.disabled"
                 [hint]="field.hint ?? ''"
               />
             }
@@ -118,7 +108,6 @@
                 [formControlName]="field.key"
                 [label]="field.label"
                 [required]="!!field.required"
-                [disabled]="!!field.disabled"
                 [hint]="field.hint ?? ''"
                 [errorMessage]="getError(field.key)"
               />

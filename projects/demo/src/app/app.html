@@ -447,7 +447,7 @@
     @if (activeSection() === 'dyntable') {
       <div class="demo-card">
         <h4>Sortable &amp; paginated</h4>
-        <uk-dynamic-table [data]="tableData" [config]="tableConfig" />
+        <uk-dynamic-table [data]="tableData" [config]="tableConfig" (actionClick)="onTableAction($event)" />
       </div>
     }
 
@@ -501,6 +501,410 @@
       </div>
     }
   </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         Spinner
+    ═══════════════════════════════════════════════════════ -->
+    @if (activeSection() === 'spinner') {
+      <h3 class="section-heading">Sizes</h3>
+      <div class="demo-card">
+        <div class="btn-row btn-row-align">
+          <uk-spinner size="xs" />
+          <uk-spinner size="sm" />
+          <uk-spinner size="md" />
+          <uk-spinner size="lg" />
+          <uk-spinner size="xl" />
+        </div>
+      </div>
+
+      <h3 class="section-heading">Variants</h3>
+      <div class="demo-card">
+        <div class="btn-row btn-row-align">
+          <uk-spinner variant="primary" />
+          <uk-spinner variant="secondary" />
+          <uk-spinner variant="success" />
+          <uk-spinner variant="danger" />
+          <uk-spinner variant="warning" />
+          <uk-spinner variant="dark" />
+        </div>
+      </div>
+
+      <h3 class="section-heading">Inline with button</h3>
+      <div class="demo-card">
+        <div class="btn-row btn-row-align">
+          <uk-button variant="primary" [loading]="true">Saving</uk-button>
+          <span class="spinner-inline">
+            <uk-spinner size="sm" variant="secondary" /> Processing…
+          </span>
+        </div>
+      </div>
+    }
+
+    <!-- ══════════════════════════════════════════════════════
+         Toast
+    ═══════════════════════════════════════════════════════ -->
+    @if (activeSection() === 'toast') {
+      <p class="page-desc">
+        Inject <code>UkToastService</code> and call <code>.success()</code>, <code>.error()</code>,
+        <code>.warning()</code>, or <code>.info()</code>. Place <code>&lt;uk-toaster /&gt;</code>
+        once in your root template.
+      </p>
+      <div class="demo-card">
+        <h4>Fire toasts</h4>
+        <div class="btn-row">
+          <uk-button variant="success" icon="check-circle"
+            (clicked)="toastService.success('File saved successfully.', 'Saved')">Success</uk-button>
+          <uk-button variant="danger" icon="exclamation-circle"
+            (clicked)="toastService.error('Something went wrong. Please try again.', 'Error')">Error</uk-button>
+          <uk-button variant="warning" icon="exclamation-triangle"
+            (clicked)="toastService.warning('Your session expires in 5 minutes.', 'Warning')">Warning</uk-button>
+          <uk-button variant="outline" icon="info-circle"
+            (clicked)="toastService.info('New version available.', 'Info')">Info</uk-button>
+        </div>
+      </div>
+      <div class="demo-card">
+        <h4>Persistent (duration 0)</h4>
+        <div class="btn-row">
+          <uk-button variant="secondary"
+            (clicked)="toastService.show({message:'This will not auto-dismiss.',variant:'info',duration:0})">
+            Persistent toast
+          </uk-button>
+        </div>
+      </div>
+    }
+
+    <!-- ══════════════════════════════════════════════════════
+         Progress
+    ═══════════════════════════════════════════════════════ -->
+    @if (activeSection() === 'progress') {
+      <div class="demo-card">
+        <h4>Variants</h4>
+        <uk-progress [value]="72" variant="primary" [showLabel]="true" />
+        <uk-progress [value]="55" variant="success" [showLabel]="true" />
+        <uk-progress [value]="38" variant="warning" [showLabel]="true" />
+        <uk-progress [value]="88" variant="danger"  [showLabel]="true" />
+        <uk-progress [value]="60" variant="info"    [showLabel]="true" />
+      </div>
+      <div class="demo-card">
+        <h4>Sizes</h4>
+        <uk-progress [value]="65" size="sm" />
+        <uk-progress [value]="65" size="md" />
+        <uk-progress [value]="65" size="lg" />
+      </div>
+      <div class="demo-card">
+        <h4>Striped &amp; animated</h4>
+        <uk-progress [value]="70" [striped]="true" variant="primary" />
+        <uk-progress [value]="50" [animated]="true" variant="success" />
+      </div>
+      <div class="demo-card">
+        <h4>Indeterminate</h4>
+        <uk-progress [indeterminate]="true" variant="primary" />
+        <uk-progress [indeterminate]="true" variant="info" />
+      </div>
+      <div class="demo-card">
+        <h4>Custom label</h4>
+        <uk-progress [value]="4" [max]="10" label="4 of 10 steps" [showLabel]="true" variant="success" />
+      </div>
+    }
+
+    <!-- ══════════════════════════════════════════════════════
+         Modal
+    ═══════════════════════════════════════════════════════ -->
+    @if (activeSection() === 'modal') {
+      <p class="page-desc">
+        <code>uk-modal</code> uses <code>[(open)]</code> binding. Place footer actions
+        using the <code>ukModalFooter</code> attribute on any element.
+      </p>
+      <div class="demo-card">
+        <h4>Default (md)</h4>
+        <div class="btn-row">
+          <uk-button variant="primary" icon="window-stack" (clicked)="modalOpen = true">Open Modal</uk-button>
+        </div>
+      </div>
+      <div class="demo-card">
+        <h4>Large</h4>
+        <div class="btn-row">
+          <uk-button variant="secondary" (clicked)="modalLgOpen = true">Open Large Modal</uk-button>
+        </div>
+      </div>
+    }
+
+    <!-- ══════════════════════════════════════════════════════
+         List Group
+    ═══════════════════════════════════════════════════════ -->
+    @if (activeSection() === 'list') {
+      <div class="demo-card">
+        <h4>Default</h4>
+        <uk-list-group>
+          <uk-list-item icon="house">Dashboard</uk-list-item>
+          <uk-list-item icon="people" badge="12" badgeVariant="primary">Users</uk-list-item>
+          <uk-list-item icon="graph-up">Analytics</uk-list-item>
+          <uk-list-item icon="gear">Settings</uk-list-item>
+        </uk-list-group>
+      </div>
+      <div class="demo-card">
+        <h4>Clickable (action) items</h4>
+        <uk-list-group>
+          <uk-list-item icon="file-earmark" [action]="true" [active]="true">Report Q1.pdf</uk-list-item>
+          <uk-list-item icon="file-earmark" [action]="true">Report Q2.pdf</uk-list-item>
+          <uk-list-item icon="file-earmark" [action]="true" badge="New" badgeVariant="success">Report Q3.pdf</uk-list-item>
+          <uk-list-item icon="file-earmark" [action]="true" [disabled]="true">Report Q4.pdf (locked)</uk-list-item>
+        </uk-list-group>
+      </div>
+      <div class="demo-card">
+        <h4>Flush (no outer border)</h4>
+        <uk-list-group [flush]="true">
+          <uk-list-item icon="check-circle-fill">Completed task one</uk-list-item>
+          <uk-list-item icon="check-circle-fill">Completed task two</uk-list-item>
+          <uk-list-item icon="circle">Pending task</uk-list-item>
+        </uk-list-group>
+      </div>
+    }
+
+    <!-- ══════════════════════════════════════════════════════
+         Avatar
+    ═══════════════════════════════════════════════════════ -->
+    @if (activeSection() === 'avatar') {
+      <div class="demo-card">
+        <h4>Sizes — circle</h4>
+        <div class="btn-row btn-row-align">
+          <uk-avatar name="Alice Johnson" size="xs" />
+          <uk-avatar name="Bob Smith"     size="sm" />
+          <uk-avatar name="Carol White"   size="md" />
+          <uk-avatar name="Dave Brown"    size="lg" />
+          <uk-avatar name="Eve Davis"     size="xl" />
+        </div>
+      </div>
+      <div class="demo-card">
+        <h4>Square shape</h4>
+        <div class="btn-row btn-row-align">
+          <uk-avatar name="Frank Miller" size="sm" shape="square" />
+          <uk-avatar name="Grace Lee"    size="md" shape="square" />
+          <uk-avatar name="Hank Wilson"  size="lg" shape="square" />
+        </div>
+      </div>
+      <div class="demo-card">
+        <h4>Status indicators</h4>
+        <div class="btn-row btn-row-align">
+          <uk-avatar name="Online User"  status="online"  size="md" />
+          <uk-avatar name="Away User"    status="away"    size="md" />
+          <uk-avatar name="Busy User"    status="busy"    size="md" />
+          <uk-avatar name="Offline User" status="offline" size="md" />
+        </div>
+      </div>
+      <div class="demo-card">
+        <h4>Avatar group (stacked)</h4>
+        <uk-avatar-group size="md">
+          <uk-avatar name="Alice Johnson" />
+          <uk-avatar name="Bob Smith" />
+          <uk-avatar name="Carol White" />
+          <uk-avatar name="Dave Brown" />
+          <uk-avatar name="Eve Davis" />
+        </uk-avatar-group>
+      </div>
+    }
+
+    <!-- ══════════════════════════════════════════════════════
+         Alert
+    ═══════════════════════════════════════════════════════ -->
+    @if (activeSection() === 'alert') {
+      <div class="demo-card">
+        <h4>Variants</h4>
+        <uk-alert variant="success" title="Success" message="Your changes have been saved successfully." />
+        <uk-alert variant="danger"  title="Error"   message="Failed to connect. Please check your network." />
+        <uk-alert variant="warning" title="Warning" message="Your storage is 85% full." />
+        <uk-alert variant="info"    title="Info"    message="A new version is available. Refresh to update." />
+        <uk-alert variant="primary"   message="Primary alert — no title." />
+        <uk-alert variant="secondary" message="Secondary alert — neutral tone." />
+      </div>
+      <div class="demo-card">
+        <h4>Dismissible</h4>
+        <uk-alert variant="success" title="Done!" message="Item deleted." [dismissible]="true" />
+        <uk-alert variant="warning" title="Heads up" message="This action cannot be undone." [dismissible]="true" />
+      </div>
+      <div class="demo-card">
+        <h4>Custom content via ng-content</h4>
+        <uk-alert variant="info" title="Tip">
+          Use <code>ng-content</code> for rich alert bodies with links or formatted text.
+        </uk-alert>
+      </div>
+    }
+
+    <!-- ══════════════════════════════════════════════════════
+         Accordion
+    ═══════════════════════════════════════════════════════ -->
+    @if (activeSection() === 'accordion') {
+      <div class="demo-card">
+        <h4>Small</h4>
+        <uk-accordion size="sm">
+          <uk-accordion-item itemId="sm1" title="Small item one" icon="question-circle">
+            Compact accordion — smaller padding and font size. Good for sidebars or dense UIs.
+          </uk-accordion-item>
+          <uk-accordion-item itemId="sm2" title="Small item two">
+            Another compact item.
+          </uk-accordion-item>
+          <uk-accordion-item itemId="sm3" title="Small item three">Third item.</uk-accordion-item>
+        </uk-accordion>
+      </div>
+
+      <div class="demo-card">
+        <h4>Medium (default)</h4>
+        <uk-accordion>
+          <uk-accordion-item itemId="a1" title="What is Angular?" icon="question-circle">
+            Angular is a TypeScript-based open-source web application framework led by Google.
+          </uk-accordion-item>
+          <uk-accordion-item itemId="a2" title="What are Angular Signals?">
+            Signals are a reactivity primitive introduced in Angular 16 that let you track state
+            changes without Zone.js or RxJS.
+          </uk-accordion-item>
+          <uk-accordion-item itemId="a3" title="What is this UI Kit?" icon="info-circle">
+            A collection of standalone Angular components built with Signals and OnPush change
+            detection — no external CSS framework required.
+          </uk-accordion-item>
+          <uk-accordion-item itemId="a4" title="Disabled item" [disabled]="true">
+            This content is not reachable.
+          </uk-accordion-item>
+        </uk-accordion>
+      </div>
+
+      <div class="demo-card">
+        <h4>Large</h4>
+        <uk-accordion size="lg">
+          <uk-accordion-item itemId="lg1" title="Large item one" icon="info-circle">
+            Spacious accordion — larger padding and font size. Great for landing pages or marketing sections.
+          </uk-accordion-item>
+          <uk-accordion-item itemId="lg2" title="Large item two">Another large item.</uk-accordion-item>
+          <uk-accordion-item itemId="lg3" title="Large item three">Third large item.</uk-accordion-item>
+        </uk-accordion>
+      </div>
+
+      <div class="demo-card">
+        <h4>Multiple open</h4>
+        <uk-accordion [multiple]="true">
+          <uk-accordion-item itemId="b1" title="Section 1 — can stay open">First section body.</uk-accordion-item>
+          <uk-accordion-item itemId="b2" title="Section 2 — stays open too">Second section body.</uk-accordion-item>
+          <uk-accordion-item itemId="b3" title="Section 3">Third section body.</uk-accordion-item>
+        </uk-accordion>
+      </div>
+
+      <h3 class="section-heading">CSS Variable Overrides</h3>
+
+      <div class="demo-card">
+        <h4>Purple theme</h4>
+        <uk-accordion class="accordion-purple">
+          <uk-accordion-item itemId="p1" title="Indigo border &amp; hover" icon="palette">
+            <code>--uk-accordion-border-color</code>, <code>--uk-accordion-hover-bg</code> and
+            <code>--uk-accordion-open-bg</code> changed to indigo tones.
+          </uk-accordion-item>
+          <uk-accordion-item itemId="p2" title="Radius increased to 14px">
+            <code>--uk-accordion-radius: 14px</code>
+          </uk-accordion-item>
+          <uk-accordion-item itemId="p3" title="Custom padding &amp; font">
+            <code>--uk-accordion-padding-x</code>, <code>--uk-accordion-trigger-py</code>,
+            <code>--uk-accordion-trigger-font</code> all overridden.
+          </uk-accordion-item>
+        </uk-accordion>
+      </div>
+
+      <div class="demo-card">
+        <h4>Green theme</h4>
+        <uk-accordion class="accordion-green">
+          <uk-accordion-item itemId="g1" title="Emerald border &amp; hover" icon="check-circle">
+            <code>--uk-accordion-border-color: #6ee7b7</code>,
+            <code>--uk-accordion-hover-bg: #ecfdf5</code>.
+          </uk-accordion-item>
+          <uk-accordion-item itemId="g2" title="Larger body font">
+            <code>--uk-accordion-body-font: 0.9375rem</code> — slightly bigger body text.
+          </uk-accordion-item>
+          <uk-accordion-item itemId="g3" title="Tighter padding">
+            <code>--uk-accordion-trigger-py: 12px</code>,
+            <code>--uk-accordion-body-pb: 14px</code>.
+          </uk-accordion-item>
+        </uk-accordion>
+      </div>
+
+      <div class="demo-card">
+        <h4>Dark theme</h4>
+        <uk-accordion class="accordion-dark">
+          <uk-accordion-item itemId="d1" title="Dark background" icon="moon-stars">
+            <code>--uk-accordion-border-color</code>, <code>--uk-accordion-hover-bg</code> and
+            <code>--uk-accordion-open-bg</code> set to dark shades.
+          </uk-accordion-item>
+          <uk-accordion-item itemId="d2" title="Light text">
+            Title and body text colours overridden via
+            <code>--uk-accordion-title-color</code> and <code>--uk-accordion-body-color</code>.
+          </uk-accordion-item>
+          <uk-accordion-item itemId="d3" title="Pill radius">
+            <code>--uk-accordion-radius: 0px</code> for a flush card look.
+          </uk-accordion-item>
+        </uk-accordion>
+      </div>
+
+      <div class="demo-card">
+        <h4>Rounded / card theme</h4>
+        <uk-accordion class="accordion-card">
+          <uk-accordion-item itemId="r1" title="Extra rounded corners" icon="app-indicator">
+            <code>--uk-accordion-radius: 20px</code> with generous padding on all sides.
+          </uk-accordion-item>
+          <uk-accordion-item itemId="r2" title="Wider horizontal padding">
+            <code>--uk-accordion-padding-x: 28px</code>.
+          </uk-accordion-item>
+          <uk-accordion-item itemId="r3" title="Larger icon &amp; chevron">
+            <code>--uk-accordion-icon-font: 1.25rem</code>,
+            <code>--uk-accordion-chevron-font: 1.125rem</code>.
+          </uk-accordion-item>
+        </uk-accordion>
+      </div>
+    }
+
+    <!-- ══════════════════════════════════════════════════════
+         Chart
+    ═══════════════════════════════════════════════════════ -->
+    @if (activeSection() === 'chart') {
+      <div class="demo-card">
+        <h4>Bar chart — multi-dataset</h4>
+        <uk-chart [config]="barChartCfg" />
+      </div>
+      <div class="demo-card">
+        <h4>Line chart — with fill</h4>
+        <uk-chart [config]="lineChartCfg" />
+      </div>
+      <div class="demo-card">
+        <h4>Donut chart</h4>
+        <uk-chart [config]="donutChartCfg" />
+      </div>
+      <div class="demo-card">
+        <h4>Pie chart</h4>
+        <uk-chart [config]="pieChartCfg" />
+      </div>
+    }
+
+  <!-- ── Toast container ── -->
+  <uk-toaster position="top-right" />
+
+  <!-- ── Modal panels ── -->
+  <uk-modal title="Confirm Action" [(open)]="modalOpen">
+    <p class="modal-body-text">
+      Are you sure you want to proceed? This action cannot be undone.
+    </p>
+    <div ukModalFooter>
+      <div class="btn-row">
+        <uk-button variant="primary"   (clicked)="modalOpen = false">Confirm</uk-button>
+        <uk-button variant="ghost"     (clicked)="modalOpen = false">Cancel</uk-button>
+      </div>
+    </div>
+  </uk-modal>
+
+  <uk-modal title="Large Modal" size="lg" [(open)]="modalLgOpen">
+    <p class="modal-body-text">
+      Large modals are useful for forms, detail views, or embedded tables.
+    </p>
+    <uk-dynamic-form [fields]="ocFormFields" submitLabel="Submit"
+      (formSubmit)="modalLgOpen = false" />
+    <div ukModalFooter>
+      <uk-button variant="ghost" (clicked)="modalLgOpen = false">Close</uk-button>
+    </div>
+  </uk-modal>
 
   <!-- ── Offcanvas panels (always in DOM so transitions work) ── -->
 

@@ -1,0 +1,19 @@
+@if (!isDismissed()) {
+  <div class="uk-alert uk-alert--{{ variant }}" role="alert">
+    <i class="bi bi-{{ resolvedIcon }} uk-alert-icon"></i>
+    <div class="uk-alert-content">
+      @if (title) {
+        <div class="uk-alert-title">{{ title }}</div>
+      }
+      @if (message) {
+        <div class="uk-alert-message">{{ message }}</div>
+      }
+      <ng-content />
+    </div>
+    @if (dismissible) {
+      <button class="uk-alert-close" type="button" (click)="dismiss()" aria-label="Dismiss">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    }
+  </div>
+}

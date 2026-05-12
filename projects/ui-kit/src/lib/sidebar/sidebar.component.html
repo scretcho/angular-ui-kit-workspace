@@ -30,6 +30,7 @@
   <!-- Nav items -->
   <ul class="uk-sidebar-nav">
     @for (item of items; track item.id) {
+      @if (isVisible(item)) {
       @if (item.dividerBefore) {
         <li class="uk-sidebar-divider"></li>
       }
@@ -94,9 +95,9 @@
         }
 
         <!-- Children -->
-        @if (item.children?.length && !collapsed && isExpanded(item.id)) {
+        @if (visibleChildren(item).length && !collapsed && isExpanded(item.id)) {
           <ul class="uk-sidebar-children">
-            @for (child of item.children!; track child.id) {
+            @for (child of visibleChildren(item); track child.id) {
               <li>
                 @if (child.route) {
                   <a
@@ -138,6 +139,7 @@
           </ul>
         }
       </li>
+      } <!-- @if isVisible -->
     }
   </ul>
 

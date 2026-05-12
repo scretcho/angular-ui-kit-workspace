@@ -1,0 +1,33 @@
+@if (isVisible()) {
+  <div
+    class="uk-modal-backdrop"
+    [class.uk-modal-backdrop--visible]="backdrop && isAnimating()"
+    (click)="onBackdropClick($event)"
+    role="presentation"
+  >
+    <div
+      class="uk-modal uk-modal--{{ size }}"
+      [class.uk-modal--open]="isAnimating()"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-label]="title || 'Dialog'"
+    >
+      <div class="uk-modal-header">
+        <span class="uk-modal-title">{{ title }}</span>
+        @if (showClose) {
+          <button class="uk-modal-close" type="button" (click)="close()" aria-label="Close">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        }
+      </div>
+
+      <div class="uk-modal-body">
+        <ng-content />
+      </div>
+
+      <div class="uk-modal-footer">
+        <ng-content select="[ukModalFooter]" />
+      </div>
+    </div>
+  </div>
+}

@@ -45,13 +45,20 @@ export interface DynamicValidator {
   message?: string;
 }
 
+export interface RowAction {
+  id: string;
+  label: string;
+  icon?: string;
+  variant?: 'default' | 'primary' | 'success' | 'danger' | 'warning';
+}
+
 export interface TableColumn<T = Record<string, unknown>> {
-  key: keyof T | string;
+  key: keyof T | string | ((row: T) => unknown);
   header: string;
   sortable?: boolean;
   width?: string;
   align?: 'left' | 'center' | 'right';
-  type?: 'text' | 'number' | 'date' | 'boolean' | 'badge' | 'actions';
+  type?: 'text' | 'number' | 'date' | 'boolean' | 'toggle' | 'badge' | 'actions';
   cellTemplate?: unknown;
   format?: (value: unknown, row: T) => string;
   badgeMap?: Record<string, string>;
@@ -67,6 +74,7 @@ export interface TableConfig<T = Record<string, unknown>> {
   striped?: boolean;
   stickyHeader?: boolean;
   emptyText?: string;
+  rowActions?: RowAction[];
 }
 
 export interface NavItem {
@@ -79,6 +87,7 @@ export interface NavItem {
   badgeVariant?: 'primary' | 'success' | 'danger' | 'warning';
   dividerBefore?: boolean;
   disabled?: boolean;
+  show?: boolean;
 }
 
 export interface HeaderAction {

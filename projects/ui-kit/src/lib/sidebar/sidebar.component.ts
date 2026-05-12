@@ -61,6 +61,18 @@ export class UkSidebarComponent {
     this.collapsedChange.emit(!this.collapsed);
   }
 
+  isVisible(item: NavItem): boolean {
+    if (item.show === false) return false;
+    if (item.children?.length) {
+      return item.children.some(c => c.show !== false);
+    }
+    return true;
+  }
+
+  visibleChildren(item: NavItem): NavItem[] {
+    return item.children?.filter(c => c.show !== false) ?? [];
+  }
+
   badgeClass(variant = 'primary'): string {
     return `uk-badge-${variant}`;
   }

@@ -39,12 +39,12 @@
               </span>
             </th>
           }
-          @for (col of config.columns; track col.key) {
+          @for (col of config.columns; track col.header) {
             <th
               class="uk-th"
-              [class.sortable]="col.sortable"
-              [class.sorted-asc]="sortKey() === col.key && sortDir() === 'asc'"
-              [class.sorted-desc]="sortKey() === col.key && sortDir() === 'desc'"
+              [class.sortable]="col.sortable && typeof col.key !== 'function'"
+              [class.sorted-asc]="typeof col.key !== 'function' && sortKey() === col.key && sortDir() === 'asc'"
+              [class.sorted-desc]="typeof col.key !== 'function' && sortKey() === col.key && sortDir() === 'desc'"
               [style.width]="col.width ?? null"
               [style.text-align]="col.align ?? 'left'"
               (click)="col.sortable && sortByCol(col)"
@@ -57,12 +57,15 @@
               }
             </th>
           }
+          @if (config.rowActions?.length) {
+            <th class="uk-th uk-th-actions">Actions</th>
+          }
         </tr>
       </thead>
       <tbody>
         @if (isLoading()) {
           <tr>
-            <td [attr.colspan]="config.columns.length + (config.selectable ? 1 : 0)" class="uk-td-center">
+            <td [attr.colspan]="config.columns.length + (config.selectable ? 1 : 0) + (config.rowActions?.length ? 1 : 0)" class="uk-td-center">
               <div class="uk-table-loading">
                 <div class="uk-spinner"></div>
                 <span>Loading...</span>
@@ -71,7 +74,7 @@
           </tr>
         } @else if (pagedData().length === 0) {
           <tr>
-            <td [attr.colspan]="config.columns.length + (config.selectable ? 1 : 0)" class="uk-td-center uk-td-empty">
+            <td [attr.colspan]="config.columns.length + (config.selectable ? 1 : 0) + (config.rowActions?.length ? 1 : 0)" class="uk-td-center uk-td-empty">
               {{ config.emptyText ?? 'No data available' }}
             </td>
           </tr>
@@ -90,13 +93,24 @@
                   </span>
                 </td>
               }
-              @for (col of config.columns; track col.key) {
+              @for (col of config.columns; track col.header) {
                 <td class="uk-td" [style.text-align]="col.align ?? 'left'">
                   @switch (col.type) {
                     @case ('boolean') {
                       <span class="uk-badge" [class.uk-badge-success]="getCellValue(row, col)" [class.uk-badge-neutral]="!getCellValue(row, col)">
                         {{ getCellValue(row, col) ? 'Yes' : 'No' }}
                       </span>
+                    }
+                    @case ('toggle') {
+                      <label class="uk-toggle" (click)="$event.stopPropagation()">
+                        <input
+                          type="checkbox"
+                          [attr.aria-label]="col.header"
+                          [checked]="!!getCellValue(row, col)"
+                          (change)="onToggle(col, row, $event)"
+                        />
+                        <span class="uk-toggle-slider"></span>
+                      </label>
                     }
                     @case ('badge') {
                       <span class="uk-badge" [class]="getBadgeClass(col, getCellValue(row, col))">
@@ -108,12 +122,32 @@
                     }
                     @case ('actions') {
                       <div class="uk-td-actions">
-                        <ng-container *ngTemplateOutlet="$any(col.cellTemplate); context: { $implicit: row }" />
+                        @if (col.cellTemplate) {
+                          <ng-container *ngTemplateOutlet="$any(col.cellTemplate); context: { $implicit: row }" />
+                        }
                       </div>
                     }
                     @default {
                       {{ col.format ? col.format(getCellValue(row, col), row) : getCellValue(row, col) }}
                     }
+                  }
+                </td>
+              }
+              @if (config.rowActions?.length) {
+                <td class="uk-td uk-td-actions">
+                  @for (act of config.rowActions!; track act.id) {
+                    <button
+                      type="button"
+                      [class]="'uk-action-btn uk-action-btn--' + (act.variant ?? 'default')"
+                      [title]="act.label"
+                      (click)="onActionClick(act.id, row, $event)"
+                    >
+                      @if (act.icon) {
+                        <i class="bi bi-{{ act.icon }}"></i>
+                      } @else {
+                        {{ act.label }}
+                      }
+                    </button>
                   }
                 </td>
               }

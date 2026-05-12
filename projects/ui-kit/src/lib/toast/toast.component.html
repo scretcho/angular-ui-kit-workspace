@@ -1,0 +1,18 @@
+<div class="uk-toaster uk-toaster--{{ position }}">
+  @for (toast of toastService.toasts(); track toast.id) {
+    <div class="uk-toast uk-toast--{{ toast.variant }}" role="alert" aria-live="assertive">
+      @if (toast.icon) {
+        <i class="bi bi-{{ toast.icon }} uk-toast-icon"></i>
+      }
+      <div class="uk-toast-body">
+        @if (toast.title) {
+          <div class="uk-toast-title">{{ toast.title }}</div>
+        }
+        <div class="uk-toast-message">{{ toast.message }}</div>
+      </div>
+      <button class="uk-toast-close" type="button" (click)="dismiss(toast.id)" aria-label="Close">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+  }
+</div>
