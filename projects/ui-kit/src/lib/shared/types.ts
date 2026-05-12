@@ -45,11 +45,12 @@ export interface DynamicValidator {
   message?: string;
 }
 
-export interface RowAction {
+export interface RowAction<T = Record<string, unknown>> {
   id: string;
   label: string;
   icon?: string;
   variant?: 'default' | 'primary' | 'success' | 'danger' | 'warning';
+  show?: boolean | ((row: T) => boolean);
 }
 
 export interface TableColumn<T = Record<string, unknown>> {
@@ -74,7 +75,7 @@ export interface TableConfig<T = Record<string, unknown>> {
   striped?: boolean;
   stickyHeader?: boolean;
   emptyText?: string;
-  rowActions?: RowAction[];
+  rowActions?: RowAction<T>[];
 }
 
 export interface NavItem {

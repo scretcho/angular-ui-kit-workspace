@@ -136,18 +136,20 @@
               @if (config.rowActions?.length) {
                 <td class="uk-td uk-td-actions">
                   @for (act of config.rowActions!; track act.id) {
-                    <button
-                      type="button"
-                      [class]="'uk-action-btn uk-action-btn--' + (act.variant ?? 'default')"
-                      [title]="act.label"
-                      (click)="onActionClick(act.id, row, $event)"
-                    >
-                      @if (act.icon) {
-                        <i class="bi bi-{{ act.icon }}"></i>
-                      } @else {
-                        {{ act.label }}
-                      }
-                    </button>
+                    @if (isActionVisible(act, row)) {
+                      <button
+                        type="button"
+                        [class]="'uk-action-btn uk-action-btn--' + (act.variant ?? 'default')"
+                        [title]="act.label"
+                        (click)="onActionClick(act.id, row, $event)"
+                      >
+                        @if (act.icon) {
+                          <i class="bi bi-{{ act.icon }}"></i>
+                        } @else {
+                          {{ act.label }}
+                        }
+                      </button>
+                    }
                   }
                 </td>
               }

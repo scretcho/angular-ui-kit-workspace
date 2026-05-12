@@ -179,6 +179,12 @@ export class UkDynamicTableComponent<T extends Record<string, unknown>> implemen
 
   onRowClick(row: T) { this.rowClick.emit(row); }
 
+  isActionVisible(act: { show?: boolean | ((row: T) => boolean) }, row: T): boolean {
+    if (act.show === undefined || act.show === true) return true;
+    if (act.show === false) return false;
+    return act.show(row);
+  }
+
   onActionClick(actionId: string, row: T, event: MouseEvent) {
     event.stopPropagation();
     this.actionClick.emit({ action: actionId, row });
