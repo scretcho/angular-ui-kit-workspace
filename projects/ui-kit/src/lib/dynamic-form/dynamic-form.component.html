@@ -3,17 +3,18 @@
     @for (field of sortedFields(); track field.key) {
       @if (!field.hidden) {
         <div class="uk-dform-field" [class]="field.class ?? ''" [style.grid-column]="field.fullWidth ? '1 / -1' : null">
+          @if (isInputField(field.type)) {
+            <uk-input
+              [formControlName]="field.key"
+              [type]="inputType(field.type)"
+              [label]="field.label"
+              [placeholder]="field.placeholder ?? ''"
+              [required]="!!field.required"
+              [hint]="field.hint ?? ''"
+              [errorMessage]="getError(field.key)"
+            />
+          } @else {
           @switch (field.type) {
-            @case ('input') {
-              <uk-input
-                [formControlName]="field.key"
-                [label]="field.label"
-                [placeholder]="field.placeholder ?? ''"
-                [required]="!!field.required"
-                [hint]="field.hint ?? ''"
-                [errorMessage]="getError(field.key)"
-              />
-            }
             @case ('textarea') {
               <uk-textarea
                 [formControlName]="field.key"
@@ -112,6 +113,7 @@
                 [errorMessage]="getError(field.key)"
               />
             }
+          }
           }
         </div>
       }
