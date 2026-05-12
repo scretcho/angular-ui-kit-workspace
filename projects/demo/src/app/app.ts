@@ -265,11 +265,15 @@ export class App {
 
   /* ── Dynamic Form ── */
   dynFormFields: DynamicFormField[] = [
-    { key: 'name',  type: 'input',    label: 'Full Name', required: true, placeholder: 'John Doe', order: 1 },
-    { key: 'email', type: 'input',    label: 'Email',     required: true, placeholder: 'john@example.com', validators: [{ type: 'email' }], order: 2 },
-    { key: 'role',  type: 'select',   label: 'Role',      options: [{ value: 'admin', label: 'Admin' }, { value: 'user', label: 'User' }], order: 3 },
-    { key: 'bio',   type: 'textarea', label: 'Bio',       placeholder: 'Tell us about yourself', rows: 3, order: 4 },
-    { key: 'agree', type: 'checkbox', label: 'I agree to the terms', required: true, order: 5 },
+    { key: 'name',     type: 'input',    label: 'Full Name', required: true, placeholder: 'John Doe', order: 1 },
+    { key: 'email',    type: 'email',    label: 'Email',     required: true, placeholder: 'john@example.com', order: 2 },
+    { key: 'password', type: 'password', label: 'Password',  required: true, placeholder: '••••••••', validators: [{ type: 'minLength', value: 8 }], order: 3 },
+    { key: 'age',      type: 'number',   label: 'Age',       placeholder: '25', min: 1, max: 120, order: 4 },
+    { key: 'phone',    type: 'tel',      label: 'Phone',     placeholder: '+1 555 000 0000', order: 5 },
+    { key: 'website',  type: 'url',      label: 'Website',   placeholder: 'https://example.com', order: 6 },
+    { key: 'role',     type: 'select',   label: 'Role',      options: [{ value: 'admin', label: 'Admin' }, { value: 'user', label: 'User' }], order: 7 },
+    { key: 'bio',      type: 'textarea', label: 'Bio',       placeholder: 'Tell us about yourself', rows: 3, order: 8 },
+    { key: 'agree',    type: 'checkbox', label: 'I agree to the terms', required: true, order: 9 },
   ];
   dynFormResult = signal<Record<string, unknown> | null>(null);
 
