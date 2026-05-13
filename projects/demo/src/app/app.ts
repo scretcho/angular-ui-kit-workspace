@@ -326,7 +326,7 @@ export class App {
   tableData = PEOPLE;
   tableConfig: TableConfig<typeof PEOPLE[0]> = {
     columns: [
-      { key: 'id',     header: 'ID',     sortable: true, width: '60px' },
+      { key: 'id',     header: 'ID',     sortable: true, width: '60px', show: false },
       { key: 'name',   header: 'Name',   sortable: true },
       { key: 'role',   header: 'Role',   type: 'badge', badgeMap: { Admin: 'uk-badge-admin', Editor: 'uk-badge-editor', Viewer: 'uk-badge-viewer' } },
       { key: 'active', header: 'Active', type: 'toggle' },
