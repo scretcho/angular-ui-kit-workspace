@@ -6,6 +6,7 @@
     </label>
   }
   <textarea
+    title="Text area {{textareaId ? 'for ' + label() : ''}}"
     [id]="textareaId"
     [placeholder]="placeholder()"
     [disabled]="isDisabled()"

@@ -12,6 +12,7 @@
       </span>
     }
     <input
+      title="{{ label() ? label() + ' input' : 'Input field' }}"
       [id]="inputId"
       [type]="type()"
       [placeholder]="placeholder()"

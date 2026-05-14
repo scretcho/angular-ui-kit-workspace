@@ -3,7 +3,7 @@
   [attr.title]="name()"
 >
   @if (src()) {
-    <img [src]="src()" [alt]="alt() ?? name() ?? 'Avatar'" class="uk-avatar-img" />
+    <img title="{{ name() }}" [src]="src()" [alt]="alt() ?? name() ?? 'Avatar'" class="uk-avatar-img" />
   } @else {
     <span class="uk-avatar-initials" [style.background]="bgColor">{{ initials }}</span>
   }

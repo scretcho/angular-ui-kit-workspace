@@ -1,7 +1,7 @@
 <header class="uk-header">
   <div class="uk-header-left">
     @if (showMenuToggle()) {
-      <button type="button" class="uk-header-toggle" (click)="menuToggle.emit()" [title]="sidebarCollapsed() ? 'Expand sidebar' : 'Collapse sidebar'">
+      <button title="Toggle sidebar {{title()}}" type="button" class="uk-header-toggle" (click)="menuToggle.emit()" [title]="sidebarCollapsed() ? 'Expand sidebar' : 'Collapse sidebar'">
         <i class="bi bi-list"></i>
       </button>
     }
@@ -27,7 +27,7 @@
       <div class="uk-header-user">
         <button type="button" class="uk-header-avatar" (click)="toggleUserMenu()">
           @if (user()!.avatar) {
-            <img [src]="user()!.avatar" [alt]="user()!.name" />
+            <img title="User avatar" [src]="user()!.avatar" [alt]="user()!.name" />
           } @else {
             <span class="uk-header-initials">{{ initials }}</span>
           }

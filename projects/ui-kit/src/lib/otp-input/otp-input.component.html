@@ -8,6 +8,7 @@
   <div class="uk-otp-boxes" [class.error]="!!errorMessage()">
     @for (i of slots; track i) {
       <input
+        title="Digit {{ i + 1 }} of {{ length() }}"
         #otpInput
         [type]="mask() ? 'password' : 'text'"
         class="uk-otp-box"

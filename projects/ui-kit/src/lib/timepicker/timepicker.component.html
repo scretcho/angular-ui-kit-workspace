@@ -9,6 +9,7 @@
     <div class="uk-tp-col">
       <button type="button" class="uk-tp-btn" (click)="increment('hour')" [disabled]="isDisabled()">&#8963;</button>
       <input
+        title="Hour {{ use24Hour() ? '' : '(in 12-hour format)' }}"
         type="text"
         class="uk-tp-input"
         [value]="padded(displayHour())"
@@ -23,6 +24,7 @@
     <div class="uk-tp-col">
       <button type="button" class="uk-tp-btn" (click)="increment('minute')" [disabled]="isDisabled()">&#8963;</button>
       <input
+        title="Minute {{ use24Hour() ? '' : '(in 12-hour format)' }}"
         type="text"
         class="uk-tp-input"
         [value]="padded(time().minute)"
@@ -38,6 +40,7 @@
       <div class="uk-tp-col">
         <button type="button" class="uk-tp-btn" (click)="increment('second')" [disabled]="isDisabled()">&#8963;</button>
         <input
+          title="Second {{ use24Hour() ? '' : '(in 12-hour format)' }}"
           type="text"
           class="uk-tp-input"
           [value]="padded(time().second ?? 0)"

@@ -5,6 +5,7 @@
         <div class="uk-table-search">
           <span class="uk-table-search-icon">&#128269;</span>
           <input
+            title="Search in table"
             type="text"
             class="uk-table-search-input"
             [placeholder]="searchPlaceholder()"
@@ -104,6 +105,7 @@
                     @case ('toggle') {
                       <label class="uk-toggle" (click)="$event.stopPropagation()">
                         <input
+                          title="Toggle {{ col.header }}"
                           type="checkbox"
                           [attr.aria-label]="col.header"
                           [checked]="!!getCellValue(row, col)"
@@ -164,7 +166,7 @@
     <div class="uk-table-pagination">
       <div class="uk-page-size">
         <span>Rows per page:</span>
-        <select class="uk-page-size-select" [value]="pageSize()" (change)="onPageSizeChange($event)">
+        <select title="Select page size" class="uk-page-size-select" [value]="pageSize()" (change)="onPageSizeChange($event)">
           @for (size of config().pageSizeOptions ?? [10, 25, 50, 100]; track size) {
             <option [value]="size">{{ size }}</option>
           }

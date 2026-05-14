@@ -17,6 +17,7 @@
   <div class="uk-range-track-wrap" [class.disabled]="isDisabled()">
     @if (range()) {
       <input
+        title="Minimum value"
         type="range"
         class="uk-range-input uk-range-low"
         [min]="min()" [max]="max()" [step]="step()"
@@ -25,6 +26,7 @@
         (input)="onLowInput($event)"
       />
       <input
+        title="Maximum value"
         type="range"
         class="uk-range-input uk-range-high"
         [min]="min()" [max]="max()" [step]="step()"
@@ -37,6 +39,7 @@
       </div>
     } @else {
       <input
+        title="Select value"
         type="range"
         class="uk-range-input"
         [min]="min()" [max]="max()" [step]="step()"
