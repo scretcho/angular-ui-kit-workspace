@@ -1,0 +1,110 @@
+/* ── Backdrop ── */
+.uk-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  transition: background 0.22s ease;
+
+  &--in { background: rgba(0, 0, 0, 0.5); }
+}
+
+/* ── Dialog shell ── */
+.uk-dialog {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
+  width: 100%;
+  max-width: 480px;
+  transform: scale(0.9) translateY(16px);
+  opacity: 0;
+  transition: transform 0.22s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.22s ease;
+
+  &--in { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* ── Confirm layout ── */
+.uk-dialog--confirm {
+  overflow: hidden;
+}
+
+/* ── Header ── */
+.uk-dialog-header {
+  padding: 18px 20px 0;
+  border-bottom: 1px solid #f3f4f6;
+  padding-bottom: 14px;
+}
+
+.uk-dialog-title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+/* ── Body ── */
+.uk-dialog-body {
+  padding: 18px 20px;
+}
+
+.uk-dialog-message {
+  font-size: 0.9375rem;
+  color: #374151;
+  margin: 0;
+  line-height: 1.55;
+}
+
+.uk-dialog-sub-message {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 8px 0 0;
+  line-height: 1.5;
+}
+
+.uk-dialog-data {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  color: #374151;
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+/* ── Actions ── */
+.uk-dialog-actions {
+  display: flex;
+  gap: 10px;
+  padding: 14px 20px;
+  border-top: 1px solid #f3f4f6;
+  justify-content: flex-end;
+}
+
+/* ── Buttons ── */
+.uk-dialog-btn {
+  padding: 9px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s;
+
+  &:hover  { filter: brightness(0.92); }
+  &:active { filter: brightness(0.85); }
+
+  &--cancel  { background: #f3f4f6; color: #374151; }
+  &--primary { background: #4f46e5; color: #fff; }
+  &--danger  { background: #ef4444; color: #fff; }
+  &--warning { background: #f59e0b; color: #fff; }
+  &--success { background: #22c55e; color: #fff; }
+}

@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter, OnChanges, SimpleChanges,
+  Component, input, output, effect, untracked,
   ChangeDetectionStrategy, signal, computed
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -16,55 +16,66 @@ type SortDir = 'asc' | 'desc' | null;
   templateUrl: './dynamic-table.component.html',
   styleUrls: ['./dynamic-table.component.scss']
 })
-export class UkDynamicTableComponent<T extends Record<string, unknown>> implements OnChanges {
-  @Input() data: T[] = [];
-  @Input() config: TableConfig<T> = { columns: [] };
-  @Input() loading = false;
-  @Input() rowKey: (row: T, index: number) => string | number = (_, i) => i;
-  @Input() rowClickable = false;
-  @Input() searchPlaceholder = 'Search...';
-  @Input() toolbarActions: unknown[] = [];
-  @Output() rowClick = new EventEmitter<T>();
-  @Output() selectionChange = new EventEmitter<T[]>();
-  @Output() sortChange = new EventEmitter<{ key: string; dir: SortDir }>();
-  @Output() pageChange = new EventEmitter<number>();
-  @Output() actionClick = new EventEmitter<{ action: string; row: T }>();
-  @Output() toggleChange = new EventEmitter<{ key: string; value: boolean; row: T }>();
+export class UkDynamicTableComponent<T extends Record<string, unknown>> {
+  readonly data = input<T[]>([]);
+  readonly config = input<TableConfig<T>>({ columns: [] });
+  readonly loading = input(false);
+  readonly rowKey = input<(row: T, index: number) => string | number>((_, i) => i);
+  readonly rowClickable = input(false);
+  readonly searchPlaceholder = input('Search...');
+  readonly toolbarActions = input<unknown[]>([]);
+  readonly rowClick = output<T>();
+  readonly selectionChange = output<T[]>();
+  readonly sortChange = output<{ key: string; dir: SortDir }>();
+  readonly pageChange = output<number>();
+  readonly actionClick = output<{ action: string; row: T }>();
+  readonly toggleChange = output<{ key: string; value: boolean; row: T }>();
 
   readonly Math = Math;
   readonly searchQuery = signal('');
   readonly sortKey = signal<string | null>(null);
   readonly sortDir = signal<SortDir>(null);
   readonly currentPage = signal(1);
-  readonly pageSize = signal(this.config.pageSize ?? 10);
+  readonly pageSize = signal(10);
   readonly selectedRows = signal<T[]>([]);
   readonly _loading = signal(false);
   readonly _data = signal<T[]>([]);
   readonly _config = signal<TableConfig<T>>({ columns: [] });
 
+  constructor() {
+    effect(() => {
+      const l = this.loading();
+      untracked(() => this._loading.set(l));
+    });
+
+    effect(() => {
+      const cfg = this.config();
+      untracked(() => {
+        this._config.set(cfg);
+        this.pageSize.set(cfg.pageSize ?? 10);
+      });
+    });
+
+    effect(() => {
+      const d = this.data();
+      untracked(() => {
+        this._data.set([...d]);
+        this.currentPage.set(1);
+        this.clearSelection();
+      });
+    });
+  }
+
   readonly visibleColumns = computed(() =>
     this._config().columns.filter(c => c.show !== false)
   );
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['loading']) this._loading.set(this.loading);
-    if (changes['config']) {
-      this._config.set(this.config);
-      this.pageSize.set(this.config.pageSize ?? 10);
-    }
-    if (changes['data']) {
-      this._data.set([...this.data]);
-      this.currentPage.set(1);
-      this.clearSelection();
-    }
-  }
 
   readonly filteredData = computed(() => {
     const data = this._data();
     const q = this.searchQuery().toLowerCase();
     let d = q
       ? data.filter(row =>
-          this.config.columns.some(col => {
+          this.config().columns.some(col => {
             const v = this.getCellValue(row, col);
             return v != null && String(v).toLowerCase().includes(q);
           })
@@ -90,7 +101,7 @@ export class UkDynamicTableComponent<T extends Record<string, unknown>> implemen
   );
 
   readonly pagedData = computed(() => {
-    if (!this.config.paginate) return this.filteredData();
+    if (!this.config().paginate) return this.filteredData();
     const start = (this.currentPage() - 1) * this.pageSize();
     return this.filteredData().slice(start, start + this.pageSize());
   });

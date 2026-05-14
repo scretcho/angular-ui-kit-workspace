@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter, forwardRef,
+  Component, input, output, forwardRef,
   ChangeDetectionStrategy, signal
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -19,13 +19,13 @@ import { CommonModule } from '@angular/common';
   }]
 })
 export class UkCheckboxComponent implements ControlValueAccessor {
-  @Input() label = '';
-  @Input() required = false;
-  @Input() disabled = false;
-  @Input() indeterminate = false;
-  @Input() hint = '';
-  @Input() errorMessage = '';
-  @Output() checkedChange = new EventEmitter<boolean>();
+  readonly label = input('');
+  readonly required = input(false);
+  readonly disabled = input(false);
+  readonly indeterminate = input(false);
+  readonly hint = input('');
+  readonly errorMessage = input('');
+  readonly checkedChange = output<boolean>();
 
   readonly checked = signal(false);
   readonly isDisabled = signal(false);

@@ -1,0 +1,32 @@
+@if (visible()) {
+  <div
+    class="uk-dialog-backdrop"
+    [class.uk-dialog-backdrop--in]="animating()"
+    (click)="onBackdropClick()"
+  >
+    <div
+      class="uk-dialog uk-dialog--alert uk-dialog--{{ variant }}"
+      [class.uk-dialog--in]="animating()"
+      role="alertdialog"
+      aria-modal="true"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="uk-dialog-icon uk-dialog-icon--{{ variant }}">
+        <i class="bi bi-{{ icon }}"></i>
+      </div>
+
+      <h3 class="uk-dialog-title">{{ autoTitle }}</h3>
+      <p class="uk-dialog-message">{{ config().message }}</p>
+
+      <div class="uk-dialog-actions uk-dialog-actions--center">
+        <button
+          type="button"
+          class="uk-dialog-btn uk-dialog-btn--{{ variant }}"
+          (click)="close()"
+        >
+          {{ config().button ?? 'Ok' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

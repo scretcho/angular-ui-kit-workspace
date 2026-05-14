@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter, forwardRef,
+  Component, input, output, forwardRef,
   ChangeDetectionStrategy, signal
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -20,14 +20,14 @@ import { SelectOption } from '../shared/types';
   }]
 })
 export class UkRadioGroupComponent implements ControlValueAccessor {
-  @Input() label = '';
-  @Input() options: SelectOption[] = [];
-  @Input() direction: 'vertical' | 'horizontal' = 'vertical';
-  @Input() required = false;
-  @Input() disabled = false;
-  @Input() hint = '';
-  @Input() errorMessage = '';
-  @Output() selectionChange = new EventEmitter<SelectOption>();
+  readonly label = input('');
+  readonly options = input<SelectOption[]>([]);
+  readonly direction = input<'vertical' | 'horizontal'>('vertical');
+  readonly required = input(false);
+  readonly disabled = input(false);
+  readonly hint = input('');
+  readonly errorMessage = input('');
+  readonly selectionChange = output<SelectOption>();
 
   readonly value = signal<string | number | null>(null);
   readonly isDisabled = signal(false);

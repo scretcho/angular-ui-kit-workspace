@@ -1,0 +1,44 @@
+@if (visible()) {
+  <div
+    class="uk-dialog-backdrop"
+    [class.uk-dialog-backdrop--in]="animating()"
+    (click)="onBackdropClick()"
+  >
+    <div
+      class="uk-dialog uk-dialog--confirm"
+      [class.uk-dialog--in]="animating()"
+      role="dialog"
+      aria-modal="true"
+      (click)="$event.stopPropagation()"
+    >
+      @if (config().header) {
+        <div class="uk-dialog-header">
+          <h3 class="uk-dialog-title">{{ config().header }}</h3>
+        </div>
+      }
+
+      <div class="uk-dialog-body">
+        <p class="uk-dialog-message">{{ config().message }}</p>
+
+        @if (config().subMessage) {
+          <p class="uk-dialog-sub-message">{{ config().subMessage }}</p>
+        }
+
+        @if (dataPreview !== null) {
+          <pre class="uk-dialog-data">{{ dataPreview }}</pre>
+        }
+      </div>
+
+      <div class="uk-dialog-actions">
+        @if (config().cancelButton !== false) {
+          <button type="button" class="uk-dialog-btn uk-dialog-btn--cancel" (click)="cancel()">
+            {{ config().cancelButton ?? 'Cancel' }}
+          </button>
+        }
+        <button type="button" [class]="confirmBtnClass" (click)="confirm()">
+          {{ config().confirmButton ?? 'Confirm' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

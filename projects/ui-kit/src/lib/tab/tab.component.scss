@@ -1,0 +1,160 @@
+.uk-tabs {
+  --uk-tab-color: #6b7280;
+  --uk-tab-active-color: #4f46e5;
+  --uk-tab-hover-color: #374151;
+  --uk-tab-disabled-color: #d1d5db;
+  --uk-tab-font-size: 0.875rem;
+  --uk-tab-gap: 4px;
+  --uk-tab-padding: 8px 16px;
+  --uk-tab-radius: 6px;
+  --uk-tab-badge-bg: #e5e7eb;
+  --uk-tab-badge-color: #374151;
+
+  display: flex;
+  flex-direction: column;
+
+  &.uk-tabs--sm {
+    --uk-tab-font-size: 0.8125rem;
+    --uk-tab-padding: 6px 12px;
+  }
+
+  &.uk-tabs--lg {
+    --uk-tab-font-size: 0.9375rem;
+    --uk-tab-padding: 10px 20px;
+  }
+}
+
+/* ── Nav bar ── */
+.uk-tabs-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--uk-tab-gap);
+}
+
+/* ── Base tab button ── */
+.uk-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--uk-tab-padding);
+  border: none;
+  background: transparent;
+  color: var(--uk-tab-color);
+  font-size: var(--uk-tab-font-size);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  border-radius: var(--uk-tab-radius);
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+  text-decoration: none;
+
+  &:hover:not(.disabled) {
+    color: var(--uk-tab-hover-color);
+  }
+
+  &.disabled {
+    color: var(--uk-tab-disabled-color);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+.uk-tab-icon { font-size: 1em; }
+.uk-tab-label { line-height: 1.4; }
+
+.uk-tab-badge {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 20px;
+  background: var(--uk-tab-badge-bg);
+  color: var(--uk-tab-badge-color);
+  margin-left: 2px;
+}
+
+/* ── Line variant (default) ── */
+.uk-tabs--line {
+  .uk-tabs-nav {
+    gap: 0;
+    border-bottom: 2px solid #e5e7eb;
+  }
+
+  .uk-tab {
+    border-radius: 0;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    padding-left: 12px;
+    padding-right: 12px;
+
+    &:hover:not(.disabled) {
+      color: var(--uk-tab-hover-color);
+      border-bottom-color: #d1d5db;
+    }
+
+    &.active {
+      color: var(--uk-tab-active-color);
+      border-bottom-color: var(--uk-tab-active-color);
+    }
+  }
+}
+
+/* ── Pills variant ── */
+.uk-tabs--pills {
+  .uk-tabs-nav {
+    gap: 4px;
+  }
+
+  .uk-tab {
+    &:hover:not(.disabled) {
+      background: #f3f4f6;
+    }
+
+    &.active {
+      background: #4f46e5;
+      color: #fff;
+
+      .uk-tab-badge {
+        background: rgba(255, 255, 255, 0.25);
+        color: #fff;
+      }
+    }
+  }
+}
+
+/* ── Enclosed variant ── */
+.uk-tabs--enclosed {
+  .uk-tabs-nav {
+    gap: 0;
+    border: 1px solid #e5e7eb;
+    border-radius: var(--uk-tab-radius) var(--uk-tab-radius) 0 0;
+    border-bottom: none;
+    background: #f9fafb;
+    padding: 4px 4px 0;
+  }
+
+  .uk-tab {
+    border-radius: var(--uk-tab-radius) var(--uk-tab-radius) 0 0;
+
+    &:hover:not(.disabled) {
+      background: #f3f4f6;
+    }
+
+    &.active {
+      background: #fff;
+      color: var(--uk-tab-active-color);
+      box-shadow: 0 -1px 0 0 #e5e7eb, 1px 0 0 0 #e5e7eb, -1px 0 0 0 #e5e7eb;
+    }
+  }
+
+  .uk-tabs-content {
+    border: 1px solid #e5e7eb;
+    border-top: none;
+    border-radius: 0 0 var(--uk-tab-radius) var(--uk-tab-radius);
+    padding: 16px;
+  }
+}
+
+/* ── Content area ── */
+.uk-tabs-content {
+  padding-top: 16px;
+}

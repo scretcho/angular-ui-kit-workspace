@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter, forwardRef,
+  Component, input, output, forwardRef,
   ChangeDetectionStrategy, signal, ViewChildren, QueryList, ElementRef, AfterViewInit
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -19,17 +19,17 @@ import { CommonModule } from '@angular/common';
   }]
 })
 export class UkOtpInputComponent implements ControlValueAccessor, AfterViewInit {
-  @Input() label = '';
-  @Input() length = 6;
-  @Input() mask = false;
-  @Input() required = false;
-  @Input() disabled = false;
-  @Input() separator = '';
-  @Input() separatorAfter = 3;
-  @Input() hint = '';
-  @Input() errorMessage = '';
-  @Output() completed = new EventEmitter<string>();
-  @Output() valueChange = new EventEmitter<string>();
+  readonly label = input('');
+  readonly length = input(6);
+  readonly mask = input(false);
+  readonly required = input(false);
+  readonly disabled = input(false);
+  readonly separator = input('');
+  readonly separatorAfter = input(3);
+  readonly hint = input('');
+  readonly errorMessage = input('');
+  readonly completed = output<string>();
+  readonly valueChange = output<string>();
 
   @ViewChildren('otpInput') inputRefs!: QueryList<ElementRef<HTMLInputElement>>;
 
@@ -37,7 +37,7 @@ export class UkOtpInputComponent implements ControlValueAccessor, AfterViewInit 
   readonly isDisabled = signal(false);
   readonly focusedIndex = signal(-1);
 
-  get slots() { return Array.from({ length: this.length }, (_, i) => i); }
+  get slots() { return Array.from({ length: this.length() }, (_, i) => i); }
 
   private onChange = (_: string) => {};
   onTouched = () => {};
@@ -73,7 +73,7 @@ export class UkOtpInputComponent implements ControlValueAccessor, AfterViewInit 
     input.value = val;
     if (val) {
       this.digits.update(d => ({ ...d, [index]: val }));
-      if (index < this.length - 1) this.focusInput(index + 1);
+      if (index < this.length() - 1) this.focusInput(index + 1);
     }
     this.emitChange();
   }
@@ -81,11 +81,11 @@ export class UkOtpInputComponent implements ControlValueAccessor, AfterViewInit 
   onPaste(e: ClipboardEvent) {
     e.preventDefault();
     const text = e.clipboardData?.getData('text') ?? '';
-    const digits = text.replace(/\D/g, '').slice(0, this.length).split('');
+    const digits = text.replace(/\D/g, '').slice(0, this.length()).split('');
     const map: Record<number, string> = {};
     digits.forEach((d, i) => { map[i] = d; });
     this.digits.set(map);
-    this.focusInput(Math.min(digits.length, this.length - 1));
+    this.focusInput(Math.min(digits.length, this.length() - 1));
     this.emitChange();
   }
 
@@ -93,12 +93,12 @@ export class UkOtpInputComponent implements ControlValueAccessor, AfterViewInit 
     const val = this.getOtpValue();
     this.onChange(val);
     this.valueChange.emit(val);
-    if (val.length === this.length) this.completed.emit(val);
+    if (val.length === this.length()) this.completed.emit(val);
   }
 
   writeValue(val: string) {
     const map: Record<number, string> = {};
-    (val ?? '').split('').slice(0, this.length).forEach((c, i) => { map[i] = c; });
+    (val ?? '').split('').slice(0, this.length()).forEach((c, i) => { map[i] = c; });
     this.digits.set(map);
   }
   registerOnChange(fn: (v: string) => void) { this.onChange = fn; }

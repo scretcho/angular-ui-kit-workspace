@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter, forwardRef,
+  Component, input, output, forwardRef,
   ChangeDetectionStrategy, signal, computed
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -20,21 +20,21 @@ import { TimeValue } from '../shared/types';
   }]
 })
 export class UkTimepickerComponent implements ControlValueAccessor {
-  @Input() label = '';
-  @Input() use24Hour = false;
-  @Input() showSeconds = false;
-  @Input() required = false;
-  @Input() disabled = false;
-  @Input() hint = '';
-  @Input() errorMessage = '';
-  @Output() timeChange = new EventEmitter<TimeValue>();
+  readonly label = input('');
+  readonly use24Hour = input(false);
+  readonly showSeconds = input(false);
+  readonly required = input(false);
+  readonly disabled = input(false);
+  readonly hint = input('');
+  readonly errorMessage = input('');
+  readonly timeChange = output<TimeValue>();
 
   readonly time = signal<TimeValue>({ hour: 12, minute: 0, second: 0, period: 'AM' });
   readonly isDisabled = signal(false);
 
   readonly displayHour = computed(() => {
     const h = this.time().hour;
-    if (this.use24Hour) return h;
+    if (this.use24Hour()) return h;
     if (h === 0) return 12;
     if (h > 12) return h - 12;
     return h;
@@ -54,7 +54,7 @@ export class UkTimepickerComponent implements ControlValueAccessor {
   increment(unit: 'hour' | 'minute' | 'second') {
     this.time.update(t => {
       const next = { ...t };
-      if (unit === 'hour') next.hour = this.use24Hour ? (t.hour + 1) % 24 : (t.hour % 12) + 1 + (t.period === 'PM' ? 12 : 0);
+      if (unit === 'hour') next.hour = this.use24Hour() ? (t.hour + 1) % 24 : (t.hour % 12) + 1 + (t.period === 'PM' ? 12 : 0);
       if (unit === 'minute') next.minute = (t.minute + 1) % 60;
       if (unit === 'second') next.second = ((t.second ?? 0) + 1) % 60;
       return next;
@@ -65,7 +65,7 @@ export class UkTimepickerComponent implements ControlValueAccessor {
   decrement(unit: 'hour' | 'minute' | 'second') {
     this.time.update(t => {
       const next = { ...t };
-      if (unit === 'hour') next.hour = this.use24Hour ? (t.hour - 1 + 24) % 24 : ((t.hour - 1 + 12) % 12) || 12 + (t.period === 'PM' ? 12 : 0);
+      if (unit === 'hour') next.hour = this.use24Hour() ? (t.hour - 1 + 24) % 24 : ((t.hour - 1 + 12) % 12) || 12 + (t.period === 'PM' ? 12 : 0);
       if (unit === 'minute') next.minute = (t.minute - 1 + 60) % 60;
       if (unit === 'second') next.second = ((t.second ?? 0) - 1 + 60) % 60;
       return next;
@@ -96,7 +96,7 @@ export class UkTimepickerComponent implements ControlValueAccessor {
   validateHour() {
     this.time.update(t => ({
       ...t,
-      hour: Math.max(0, Math.min(this.use24Hour ? 23 : 12, t.hour))
+      hour: Math.max(0, Math.min(this.use24Hour() ? 23 : 12, t.hour))
     }));
     this.emit();
   }

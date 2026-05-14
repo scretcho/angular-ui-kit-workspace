@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter, forwardRef,
+  Component, input, output, forwardRef,
   ChangeDetectionStrategy, signal, computed, HostListener, ElementRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -31,16 +31,16 @@ interface CalendarDay {
   }]
 })
 export class UkDateRangePickerComponent implements ControlValueAccessor {
-  @Input() label = '';
-  @Input() placeholder = 'Select date range';
-  @Input() required = false;
-  @Input() disabled = false;
-  @Input() minDate?: Date;
-  @Input() maxDate?: Date;
-  @Input() showPresets = true;
-  @Input() errorMessage = '';
-  @Input() format = 'MMM d, yyyy';
-  @Output() rangeChange = new EventEmitter<DateRange>();
+  readonly label = input('');
+  readonly placeholder = input('Select date range');
+  readonly required = input(false);
+  readonly disabled = input(false);
+  readonly minDate = input<Date>();
+  readonly maxDate = input<Date>();
+  readonly showPresets = input(true);
+  readonly errorMessage = input('');
+  readonly format = input('MMM d, yyyy');
+  readonly rangeChange = output<DateRange>();
 
   readonly isOpen = signal(false);
   readonly isDisabled = signal(false);
@@ -115,6 +115,8 @@ export class UkDateRangePickerComponent implements ControlValueAccessor {
       const hi = r.start < hover ? hover : r.start;
       inRange = date > lo && date < hi;
     }
+    const minDate = this.minDate();
+    const maxDate = this.maxDate();
     return {
       date, isCurrentMonth,
       isToday: this.sameDay(date, this.today),
@@ -122,7 +124,7 @@ export class UkDateRangePickerComponent implements ControlValueAccessor {
       isInRange: inRange,
       isStart: s,
       isEnd: e,
-      isDisabled: (!!this.minDate && date < this.minDate) || (!!this.maxDate && date > this.maxDate)
+      isDisabled: (!!minDate && date < minDate) || (!!maxDate && date > maxDate)
     };
   }
 
@@ -171,7 +173,7 @@ export class UkDateRangePickerComponent implements ControlValueAccessor {
 
   readonly displayValue = computed(() => {
     const r = this.dateRange();
-    if (!r.start) return this.placeholder;
+    if (!r.start) return this.placeholder();
     if (!r.end) return `${this.formatDate(r.start)} – ...`;
     return `${this.formatDate(r.start)} – ${this.formatDate(r.end)}`;
   });

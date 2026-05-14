@@ -1,15 +1,15 @@
-<div class="uk-accordion-item" [class.uk-accordion-item--open]="isOpen()" [class.uk-accordion-item--disabled]="disabled">
+<div class="uk-accordion-item" [class.uk-accordion-item--open]="isOpen()" [class.uk-accordion-item--disabled]="disabled()">
   <button
     class="uk-accordion-trigger"
     type="button"
     [attr.aria-expanded]="isOpen()"
-    [disabled]="disabled || null"
+    [disabled]="disabled() || null"
     (click)="toggle()"
   >
-    @if (icon) {
-      <i class="bi bi-{{ icon }} uk-accordion-icon"></i>
+    @if (icon()) {
+      <i class="bi bi-{{ icon() }} uk-accordion-icon"></i>
     }
-    <span class="uk-accordion-title">{{ title }}</span>
+    <span class="uk-accordion-title">{{ title() }}</span>
     <i class="bi bi-chevron-down uk-accordion-chevron"></i>
   </button>
   <div class="uk-accordion-body" [class.uk-accordion-body--open]="isOpen()">

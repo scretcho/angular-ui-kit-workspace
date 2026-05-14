@@ -1,0 +1,28 @@
+<div class="uk-tabs uk-tabs--{{ variant() }} uk-tabs--{{ size() }}">
+  <div class="uk-tabs-nav" role="tablist">
+    @for (tab of tabs(); track tab.id) {
+      <button
+        type="button"
+        class="uk-tab"
+        role="tab"
+        [class.active]="isActive(tab)"
+        [class.disabled]="tab.disabled"
+        [attr.aria-selected]="isActive(tab)"
+        [attr.aria-disabled]="tab.disabled || null"
+        [disabled]="tab.disabled || null"
+        (click)="select(tab)"
+      >
+        @if (tab.icon) {
+          <i class="bi bi-{{ tab.icon }} uk-tab-icon"></i>
+        }
+        <span class="uk-tab-label">{{ tab.label }}</span>
+        @if (tab.badge != null) {
+          <span class="uk-tab-badge">{{ tab.badge }}</span>
+        }
+      </button>
+    }
+  </div>
+  <div class="uk-tabs-content">
+    <ng-content />
+  </div>
+</div>

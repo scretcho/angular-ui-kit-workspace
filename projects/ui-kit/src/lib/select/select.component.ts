@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter, forwardRef,
+  Component, input, output, forwardRef,
   ChangeDetectionStrategy, signal, computed, HostListener, ElementRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -20,16 +20,16 @@ import { SelectOption, UkSize } from '../shared/types';
   }]
 })
 export class UkSelectComponent implements ControlValueAccessor {
-  @Input() label = '';
-  @Input() placeholder = 'Select an option';
-  @Input() options: SelectOption[] = [];
-  @Input() size: UkSize = 'md';
-  @Input() required = false;
-  @Input() disabled = false;
-  @Input() searchable = false;
-  @Input() hint = '';
-  @Input() errorMessage = '';
-  @Output() selectionChange = new EventEmitter<SelectOption>();
+  readonly label = input('');
+  readonly placeholder = input('Select an option');
+  readonly options = input<SelectOption[]>([]);
+  readonly size = input<UkSize>('md');
+  readonly required = input(false);
+  readonly disabled = input(false);
+  readonly searchable = input(false);
+  readonly hint = input('');
+  readonly errorMessage = input('');
+  readonly selectionChange = output<SelectOption>();
 
   readonly value = signal<string | number | null>(null);
   readonly isOpen = signal(false);
@@ -37,17 +37,17 @@ export class UkSelectComponent implements ControlValueAccessor {
   readonly searchQuery = signal('');
 
   readonly selectedOption = computed(() =>
-    this.options.find(o => o.value === this.value()) ?? null
+    this.options().find(o => o.value === this.value()) ?? null
   );
 
   readonly filteredOptions = computed(() => {
     const q = this.searchQuery().toLowerCase();
-    return q ? this.options.filter(o => o.label.toLowerCase().includes(q)) : this.options;
+    return q ? this.options().filter(o => o.label.toLowerCase().includes(q)) : this.options();
   });
 
   readonly wrapperClass = computed(() => {
-    const classes: string[] = [this.size];
-    if (this.errorMessage) classes.push('error');
+    const classes: string[] = [this.size()];
+    if (this.errorMessage()) classes.push('error');
     return classes.join(' ');
   });
 

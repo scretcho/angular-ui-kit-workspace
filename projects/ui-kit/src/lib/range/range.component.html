@@ -1,25 +1,25 @@
 <div class="uk-range-wrapper">
-  @if (label) {
+  @if (label()) {
     <div class="uk-range-header">
       <label class="uk-label">
-        {{ label }}
-        @if (required) { <span class="uk-required">*</span> }
+        {{ label() }}
+        @if (required()) { <span class="uk-required">*</span> }
       </label>
-      @if (showValue) {
+      @if (showValue()) {
         <span class="uk-range-val">
-          @if (range) { {{ lowValue() }} – {{ highValue() }} }
+          @if (range()) { {{ lowValue() }} – {{ highValue() }} }
           @else { {{ value() }} }
-          @if (unit) { {{ unit }} }
+          @if (unit()) { {{ unit() }} }
         </span>
       }
     </div>
   }
   <div class="uk-range-track-wrap" [class.disabled]="isDisabled()">
-    @if (range) {
+    @if (range()) {
       <input
         type="range"
         class="uk-range-input uk-range-low"
-        [min]="min" [max]="max" [step]="step"
+        [min]="min()" [max]="max()" [step]="step()"
         [value]="lowValue()"
         [disabled]="isDisabled()"
         (input)="onLowInput($event)"
@@ -27,7 +27,7 @@
       <input
         type="range"
         class="uk-range-input uk-range-high"
-        [min]="min" [max]="max" [step]="step"
+        [min]="min()" [max]="max()" [step]="step()"
         [value]="highValue()"
         [disabled]="isDisabled()"
         (input)="onHighInput($event)"
@@ -39,7 +39,7 @@
       <input
         type="range"
         class="uk-range-input"
-        [min]="min" [max]="max" [step]="step"
+        [min]="min()" [max]="max()" [step]="step()"
         [value]="value()"
         [disabled]="isDisabled()"
         (input)="onInput($event)"
@@ -49,11 +49,11 @@
       </div>
     }
   </div>
-  @if (showTicks) {
+  @if (showTicks()) {
     <div class="uk-range-ticks">
-      <span>{{ min }}</span>
-      <span>{{ max }}</span>
+      <span>{{ min() }}</span>
+      <span>{{ max() }}</span>
     </div>
   }
-  @if (hint) { <span class="uk-hint">{{ hint }}</span> }
+  @if (hint()) { <span class="uk-hint">{{ hint() }}</span> }
 </div>

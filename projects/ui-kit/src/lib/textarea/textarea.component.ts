@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter, forwardRef,
+  Component, input, output, forwardRef,
   ChangeDetectionStrategy, signal, computed
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -20,26 +20,26 @@ import { UkSize } from '../shared/types';
   }]
 })
 export class UkTextareaComponent implements ControlValueAccessor {
-  @Input() label = '';
-  @Input() placeholder = '';
-  @Input() size: UkSize = 'md';
-  @Input() rows = 4;
-  @Input() required = false;
-  @Input() disabled = false;
-  @Input() readonly = false;
-  @Input() resizable = true;
-  @Input() hint = '';
-  @Input() errorMessage = '';
-  @Input() maxlength?: number;
-  @Output() valueChange = new EventEmitter<string>();
+  readonly label = input('');
+  readonly placeholder = input('');
+  readonly size = input<UkSize>('md');
+  readonly rows = input(4);
+  readonly required = input(false);
+  readonly disabled = input(false);
+  readonly readonly = input(false);
+  readonly resizable = input(true);
+  readonly hint = input('');
+  readonly errorMessage = input('');
+  readonly maxlength = input<number>();
+  readonly valueChange = output<string>();
 
   readonly value = signal('');
   readonly isDisabled = signal(false);
   readonly textareaId = `uk-textarea-${Math.random().toString(36).slice(2)}`;
 
   readonly wrapperClass = computed(() => {
-    const classes: string[] = [this.size];
-    if (this.errorMessage) classes.push('error');
+    const classes: string[] = [this.size()];
+    if (this.errorMessage()) classes.push('error');
     return classes.join(' ');
   });
 

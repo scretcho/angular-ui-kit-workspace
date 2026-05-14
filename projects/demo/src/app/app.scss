@@ -248,3 +248,21 @@
   --uk-accordion-chevron-color:  #9ca3af;
   --uk-accordion-gap:            14px;
 }
+
+/* ── Tabs demo ── */
+.tab-active-info {
+  padding: 12px 4px;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.tab-panel-content {
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.tab-sizes {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

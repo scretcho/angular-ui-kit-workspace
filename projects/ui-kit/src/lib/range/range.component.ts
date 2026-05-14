@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter, forwardRef,
+  Component, input, output, forwardRef,
   ChangeDetectionStrategy, signal, computed
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -19,18 +19,18 @@ import { CommonModule } from '@angular/common';
   }]
 })
 export class UkRangeComponent implements ControlValueAccessor {
-  @Input() label = '';
-  @Input() min = 0;
-  @Input() max = 100;
-  @Input() step = 1;
-  @Input() range = false;
-  @Input() showValue = true;
-  @Input() showTicks = true;
-  @Input() unit = '';
-  @Input() required = false;
-  @Input() disabled = false;
-  @Input() hint = '';
-  @Output() valueChange = new EventEmitter<number | [number, number]>();
+  readonly label = input('');
+  readonly min = input(0);
+  readonly max = input(100);
+  readonly step = input(1);
+  readonly range = input(false);
+  readonly showValue = input(true);
+  readonly showTicks = input(true);
+  readonly unit = input('');
+  readonly required = input(false);
+  readonly disabled = input(false);
+  readonly hint = input('');
+  readonly valueChange = output<number | [number, number]>();
 
   readonly value = signal(0);
   readonly lowValue = signal(0);
@@ -38,13 +38,13 @@ export class UkRangeComponent implements ControlValueAccessor {
   readonly isDisabled = signal(false);
 
   readonly valuePercent = computed(() =>
-    ((this.value() - this.min) / (this.max - this.min)) * 100
+    ((this.value() - this.min()) / (this.max() - this.min())) * 100
   );
   readonly lowPercent = computed(() =>
-    ((this.lowValue() - this.min) / (this.max - this.min)) * 100
+    ((this.lowValue() - this.min()) / (this.max() - this.min())) * 100
   );
   readonly highPercent = computed(() =>
-    ((this.highValue() - this.min) / (this.max - this.min)) * 100
+    ((this.highValue() - this.min()) / (this.max() - this.min())) * 100
   );
 
   private onChange = (_: number | [number, number]) => {};
@@ -59,13 +59,13 @@ export class UkRangeComponent implements ControlValueAccessor {
   }
 
   onLowInput(e: Event) {
-    const v = Math.min(+(e.target as HTMLInputElement).value, this.highValue() - this.step);
+    const v = Math.min(+(e.target as HTMLInputElement).value, this.highValue() - this.step());
     this.lowValue.set(v);
     this.emitRange();
   }
 
   onHighInput(e: Event) {
-    const v = Math.max(+(e.target as HTMLInputElement).value, this.lowValue() + this.step);
+    const v = Math.max(+(e.target as HTMLInputElement).value, this.lowValue() + this.step());
     this.highValue.set(v);
     this.emitRange();
   }

@@ -1,27 +1,27 @@
 <div class="uk-rating-wrapper">
-  @if (label) {
-    <label class="uk-label">{{ label }}</label>
+  @if (label()) {
+    <label class="uk-label">{{ label() }}</label>
   }
-  <div class="uk-rating-stars" [class.disabled]="isDisabled()" [class.readonly]="readonly">
+  <div class="uk-rating-stars" [class.disabled]="isDisabled()" [class.readonly]="readonly()">
     @for (star of stars; track star) {
       <button
         type="button"
         class="uk-star"
         [class.filled]="star <= (hoverValue() ?? value())"
-        [class.half]="allowHalf && star - 0.5 === (hoverValue() ?? value())"
-        [disabled]="isDisabled() || readonly"
+        [class.half]="allowHalf() && star - 0.5 === (hoverValue() ?? value())"
+        [disabled]="isDisabled() || readonly()"
         (click)="rate(star)"
         (mouseenter)="hoverValue.set(star)"
         (mouseleave)="hoverValue.set(null)"
       >
-        @if (icon === 'star') { ★ }
-        @else if (icon === 'heart') { ♥ }
-        @else { {{ icon }} }
+        @if (icon() === 'star') { ★ }
+        @else if (icon() === 'heart') { ♥ }
+        @else { {{ icon() }} }
       </button>
     }
-    @if (showCount) {
-      <span class="uk-rating-count">{{ value() }}/{{ max }}</span>
+    @if (showCount()) {
+      <span class="uk-rating-count">{{ value() }}/{{ max() }}</span>
     }
   </div>
-  @if (hint) { <span class="uk-hint">{{ hint }}</span> }
+  @if (hint()) { <span class="uk-hint">{{ hint() }}</span> }
 </div>

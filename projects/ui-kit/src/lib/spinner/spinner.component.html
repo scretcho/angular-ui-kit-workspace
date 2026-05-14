@@ -1,7 +1,7 @@
 <span
-  class="uk-spinner uk-spinner--{{ size }} uk-spinner--{{ variant }}"
+  class="uk-spinner uk-spinner--{{ size() }} uk-spinner--{{ variant() }}"
   role="status"
-  [attr.aria-label]="label"
+  [attr.aria-label]="label()"
 >
-  <span class="uk-sr-only">{{ label }}</span>
+  <span class="uk-sr-only">{{ label() }}</span>
 </span>

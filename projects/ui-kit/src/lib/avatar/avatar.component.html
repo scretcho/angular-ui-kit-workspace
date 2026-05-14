@@ -1,13 +1,13 @@
 <span
-  class="uk-avatar uk-avatar--{{ size }} uk-avatar--{{ shape }}"
-  [attr.title]="name"
+  class="uk-avatar uk-avatar--{{ size() }} uk-avatar--{{ shape() }}"
+  [attr.title]="name()"
 >
-  @if (src) {
-    <img [src]="src" [alt]="alt ?? name ?? 'Avatar'" class="uk-avatar-img" />
+  @if (src()) {
+    <img [src]="src()" [alt]="alt() ?? name() ?? 'Avatar'" class="uk-avatar-img" />
   } @else {
     <span class="uk-avatar-initials" [style.background]="bgColor">{{ initials }}</span>
   }
-  @if (status) {
-    <span class="uk-avatar-status uk-avatar-status--{{ status }}"></span>
+  @if (status()) {
+    <span class="uk-avatar-status uk-avatar-status--{{ status() }}"></span>
   }
 </span>

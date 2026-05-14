@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ACCORDION_TOKEN } from './accordion-host';
 
@@ -11,16 +11,16 @@ import { ACCORDION_TOKEN } from './accordion-host';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UkAccordionItemComponent {
-  @Input({ required: true }) itemId = '';
-  @Input() title = '';
-  @Input() icon?: string;
-  @Input() disabled = false;
+  readonly itemId = input.required<string>();
+  readonly title = input('');
+  readonly icon = input<string>();
+  readonly disabled = input(false);
 
   private accordion = inject(ACCORDION_TOKEN);
 
-  readonly isOpen = computed(() => this.accordion.openIds().has(this.itemId));
+  readonly isOpen = computed(() => this.accordion.openIds().has(this.itemId()));
 
   toggle(): void {
-    if (!this.disabled) this.accordion.toggle(this.itemId);
+    if (!this.disabled()) this.accordion.toggle(this.itemId());
   }
 }

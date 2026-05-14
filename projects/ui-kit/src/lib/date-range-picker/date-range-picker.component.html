@@ -1,8 +1,8 @@
 <div class="uk-drp-wrapper">
-  @if (label) {
+  @if (label()) {
     <label class="uk-label">
-      {{ label }}
-      @if (required) { <span class="uk-required">*</span> }
+      {{ label() }}
+      @if (required()) { <span class="uk-required">*</span> }
     </label>
   }
   <div class="uk-drp-trigger" [class.open]="isOpen()" [class.disabled]="isDisabled()" (click)="openPicker()">
@@ -72,7 +72,7 @@
           </div>
         </div>
       </div>
-      @if (showPresets) {
+      @if (showPresets()) {
         <div class="uk-drp-presets">
           @for (p of presets; track p.label) {
             <button type="button" class="uk-drp-preset" (click)="applyPreset(p)">{{ p.label }}</button>
@@ -85,5 +85,5 @@
       </div>
     </div>
   }
-  @if (errorMessage) { <span class="uk-error">{{ errorMessage }}</span> }
+  @if (errorMessage()) { <span class="uk-error">{{ errorMessage() }}</span> }
 </div>

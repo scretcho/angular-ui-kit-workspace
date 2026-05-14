@@ -879,6 +879,67 @@
       </div>
     }
 
+    @if (activeSection() === 'tabs') {
+      <div class="demo-card">
+        <h4>Line (default)</h4>
+        <uk-tabs [tabs]="demoTabs" variant="line" [activeTab]="activeTab()" (tabChange)="activeTab.set($event)" />
+        <div class="tab-active-info">
+          Active tab: <strong>{{ activeTab() }}</strong>
+        </div>
+      </div>
+      <div class="demo-card">
+        <h4>Pills</h4>
+        <uk-tabs [tabs]="demoTabs" variant="pills" [activeTab]="activeTab()" (tabChange)="activeTab.set($event)" />
+      </div>
+      <div class="demo-card">
+        <h4>Enclosed</h4>
+        <uk-tabs [tabs]="demoTabs" variant="enclosed" [activeTab]="activeTab()" (tabChange)="activeTab.set($event)">
+          <div class="tab-panel-content">
+            @switch (activeTab()) {
+              @case ('overview')  { <p>Overview content goes here.</p> }
+              @case ('features')  { <p>Features content goes here.</p> }
+              @case ('usage')     { <p>Usage content goes here.</p> }
+              @case ('badge')     { <p>3 new releases this month.</p> }
+            }
+          </div>
+        </uk-tabs>
+      </div>
+      <div class="demo-card">
+        <h4>Sizes</h4>
+        <div class="tab-sizes">
+          <uk-tabs [tabs]="demoTabs" variant="pills" size="sm" />
+          <uk-tabs [tabs]="demoTabs" variant="pills" size="md" />
+          <uk-tabs [tabs]="demoTabs" variant="pills" size="lg" />
+        </div>
+      </div>
+    }
+
+    @if (activeSection() === 'dialog') {
+      <div class="demo-card">
+        <h4>Alert dialogs</h4>
+        <div class="demo-row">
+          <uk-button variant="ghost" icon="info-circle" label="Info"    (clicked)="showInfo()" />
+          <uk-button variant="success" icon="check-circle" label="Success" (clicked)="showSuccess()" />
+          <uk-button variant="danger"  icon="x-circle"     label="Error"   (clicked)="showError()" />
+          <uk-button variant="warning" icon="exclamation-triangle" label="Warning" (clicked)="showWarning()" />
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h4>Confirmation dialogs</h4>
+        <div class="demo-row">
+          <uk-button variant="danger"  icon="trash"        label="Delete (with data)"  (clicked)="showConfirm()" />
+          <uk-button variant="primary" icon="send"         label="Publish (no cancel)" (clicked)="showConfirmNoCancel()" />
+        </div>
+      </div>
+
+      @if (dialogResult()) {
+        <div class="demo-card">
+          <p>Last result: <strong>{{ dialogResult() }}</strong></p>
+        </div>
+      }
+    }
+
   <!-- ── Toast container ── -->
   <uk-toaster position="top-right" />
 

@@ -1,13 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
+  effect,
   HostListener,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
+  input,
+  model,
+  output,
   signal,
+  untracked,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -21,29 +21,32 @@ export type OffcanvasPosition = 'left' | 'right' | 'top' | 'bottom';
   styleUrls: ['./offcanvas.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UkOffcanvasComponent implements OnChanges {
-  @Input() open = false;
-  @Input() title = '';
-  @Input() position: OffcanvasPosition = 'right';
-  @Input() size = '';
-  @Input() backdrop = true;
-  @Input() closeOnBackdrop = true;
+export class UkOffcanvasComponent {
+  readonly open = model(false);
+  readonly title = input('');
+  readonly position = input<OffcanvasPosition>('right');
+  readonly size = input('');
+  readonly backdrop = input(true);
+  readonly closeOnBackdrop = input(true);
 
-  @Output() openChange = new EventEmitter<boolean>();
-  @Output() closed = new EventEmitter<void>();
+  readonly closed = output<void>();
 
   readonly isVisible = signal(false);
   readonly isAnimating = signal(false);
 
   private closeTimer: ReturnType<typeof setTimeout> | null = null;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (!changes['open']) return;
-    if (this.open) {
-      this.show();
-    } else {
-      this.hide();
-    }
+  constructor() {
+    effect(() => {
+      const isOpen = this.open();
+      untracked(() => {
+        if (isOpen) {
+          this.show();
+        } else {
+          this.hide();
+        }
+      });
+    });
   }
 
   private show(): void {
@@ -64,26 +67,27 @@ export class UkOffcanvasComponent implements OnChanges {
   }
 
   close(): void {
-    this.open = false;
-    this.openChange.emit(false);
+    this.open.set(false);
     this.closed.emit();
     this.hide();
   }
 
   onBackdropClick(): void {
-    if (this.closeOnBackdrop) this.close();
+    if (this.closeOnBackdrop()) this.close();
   }
 
   @HostListener('document:keydown.escape')
   onEscape(): void {
-    if (this.open) this.close();
+    if (this.open()) this.close();
   }
 
   get panelStyle(): Record<string, string> {
-    if (!this.size) return {};
-    if (this.position === 'left' || this.position === 'right') {
-      return { width: this.size };
+    const sz = this.size();
+    if (!sz) return {};
+    const pos = this.position();
+    if (pos === 'left' || pos === 'right') {
+      return { width: sz };
     }
-    return { height: this.size };
+    return { height: sz };
   }
 }

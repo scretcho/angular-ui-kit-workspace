@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter, HostListener,
+  Component, input, output, HostListener,
   ChangeDetectionStrategy, signal, ElementRef
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -14,15 +14,15 @@ import { HeaderAction, LayoutUser } from '../shared/types';
   styleUrls: ['./header.component.scss'],
 })
 export class UkHeaderComponent {
-  @Input() title = '';
-  @Input() logo?: string;
-  @Input() actions: HeaderAction[] = [];
-  @Input() user?: LayoutUser;
-  @Input() sidebarCollapsed = false;
-  @Input() showMenuToggle = true;
-  @Output() menuToggle = new EventEmitter<void>();
-  @Output() actionClick = new EventEmitter<string>();
-  @Output() userMenuClick = new EventEmitter<string>();
+  readonly title = input('');
+  readonly logo = input<string>();
+  readonly actions = input<HeaderAction[]>([]);
+  readonly user = input<LayoutUser>();
+  readonly sidebarCollapsed = input(false);
+  readonly showMenuToggle = input(true);
+  readonly menuToggle = output<void>();
+  readonly actionClick = output<string>();
+  readonly userMenuClick = output<string>();
 
   readonly userMenuOpen = signal(false);
 
@@ -34,8 +34,9 @@ export class UkHeaderComponent {
   }
 
   get initials(): string {
-    if (!this.user) return '';
-    return this.user.name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+    const u = this.user();
+    if (!u) return '';
+    return u.name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
   }
 
   toggleUserMenu() { this.userMenuOpen.update(v => !v); }

@@ -4,21 +4,21 @@
       type="checkbox"
       class="uk-cb-native"
       [checked]="checked()"
-      [indeterminate]="indeterminate"
+      [indeterminate]="indeterminate()"
       [disabled]="isDisabled()"
       (change)="onToggle($event)"
     />
-    <span class="uk-cb-box" [class.checked]="checked()" [class.indeterminate]="indeterminate">
-      @if (indeterminate) { <span class="uk-cb-dash">—</span> }
+    <span class="uk-cb-box" [class.checked]="checked()" [class.indeterminate]="indeterminate()">
+      @if (indeterminate()) { <span class="uk-cb-dash">—</span> }
       @else if (checked()) { <span class="uk-cb-check">✓</span> }
     </span>
   </span>
-  @if (label) {
+  @if (label()) {
     <span class="uk-cb-text">
-      {{ label }}
-      @if (required) { <span class="uk-required">*</span> }
+      {{ label() }}
+      @if (required()) { <span class="uk-required">*</span> }
     </span>
   }
 </label>
-@if (hint) { <span class="uk-hint">{{ hint }}</span> }
-@if (errorMessage) { <span class="uk-error">{{ errorMessage }}</span> }
+@if (hint()) { <span class="uk-hint">{{ hint() }}</span> }
+@if (errorMessage()) { <span class="uk-error">{{ errorMessage() }}</span> }

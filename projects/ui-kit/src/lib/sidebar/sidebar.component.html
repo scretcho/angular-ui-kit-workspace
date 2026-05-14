@@ -1,27 +1,27 @@
-<nav class="uk-sidebar" [class.collapsed]="collapsed">
+<nav class="uk-sidebar" [class.collapsed]="collapsed()">
 
   <!-- Brand -->
   <div class="uk-sidebar-brand">
-    @if (brandRoute) {
-      <a class="uk-sidebar-brand-inner" [routerLink]="brandRoute">
-        @if (brandLogo) {
-          <img class="uk-sidebar-logo" [src]="brandLogo" alt="logo" />
+    @if (brandRoute()) {
+      <a class="uk-sidebar-brand-inner" [routerLink]="brandRoute()">
+        @if (brandLogo()) {
+          <img class="uk-sidebar-logo" [src]="brandLogo()" alt="logo" />
         } @else {
           <span class="uk-sidebar-logo-icon"><i class="bi bi-layers-fill"></i></span>
         }
-        @if (!collapsed) {
-          <span class="uk-sidebar-brand-title">{{ brandTitle }}</span>
+        @if (!collapsed()) {
+          <span class="uk-sidebar-brand-title">{{ brandTitle() }}</span>
         }
       </a>
     } @else {
       <div class="uk-sidebar-brand-inner">
-        @if (brandLogo) {
-          <img class="uk-sidebar-logo" [src]="brandLogo" alt="logo" />
+        @if (brandLogo()) {
+          <img class="uk-sidebar-logo" [src]="brandLogo()" alt="logo" />
         } @else {
           <span class="uk-sidebar-logo-icon"><i class="bi bi-layers-fill"></i></span>
         }
-        @if (!collapsed) {
-          <span class="uk-sidebar-brand-title">{{ brandTitle }}</span>
+        @if (!collapsed()) {
+          <span class="uk-sidebar-brand-title">{{ brandTitle() }}</span>
         }
       </div>
     }
@@ -29,7 +29,7 @@
 
   <!-- Nav items -->
   <ul class="uk-sidebar-nav">
-    @for (item of items; track item.id) {
+    @for (item of items(); track item.id) {
       @if (isVisible(item)) {
       @if (item.dividerBefore) {
         <li class="uk-sidebar-divider"></li>
@@ -45,13 +45,13 @@
             class="uk-sidebar-link"
             [routerLink]="item.route"
             routerLinkActive="active"
-            [title]="collapsed ? item.label : ''"
+            [title]="collapsed() ? item.label : ''"
             [class.disabled]="item.disabled"
             (click)="itemClick.emit(item)">
             @if (item.icon) {
               <i class="bi bi-{{ item.icon }} uk-sidebar-icon"></i>
             }
-            @if (!collapsed) {
+            @if (!collapsed()) {
               <span class="uk-sidebar-label">{{ item.label }}</span>
               @if (item.badge != null) {
                 <span class="uk-sidebar-badge" [class]="badgeClass(item.badgeVariant)">{{ item.badge }}</span>
@@ -71,12 +71,12 @@
             class="uk-sidebar-link"
             [class.active]="isActive(item)"
             [class.child-active]="isChildActive(item)"
-            [title]="collapsed ? item.label : ''"
+            [title]="collapsed() ? item.label : ''"
             (click)="select(item)">
             @if (item.icon) {
               <i class="bi bi-{{ item.icon }} uk-sidebar-icon"></i>
             }
-            @if (!collapsed) {
+            @if (!collapsed()) {
               <span class="uk-sidebar-label">{{ item.label }}</span>
               @if (item.badge != null) {
                 <span class="uk-sidebar-badge" [class]="badgeClass(item.badgeVariant)">{{ item.badge }}</span>
@@ -95,7 +95,7 @@
         }
 
         <!-- Children -->
-        @if (visibleChildren(item).length && !collapsed && isExpanded(item.id)) {
+        @if (visibleChildren(item).length && !collapsed() && isExpanded(item.id)) {
           <ul class="uk-sidebar-children">
             @for (child of visibleChildren(item); track child.id) {
               <li>
@@ -120,7 +120,7 @@
                   <button
                     type="button"
                     class="uk-sidebar-child-link"
-                    [class.active]="child.id === activeId"
+                    [class.active]="child.id === activeId()"
                     [class.disabled]="child.disabled"
                     (click)="selectChild(child)">
                     @if (child.icon) {
@@ -144,8 +144,8 @@
   </ul>
 
   <!-- Collapse toggle -->
-  <button type="button" class="uk-sidebar-collapse-btn" (click)="toggleCollapse()" [title]="collapsed ? 'Expand' : 'Collapse'">
-    <i class="bi" [class.bi-chevron-double-left]="!collapsed" [class.bi-chevron-double-right]="collapsed"></i>
-    @if (!collapsed) { <span>Collapse</span> }
+  <button type="button" class="uk-sidebar-collapse-btn" (click)="toggleCollapse()" [title]="collapsed() ? 'Expand' : 'Collapse'">
+    <i class="bi" [class.bi-chevron-double-left]="!collapsed()" [class.bi-chevron-double-right]="collapsed()"></i>
+    @if (!collapsed()) { <span>Collapse</span> }
   </button>
 </nav>

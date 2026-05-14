@@ -1,13 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
+  effect,
   HostListener,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
+  input,
+  model,
+  output,
   signal,
+  untracked,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -21,25 +21,28 @@ export type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
   styleUrls: ['./modal.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UkModalComponent implements OnChanges {
-  @Input() open = false;
-  @Input() title = '';
-  @Input() size: ModalSize = 'md';
-  @Input() backdrop = true;
-  @Input() closeOnBackdrop = true;
-  @Input() showClose = true;
+export class UkModalComponent {
+  readonly open = model(false);
+  readonly title = input('');
+  readonly size = input<ModalSize>('md');
+  readonly backdrop = input(true);
+  readonly closeOnBackdrop = input(true);
+  readonly showClose = input(true);
 
-  @Output() openChange = new EventEmitter<boolean>();
-  @Output() closed = new EventEmitter<void>();
+  readonly closed = output<void>();
 
   readonly isVisible = signal(false);
   readonly isAnimating = signal(false);
 
   private closeTimer: ReturnType<typeof setTimeout> | null = null;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (!changes['open']) return;
-    if (this.open) this.show(); else this.hide();
+  constructor() {
+    effect(() => {
+      const isOpen = this.open();
+      untracked(() => {
+        if (isOpen) this.show(); else this.hide();
+      });
+    });
   }
 
   private show(): void {
@@ -54,18 +57,17 @@ export class UkModalComponent implements OnChanges {
   }
 
   close(): void {
-    this.open = false;
-    this.openChange.emit(false);
+    this.open.set(false);
     this.closed.emit();
     this.hide();
   }
 
   onBackdropClick(event: MouseEvent): void {
-    if (this.closeOnBackdrop && event.target === event.currentTarget) this.close();
+    if (this.closeOnBackdrop() && event.target === event.currentTarget) this.close();
   }
 
   @HostListener('document:keydown.escape')
   onEscape(): void {
-    if (this.open) this.close();
+    if (this.open()) this.close();
   }
 }

@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter, forwardRef,
+  Component, input, output, forwardRef,
   ChangeDetectionStrategy, signal, computed, HostListener, ElementRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -27,17 +27,17 @@ interface CalendarDay {
   }]
 })
 export class UkDatepickerComponent implements ControlValueAccessor {
-  @Input() label = '';
-  @Input() placeholder = 'Select date';
-  @Input() required = false;
-  @Input() disabled = false;
-  @Input() minDate?: Date;
-  @Input() maxDate?: Date;
-  @Input() showTodayButton = true;
-  @Input() clearable = true;
-  @Input() hint = '';
-  @Input() errorMessage = '';
-  @Output() dateChange = new EventEmitter<Date | null>();
+  readonly label = input('');
+  readonly placeholder = input('Select date');
+  readonly required = input(false);
+  readonly disabled = input(false);
+  readonly minDate = input<Date>();
+  readonly maxDate = input<Date>();
+  readonly showTodayButton = input(true);
+  readonly clearable = input(true);
+  readonly hint = input('');
+  readonly errorMessage = input('');
+  readonly dateChange = output<Date | null>();
 
   readonly isOpen   = signal(false);
   readonly isDisabled = signal(false);
@@ -96,14 +96,16 @@ export class UkDatepickerComponent implements ControlValueAccessor {
 
   makeDay(date: Date, isCurrentMonth: boolean): CalendarDay {
     const sel = this.selected();
+    const minDate = this.minDate();
+    const maxDate = this.maxDate();
     return {
       date,
       isCurrentMonth,
       isToday: this.sameDay(date, this.today),
       isSelected: !!sel && this.sameDay(date, sel),
       isDisabled:
-        (!!this.minDate && date < this.minDate) ||
-        (!!this.maxDate && date > this.maxDate),
+        (!!minDate && date < minDate) ||
+        (!!maxDate && date > maxDate),
     };
   }
 

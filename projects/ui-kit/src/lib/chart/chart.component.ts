@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input, signal, untracked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export type ChartType = 'bar' | 'line' | 'donut' | 'pie';
@@ -75,22 +75,26 @@ export interface DonutChartData {
   styleUrls: ['./chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UkChartComponent implements OnChanges {
-  @Input({ required: true }) config!: ChartConfig;
+export class UkChartComponent {
+  readonly config = input.required<ChartConfig>();
 
-  barData!: BarChartData;
-  lineData!: LineChartData;
-  donutData!: DonutChartData;
+  readonly barData = signal<BarChartData | null>(null);
+  readonly lineData = signal<LineChartData | null>(null);
+  readonly donutData = signal<DonutChartData | null>(null);
 
-  ngOnChanges(): void {
-    if (!this.config) return;
-    if (this.config.type === 'bar') this.barData = this.buildBarData();
-    else if (this.config.type === 'line') this.lineData = this.buildLineData();
-    else this.donutData = this.buildDonutData();
+  constructor() {
+    effect(() => {
+      const cfg = this.config();
+      untracked(() => {
+        if (cfg.type === 'bar') this.barData.set(this.buildBarData(cfg));
+        else if (cfg.type === 'line') this.lineData.set(this.buildLineData(cfg));
+        else this.donutData.set(this.buildDonutData(cfg));
+      });
+    });
   }
 
-  private buildBarData(): BarChartData {
-    const { labels, datasets } = this.config;
+  private buildBarData(cfg: ChartConfig): BarChartData {
+    const { labels, datasets } = cfg;
     const allVals = datasets.flatMap(d => d.data);
     const max = niceMax(Math.max(...allVals, 0));
     const ticks = yTicks(max);
@@ -128,8 +132,8 @@ export class UkChartComponent implements OnChanges {
     return { bars, xLabels, ticks, legend, W, H };
   }
 
-  private buildLineData(): LineChartData {
-    const { labels, datasets } = this.config;
+  private buildLineData(cfg: ChartConfig): LineChartData {
+    const { labels, datasets } = cfg;
     const allVals = datasets.flatMap(d => d.data);
     const max = niceMax(Math.max(...allVals, 0));
     const ticks = yTicks(max);
@@ -163,8 +167,8 @@ export class UkChartComponent implements OnChanges {
     return { series, xLabels, ticks, legend, W, H };
   }
 
-  private buildDonutData(): DonutChartData {
-    const { labels, datasets, type } = this.config;
+  private buildDonutData(cfg: ChartConfig): DonutChartData {
+    const { labels, datasets, type } = cfg;
     const data = datasets[0]?.data ?? [];
     const total = data.reduce((a, b) => a + b, 0);
     const VW = 320, VH = 280;

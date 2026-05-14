@@ -1,26 +1,26 @@
 <div class="uk-progress-wrapper">
-  @if (showLabel) {
+  @if (showLabel()) {
     <div class="uk-progress-label-row">
       <span class="uk-progress-label">{{ displayLabel }}</span>
-      @if (!indeterminate) {
+      @if (!indeterminate()) {
         <span class="uk-progress-pct">{{ roundedPercent }}%</span>
       }
     </div>
   }
   <div
-    class="uk-progress uk-progress--{{ size }}"
+    class="uk-progress uk-progress--{{ size() }}"
     role="progressbar"
-    [attr.aria-valuenow]="indeterminate ? null : value"
+    [attr.aria-valuenow]="indeterminate() ? null : value()"
     aria-valuemin="0"
-    [attr.aria-valuemax]="max"
+    [attr.aria-valuemax]="max()"
     [attr.aria-label]="displayLabel"
   >
     <div
-      class="uk-progress-bar uk-progress-bar--{{ variant }}"
-      [class.uk-progress-bar--striped]="striped || animated"
-      [class.uk-progress-bar--animated]="animated"
-      [class.uk-progress-bar--indeterminate]="indeterminate"
-      [style.width.%]="indeterminate ? null : percent"
+      class="uk-progress-bar uk-progress-bar--{{ variant() }}"
+      [class.uk-progress-bar--striped]="striped() || animated()"
+      [class.uk-progress-bar--animated]="animated()"
+      [class.uk-progress-bar--indeterminate]="indeterminate()"
+      [style.width.%]="indeterminate() ? null : percent"
     ></div>
   </div>
 </div>

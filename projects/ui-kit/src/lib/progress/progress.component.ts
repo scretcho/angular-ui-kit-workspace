@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export type ProgressVariant = 'primary' | 'success' | 'danger' | 'warning' | 'info';
@@ -13,18 +13,18 @@ export type ProgressSize = 'sm' | 'md' | 'lg';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UkProgressComponent {
-  @Input() value = 0;
-  @Input() max = 100;
-  @Input() label?: string;
-  @Input() showLabel = false;
-  @Input() striped = false;
-  @Input() animated = false;
-  @Input() indeterminate = false;
-  @Input() variant: ProgressVariant = 'primary';
-  @Input() size: ProgressSize = 'md';
+  readonly value = input(0);
+  readonly max = input(100);
+  readonly label = input<string>();
+  readonly showLabel = input(false);
+  readonly striped = input(false);
+  readonly animated = input(false);
+  readonly indeterminate = input(false);
+  readonly variant = input<ProgressVariant>('primary');
+  readonly size = input<ProgressSize>('md');
 
   get percent(): number {
-    return Math.min(100, Math.max(0, (this.value / this.max) * 100));
+    return Math.min(100, Math.max(0, (this.value() / this.max()) * 100));
   }
 
   get roundedPercent(): number {
@@ -32,6 +32,6 @@ export class UkProgressComponent {
   }
 
   get displayLabel(): string {
-    return this.label ?? `${this.roundedPercent}%`;
+    return this.label() ?? `${this.roundedPercent}%`;
   }
 }

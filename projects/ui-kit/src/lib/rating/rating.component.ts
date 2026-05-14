@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter, forwardRef,
+  Component, input, output, forwardRef,
   ChangeDetectionStrategy, signal
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -19,27 +19,27 @@ import { CommonModule } from '@angular/common';
   }]
 })
 export class UkRatingComponent implements ControlValueAccessor {
-  @Input() label = '';
-  @Input() max = 5;
-  @Input() icon: 'star' | 'heart' | string = 'star';
-  @Input() allowHalf = false;
-  @Input() readonly = false;
-  @Input() disabled = false;
-  @Input() showCount = false;
-  @Input() hint = '';
-  @Output() ratingChange = new EventEmitter<number>();
+  readonly label = input('');
+  readonly max = input(5);
+  readonly icon = input<'star' | 'heart' | string>('star');
+  readonly allowHalf = input(false);
+  readonly readonly = input(false);
+  readonly disabled = input(false);
+  readonly showCount = input(false);
+  readonly hint = input('');
+  readonly ratingChange = output<number>();
 
   readonly value = signal(0);
   readonly hoverValue = signal<number | null>(null);
   readonly isDisabled = signal(false);
 
-  get stars() { return Array.from({ length: this.max }, (_, i) => i + 1); }
+  get stars() { return Array.from({ length: this.max() }, (_, i) => i + 1); }
 
   private onChange = (_: number) => {};
   onTouched = () => {};
 
   rate(star: number) {
-    if (this.isDisabled() || this.readonly) return;
+    if (this.isDisabled() || this.readonly()) return;
     const v = this.value() === star ? 0 : star;
     this.value.set(v);
     this.onChange(v);

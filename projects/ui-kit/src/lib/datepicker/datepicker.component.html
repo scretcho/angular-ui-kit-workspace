@@ -1,9 +1,9 @@
 <div class="uk-dp-wrapper">
 
-  @if (label) {
+  @if (label()) {
     <label class="uk-label">
-      {{ label }}
-      @if (required) { <span class="uk-required">*</span> }
+      {{ label() }}
+      @if (required()) { <span class="uk-required">*</span> }
     </label>
   }
 
@@ -15,9 +15,9 @@
        (click)="open()">
     <i class="bi bi-calendar3 uk-dp-icon"></i>
     <span class="uk-dp-value" [class.placeholder]="!selected()">
-      {{ displayValue() || placeholder }}
+      {{ displayValue() || placeholder() }}
     </span>
-    @if (clearable && selected()) {
+    @if (clearable() && selected()) {
       <button type="button" class="uk-dp-clear" (click)="clear($event)" title="Clear">&#x2715;</button>
     }
   </div>
@@ -82,7 +82,7 @@
 
       <!-- Footer -->
       <div class="uk-dp-footer">
-        @if (showTodayButton) {
+        @if (showTodayButton()) {
           <button type="button" class="uk-dp-today-btn" (click)="selectToday()">Today</button>
         }
         <button type="button" class="uk-dp-close-btn" (click)="isOpen.set(false)">Close</button>
@@ -91,6 +91,6 @@
     </div>
   }
 
-  @if (hint && !errorMessage)    { <span class="uk-hint">{{ hint }}</span> }
-  @if (errorMessage)             { <span class="uk-error">{{ errorMessage }}</span> }
+  @if (hint() && !errorMessage())    { <span class="uk-hint">{{ hint() }}</span> }
+  @if (errorMessage())               { <span class="uk-error">{{ errorMessage() }}</span> }
 </div>

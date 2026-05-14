@@ -1,8 +1,8 @@
 <div class="uk-tp-wrapper">
-  @if (label) {
+  @if (label()) {
     <label class="uk-label">
-      {{ label }}
-      @if (required) { <span class="uk-required">*</span> }
+      {{ label() }}
+      @if (required()) { <span class="uk-required">*</span> }
     </label>
   }
   <div class="uk-tp-control" [class.disabled]="isDisabled()">
@@ -33,7 +33,7 @@
       />
       <button type="button" class="uk-tp-btn" (click)="decrement('minute')" [disabled]="isDisabled()">&#8964;</button>
     </div>
-    @if (showSeconds) {
+    @if (showSeconds()) {
       <span class="uk-tp-sep">:</span>
       <div class="uk-tp-col">
         <button type="button" class="uk-tp-btn" (click)="increment('second')" [disabled]="isDisabled()">&#8963;</button>
@@ -48,7 +48,7 @@
         <button type="button" class="uk-tp-btn" (click)="decrement('second')" [disabled]="isDisabled()">&#8964;</button>
       </div>
     }
-    @if (!use24Hour) {
+    @if (!use24Hour()) {
       <div class="uk-tp-period">
         <button
           type="button"
@@ -67,6 +67,6 @@
       </div>
     }
   </div>
-  @if (hint && !errorMessage) { <span class="uk-hint">{{ hint }}</span> }
-  @if (errorMessage) { <span class="uk-error">{{ errorMessage }}</span> }
+  @if (hint() && !errorMessage()) { <span class="uk-hint">{{ hint() }}</span> }
+  @if (errorMessage()) { <span class="uk-error">{{ errorMessage() }}</span> }
 </div>

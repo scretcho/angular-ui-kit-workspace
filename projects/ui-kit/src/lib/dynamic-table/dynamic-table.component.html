@@ -1,13 +1,13 @@
 <div class="uk-table-container">
-  @if (config.searchable || toolbarActions.length > 0) {
+  @if (config().searchable || toolbarActions().length > 0) {
     <div class="uk-table-toolbar">
-      @if (config.searchable) {
+      @if (config().searchable) {
         <div class="uk-table-search">
           <span class="uk-table-search-icon">&#128269;</span>
           <input
             type="text"
             class="uk-table-search-input"
-            [placeholder]="searchPlaceholder"
+            [placeholder]="searchPlaceholder()"
             [value]="searchQuery()"
             (input)="onSearch($event)"
           />
@@ -19,7 +19,7 @@
       <div class="uk-table-toolbar-actions">
         <ng-content select="[ukTableActions]" />
       </div>
-      @if (config.selectable && selectedRows().length > 0) {
+      @if (config().selectable && selectedRows().length > 0) {
         <div class="uk-table-selection-info">
           {{ selectedRows().length }} selected
           <button class="uk-table-clear-sel" (click)="clearSelection()">Clear</button>
@@ -29,10 +29,10 @@
   }
 
   <div class="uk-table-scroll">
-    <table class="uk-table" [class.striped]="config.striped" [class.sticky-header]="config.stickyHeader">
+    <table class="uk-table" [class.striped]="config().striped" [class.sticky-header]="config().stickyHeader">
       <thead>
         <tr>
-          @if (config.selectable) {
+          @if (config().selectable) {
             <th class="uk-th uk-th-check">
               <span class="uk-check-box" [class.checked]="allSelected()" (click)="toggleAll()">
                 @if (allSelected()) { ✓ } @else if (someSelected()) { — }
@@ -57,7 +57,7 @@
               }
             </th>
           }
-          @if (config.rowActions?.length) {
+          @if (config().rowActions?.length) {
             <th class="uk-th uk-th-actions">Actions</th>
           }
         </tr>
@@ -65,7 +65,7 @@
       <tbody>
         @if (isLoading()) {
           <tr>
-            <td [attr.colspan]="visibleColumns().length + (config.selectable ? 1 : 0) + (config.rowActions?.length ? 1 : 0)" class="uk-td-center">
+            <td [attr.colspan]="visibleColumns().length + (config().selectable ? 1 : 0) + (config().rowActions?.length ? 1 : 0)" class="uk-td-center">
               <div class="uk-table-loading">
                 <div class="uk-spinner"></div>
                 <span>Loading...</span>
@@ -74,19 +74,19 @@
           </tr>
         } @else if (pagedData().length === 0) {
           <tr>
-            <td [attr.colspan]="visibleColumns().length + (config.selectable ? 1 : 0) + (config.rowActions?.length ? 1 : 0)" class="uk-td-center uk-td-empty">
-              {{ config.emptyText ?? 'No data available' }}
+            <td [attr.colspan]="visibleColumns().length + (config().selectable ? 1 : 0) + (config().rowActions?.length ? 1 : 0)" class="uk-td-center uk-td-empty">
+              {{ config().emptyText ?? 'No data available' }}
             </td>
           </tr>
         } @else {
-          @for (row of pagedData(); track rowKey(row, $index)) {
+          @for (row of pagedData(); track rowKey()(row, $index)) {
             <tr
               class="uk-tr"
               [class.selected]="isSelected(row)"
-              [class.clickable]="rowClickable"
+              [class.clickable]="rowClickable()"
               (click)="onRowClick(row)"
             >
-              @if (config.selectable) {
+              @if (config().selectable) {
                 <td class="uk-td uk-td-check" (click)="$event.stopPropagation(); toggleRow(row)">
                   <span class="uk-check-box" [class.checked]="isSelected(row)">
                     @if (isSelected(row)) { ✓ }
@@ -133,9 +133,9 @@
                   }
                 </td>
               }
-              @if (config.rowActions?.length) {
+              @if (config().rowActions?.length) {
                 <td class="uk-td uk-td-actions">
-                  @for (act of config.rowActions!; track act.id) {
+                  @for (act of config().rowActions!; track act.id) {
                     @if (isActionVisible(act, row)) {
                       <button
                         type="button"
@@ -160,12 +160,12 @@
     </table>
   </div>
 
-  @if (config.paginate && totalPages() > 1) {
+  @if (config().paginate && totalPages() > 1) {
     <div class="uk-table-pagination">
       <div class="uk-page-size">
         <span>Rows per page:</span>
         <select class="uk-page-size-select" [value]="pageSize()" (change)="onPageSizeChange($event)">
-          @for (size of config.pageSizeOptions ?? [10, 25, 50, 100]; track size) {
+          @for (size of config().pageSizeOptions ?? [10, 25, 50, 100]; track size) {
             <option [value]="size">{{ size }}</option>
           }
         </select>

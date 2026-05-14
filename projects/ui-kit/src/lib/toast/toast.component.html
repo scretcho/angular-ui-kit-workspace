@@ -1,4 +1,4 @@
-<div class="uk-toaster uk-toaster--{{ position }}">
+<div class="uk-toaster uk-toaster--{{ position() }}">
   @for (toast of toastService.toasts(); track toast.id) {
     <div class="uk-toast uk-toast--{{ toast.variant }}" role="alert" aria-live="assertive">
       @if (toast.icon) {

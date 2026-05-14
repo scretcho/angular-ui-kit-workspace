@@ -1,27 +1,27 @@
 <div class="uk-textarea-wrapper" [class]="wrapperClass()">
-  @if (label) {
+  @if (label()) {
     <label [for]="textareaId" class="uk-label">
-      {{ label }}
-      @if (required) { <span class="uk-required">*</span> }
+      {{ label() }}
+      @if (required()) { <span class="uk-required">*</span> }
     </label>
   }
   <textarea
     [id]="textareaId"
-    [placeholder]="placeholder"
+    [placeholder]="placeholder()"
     [disabled]="isDisabled()"
-    [readonly]="readonly"
-    [rows]="rows"
-    [attr.maxlength]="maxlength || null"
-    [class.uk-textarea--resize-none]="!resizable"
+    [readonly]="readonly()"
+    [rows]="rows()"
+    [attr.maxlength]="maxlength() || null"
+    [class.uk-textarea--resize-none]="!resizable()"
     class="uk-textarea"
     (input)="onInput($event)"
     (blur)="onTouched()"
   >{{ value() }}</textarea>
   <div class="uk-textarea-footer">
-    @if (hint && !errorMessage) { <span class="uk-hint">{{ hint }}</span> }
-    @if (errorMessage) { <span class="uk-error">{{ errorMessage }}</span> }
-    @if (maxlength) {
-      <span class="uk-char-count">{{ value().length }} / {{ maxlength }}</span>
+    @if (hint() && !errorMessage()) { <span class="uk-hint">{{ hint() }}</span> }
+    @if (errorMessage()) { <span class="uk-error">{{ errorMessage() }}</span> }
+    @if (maxlength()) {
+      <span class="uk-char-count">{{ value().length }} / {{ maxlength() }}</span>
     }
   </div>
 </div>

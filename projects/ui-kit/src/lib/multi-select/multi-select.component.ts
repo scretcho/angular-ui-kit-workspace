@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter, forwardRef,
+  Component, input, output, forwardRef,
   ChangeDetectionStrategy, signal, computed, HostListener, ElementRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -20,16 +20,16 @@ import { SelectOption, UkSize } from '../shared/types';
   }]
 })
 export class UkMultiSelectComponent implements ControlValueAccessor {
-  @Input() label = '';
-  @Input() placeholder = 'Select options';
-  @Input() options: SelectOption[] = [];
-  @Input() size: UkSize = 'md';
-  @Input() required = false;
-  @Input() disabled = false;
-  @Input() showSelectAll = true;
-  @Input() hint = '';
-  @Input() errorMessage = '';
-  @Output() selectionChange = new EventEmitter<SelectOption[]>();
+  readonly label = input('');
+  readonly placeholder = input('Select options');
+  readonly options = input<SelectOption[]>([]);
+  readonly size = input<UkSize>('md');
+  readonly required = input(false);
+  readonly disabled = input(false);
+  readonly showSelectAll = input(true);
+  readonly hint = input('');
+  readonly errorMessage = input('');
+  readonly selectionChange = output<SelectOption[]>();
 
   readonly values = signal<(string | number)[]>([]);
   readonly isOpen = signal(false);
@@ -37,21 +37,21 @@ export class UkMultiSelectComponent implements ControlValueAccessor {
   readonly searchQuery = signal('');
 
   readonly selectedOptions = computed(() =>
-    this.options.filter(o => this.values().includes(o.value as string | number))
+    this.options().filter(o => this.values().includes(o.value as string | number))
   );
 
   readonly filteredOptions = computed(() => {
     const q = this.searchQuery().toLowerCase();
-    return q ? this.options.filter(o => o.label.toLowerCase().includes(q)) : this.options;
+    return q ? this.options().filter(o => o.label.toLowerCase().includes(q)) : this.options();
   });
 
   readonly allSelected = computed(() =>
-    this.options.length > 0 && this.options.every(o => this.values().includes(o.value as string | number))
+    this.options().length > 0 && this.options().every(o => this.values().includes(o.value as string | number))
   );
 
   readonly wrapperClass = computed(() => {
     const classes: string[] = [];
-    if (this.errorMessage) classes.push('error');
+    if (this.errorMessage()) classes.push('error');
     return classes.join(' ');
   });
 
@@ -98,7 +98,7 @@ export class UkMultiSelectComponent implements ControlValueAccessor {
     if (this.allSelected()) {
       this.values.set([]);
     } else {
-      this.values.set(this.options.filter(o => !o.disabled).map(o => o.value as string | number));
+      this.values.set(this.options().filter(o => !o.disabled).map(o => o.value as string | number));
     }
     this.onChange(this.values());
     this.selectionChange.emit(this.selectedOptions());

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UkToastService, ToastPosition } from './toast.service';
 
@@ -11,7 +11,7 @@ import { UkToastService, ToastPosition } from './toast.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UkToasterComponent {
-  @Input() position: ToastPosition = 'top-right';
+  readonly position = input<ToastPosition>('top-right');
 
   readonly toastService = inject(UkToastService);
 

@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter,
+  Component, input, output,
   ChangeDetectionStrategy, signal
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -15,14 +15,14 @@ import { NavItem } from '../shared/types';
   styleUrls: ['./sidebar.component.scss'],
 })
 export class UkSidebarComponent {
-  @Input() items: NavItem[] = [];
-  @Input() activeId = '';
-  @Input() collapsed = false;
-  @Input() brandTitle = 'App';
-  @Input() brandLogo?: string;
-  @Input() brandRoute?: string;
-  @Output() itemClick = new EventEmitter<NavItem>();
-  @Output() collapsedChange = new EventEmitter<boolean>();
+  readonly items = input<NavItem[]>([]);
+  readonly activeId = input('');
+  readonly collapsed = input(false);
+  readonly brandTitle = input('App');
+  readonly brandLogo = input<string>();
+  readonly brandRoute = input<string>();
+  readonly itemClick = output<NavItem>();
+  readonly collapsedChange = output<boolean>();
 
   readonly expanded = signal<Record<string, boolean>>({});
 
@@ -35,12 +35,12 @@ export class UkSidebarComponent {
   }
 
   isActive(item: NavItem): boolean {
-    if (item.id === this.activeId) return true;
-    return item.children?.some(c => c.id === this.activeId) ?? false;
+    if (item.id === this.activeId()) return true;
+    return item.children?.some(c => c.id === this.activeId()) ?? false;
   }
 
   isChildActive(item: NavItem): boolean {
-    return item.children?.some(c => c.id === this.activeId) ?? false;
+    return item.children?.some(c => c.id === this.activeId()) ?? false;
   }
 
   select(item: NavItem) {
@@ -58,7 +58,7 @@ export class UkSidebarComponent {
   }
 
   toggleCollapse() {
-    this.collapsedChange.emit(!this.collapsed);
+    this.collapsedChange.emit(!this.collapsed());
   }
 
   isVisible(item: NavItem): boolean {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export type AlertVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
@@ -21,18 +21,18 @@ const DEFAULT_ICONS: Record<AlertVariant, string> = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UkAlertComponent {
-  @Input() variant: AlertVariant = 'info';
-  @Input() title?: string;
-  @Input() message?: string;
-  @Input() icon?: string;
-  @Input() dismissible = false;
+  readonly variant = input<AlertVariant>('info');
+  readonly title = input<string>();
+  readonly message = input<string>();
+  readonly icon = input<string>();
+  readonly dismissible = input(false);
 
-  @Output() dismissed = new EventEmitter<void>();
+  readonly dismissed = output<void>();
 
   readonly isDismissed = signal(false);
 
   get resolvedIcon(): string {
-    return this.icon ?? DEFAULT_ICONS[this.variant];
+    return this.icon() ?? DEFAULT_ICONS[this.variant()];
   }
 
   dismiss(): void {

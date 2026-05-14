@@ -1,9 +1,9 @@
 <div class="uk-layout">
   <uk-header
-    [title]="title"
-    [logo]="logo"
-    [actions]="headerActions"
-    [user]="user"
+    [title]="title()"
+    [logo]="logo()"
+    [actions]="headerActions()"
+    [user]="user()"
     [sidebarCollapsed]="sidebarCollapsed()"
     (menuToggle)="toggleSidebar()"
     (actionClick)="headerActionClick.emit($event)"
@@ -12,12 +12,12 @@
 
   <div class="uk-layout-body">
     <uk-sidebar
-      [items]="navItems"
-      [activeId]="activeNavId"
+      [items]="navItems()"
+      [activeId]="activeNavId()"
       [collapsed]="sidebarCollapsed()"
-      [brandTitle]="title"
-      [brandLogo]="logo"
-      [brandRoute]="brandRoute"
+      [brandTitle]="title()"
+      [brandLogo]="logo()"
+      [brandRoute]="brandRoute()"
       (itemClick)="navItemClick.emit($event)"
       (collapsedChange)="sidebarCollapsed.set($event)"
     />

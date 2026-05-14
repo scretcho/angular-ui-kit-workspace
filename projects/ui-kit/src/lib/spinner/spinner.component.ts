@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 export type SpinnerSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export type SpinnerVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'light' | 'dark';
@@ -11,7 +11,7 @@ export type SpinnerVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'w
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UkSpinnerComponent {
-  @Input() size: SpinnerSize = 'md';
-  @Input() variant: SpinnerVariant = 'primary';
-  @Input() label = 'Loading…';
+  readonly size = input<SpinnerSize>('md');
+  readonly variant = input<SpinnerVariant>('primary');
+  readonly label = input('Loading…');
 }

@@ -1,14 +1,14 @@
 <div class="uk-ms-wrapper" [class]="wrapperClass()">
-  @if (label) {
+  @if (label()) {
     <label class="uk-label">
-      {{ label }}
-      @if (required) { <span class="uk-required">*</span> }
+      {{ label() }}
+      @if (required()) { <span class="uk-required">*</span> }
     </label>
   }
   <div class="uk-ms-trigger" [class.open]="isOpen()" [class.disabled]="isDisabled()" (click)="toggle()">
     <div class="uk-ms-tags">
       @if (selectedOptions().length === 0) {
-        <span class="uk-ms-placeholder">{{ placeholder }}</span>
+        <span class="uk-ms-placeholder">{{ placeholder() }}</span>
       }
       @for (opt of selectedOptions(); track opt.value) {
         <span class="uk-ms-tag">
@@ -31,7 +31,7 @@
           (click)="$event.stopPropagation()"
         />
       </div>
-      @if (showSelectAll) {
+      @if (showSelectAll()) {
         <div class="uk-ms-select-all" (click)="toggleAll()">
           <span class="uk-ms-check-box" [class.checked]="allSelected()">
             @if (allSelected()) { ✓ }
@@ -59,6 +59,6 @@
       </ul>
     </div>
   }
-  @if (hint && !errorMessage) { <span class="uk-hint">{{ hint }}</span> }
-  @if (errorMessage) { <span class="uk-error">{{ errorMessage }}</span> }
+  @if (hint() && !errorMessage()) { <span class="uk-hint">{{ hint() }}</span> }
+  @if (errorMessage()) { <span class="uk-error">{{ errorMessage() }}</span> }
 </div>

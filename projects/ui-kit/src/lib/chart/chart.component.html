@@ -1,26 +1,26 @@
-@if (config.type === 'bar' && barData) {
+@if (config().type === 'bar' && barData()) {
   <div class="uk-chart">
-    <svg [attr.viewBox]="'0 0 ' + barData.W + ' ' + barData.H" class="uk-chart-svg">
+    <svg [attr.viewBox]="'0 0 ' + barData()!.W + ' ' + barData()!.H" class="uk-chart-svg">
       <!-- Y-axis grid + ticks -->
-      @for (tick of barData.ticks; track tick.value) {
-        <line [attr.x1]="52" [attr.y1]="tick.y" [attr.x2]="barData.W - 20" [attr.y2]="tick.y"
+      @for (tick of barData()!.ticks; track tick.value) {
+        <line [attr.x1]="52" [attr.y1]="tick.y" [attr.x2]="barData()!.W - 20" [attr.y2]="tick.y"
               stroke="#e5e7eb" stroke-width="1" />
         <text [attr.x]="48" [attr.y]="tick.y + 4" text-anchor="end" class="uk-chart-tick">{{ tick.value }}</text>
       }
       <!-- Bars -->
-      @for (bar of barData.bars; track $index) {
+      @for (bar of barData()!.bars; track $index) {
         <rect [attr.x]="bar.x" [attr.y]="bar.y" [attr.width]="bar.w" [attr.height]="bar.h"
               [attr.fill]="bar.color" rx="3">
           <title>{{ bar.label }}: {{ bar.value }}</title>
         </rect>
       }
       <!-- X labels -->
-      @for (xl of barData.xLabels; track $index) {
-        <text [attr.x]="xl.x" [attr.y]="barData.H - 6" text-anchor="middle" class="uk-chart-label">{{ xl.text }}</text>
+      @for (xl of barData()!.xLabels; track $index) {
+        <text [attr.x]="xl.x" [attr.y]="barData()!.H - 6" text-anchor="middle" class="uk-chart-label">{{ xl.text }}</text>
       }
     </svg>
     <div class="uk-chart-legend">
-      @for (item of barData.legend; track item.label) {
+      @for (item of barData()!.legend; track item.label) {
         <span class="uk-chart-legend-item">
           <span class="uk-chart-legend-dot" [style.background]="item.color"></span>{{ item.label }}
         </span>
@@ -29,27 +29,27 @@
   </div>
 }
 
-@if (config.type === 'line' && lineData) {
+@if (config().type === 'line' && lineData()) {
   <div class="uk-chart">
-    <svg [attr.viewBox]="'0 0 ' + lineData.W + ' ' + lineData.H" class="uk-chart-svg">
-      @for (tick of lineData.ticks; track tick.value) {
-        <line [attr.x1]="52" [attr.y1]="tick.y" [attr.x2]="lineData.W - 20" [attr.y2]="tick.y"
+    <svg [attr.viewBox]="'0 0 ' + lineData()!.W + ' ' + lineData()!.H" class="uk-chart-svg">
+      @for (tick of lineData()!.ticks; track tick.value) {
+        <line [attr.x1]="52" [attr.y1]="tick.y" [attr.x2]="lineData()!.W - 20" [attr.y2]="tick.y"
               stroke="#e5e7eb" stroke-width="1" />
         <text [attr.x]="48" [attr.y]="tick.y + 4" text-anchor="end" class="uk-chart-tick">{{ tick.value }}</text>
       }
-      @for (s of lineData.series; track s.label) {
+      @for (s of lineData()!.series; track s.label) {
         <polygon [attr.points]="s.fill" [attr.fill]="s.color" fill-opacity="0.1" />
         <polyline [attr.points]="s.polyline" [attr.stroke]="s.color" fill="none" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />
         @for (pt of s.points; track $index) {
           <circle [attr.cx]="pt.x" [attr.cy]="pt.y" r="4" [attr.fill]="s.color" stroke="#fff" stroke-width="2" />
         }
       }
-      @for (xl of lineData.xLabels; track $index) {
-        <text [attr.x]="xl.x" [attr.y]="lineData.H - 6" text-anchor="middle" class="uk-chart-label">{{ xl.text }}</text>
+      @for (xl of lineData()!.xLabels; track $index) {
+        <text [attr.x]="xl.x" [attr.y]="lineData()!.H - 6" text-anchor="middle" class="uk-chart-label">{{ xl.text }}</text>
       }
     </svg>
     <div class="uk-chart-legend">
-      @for (item of lineData.legend; track item.label) {
+      @for (item of lineData()!.legend; track item.label) {
         <span class="uk-chart-legend-item">
           <span class="uk-chart-legend-dot" [style.background]="item.color"></span>{{ item.label }}
         </span>
@@ -58,14 +58,14 @@
   </div>
 }
 
-@if ((config.type === 'donut' || config.type === 'pie') && donutData) {
+@if ((config().type === 'donut' || config().type === 'pie') && donutData()) {
   <div class="uk-chart uk-chart--donut">
-    <svg [attr.viewBox]="'0 0 ' + donutData.VW + ' ' + donutData.VH" class="uk-chart-svg uk-chart-svg--donut">
-      @if (donutData.isEmpty) {
-        <circle [attr.cx]="donutData.cx" [attr.cy]="donutData.cy" [attr.r]="donutData.R" fill="#f3f4f6" />
-        <text [attr.x]="donutData.cx" [attr.y]="donutData.cy + 5" text-anchor="middle" class="uk-chart-empty">No data</text>
+    <svg [attr.viewBox]="'0 0 ' + donutData()!.VW + ' ' + donutData()!.VH" class="uk-chart-svg uk-chart-svg--donut">
+      @if (donutData()!.isEmpty) {
+        <circle [attr.cx]="donutData()!.cx" [attr.cy]="donutData()!.cy" [attr.r]="donutData()!.R" fill="#f3f4f6" />
+        <text [attr.x]="donutData()!.cx" [attr.y]="donutData()!.cy + 5" text-anchor="middle" class="uk-chart-empty">No data</text>
       } @else {
-        @for (seg of donutData.segments; track seg.label) {
+        @for (seg of donutData()!.segments; track seg.label) {
           <path [attr.d]="seg.d" [attr.fill]="seg.color" stroke="#fff" stroke-width="2">
             <title>{{ seg.label }}: {{ seg.value }} ({{ seg.pct }}%)</title>
           </path>
@@ -73,7 +73,7 @@
       }
     </svg>
     <div class="uk-chart-legend uk-chart-legend--donut">
-      @for (item of donutData.legend; track item.label) {
+      @for (item of donutData()!.legend; track item.label) {
         <span class="uk-chart-legend-item">
           <span class="uk-chart-legend-dot" [style.background]="item.color"></span>
           {{ item.label }} <span class="uk-chart-legend-pct">{{ item.pct }}%</span>

@@ -1,13 +1,13 @@
-<div class="uk-stepper" [class.vertical]="direction === 'vertical'">
+<div class="uk-stepper" [class.vertical]="direction() === 'vertical'">
   <!-- Step Headers -->
   <div class="uk-stepper-header">
-    @for (step of steps; track $index; let i = $index; let last = $last) {
+    @for (step of steps(); track $index; let i = $index; let last = $last) {
       <div
         class="uk-step"
         [class.active]="currentStep() === i"
         [class.completed]="i < currentStep()"
-        [class.clickable]="allowNavigation"
-        (click)="allowNavigation ? goTo(i) : null"
+        [class.clickable]="allowNavigation()"
+        (click)="allowNavigation() ? goTo(i) : null"
       >
         <div class="uk-step-indicator">
           <div class="uk-step-circle">
@@ -19,7 +19,7 @@
               <span>{{ i + 1 }}</span>
             }
           </div>
-          @if (!last && direction !== 'vertical') {
+          @if (!last && direction() !== 'vertical') {
             <div class="uk-step-line" [class.done]="i < currentStep()"></div>
           }
         </div>
@@ -40,14 +40,14 @@
   <div class="uk-stepper-content">
     <ng-content />
     @for (tmpl of stepTemplates; track $index) {
-      @if (tmpl.stepIndex === currentStep()) {
+      @if (tmpl.stepIndex() === currentStep()) {
         <ng-container [ngTemplateOutlet]="tmpl.templateRef" />
       }
     }
   </div>
 
   <!-- Navigation -->
-  @if (showNavigation) {
+  @if (showNavigation()) {
     <div class="uk-stepper-nav">
       <button
         type="button"
@@ -55,8 +55,8 @@
         [disabled]="currentStep() === 0"
         (click)="prev()"
       >&#8592; Back</button>
-      <div class="uk-step-progress">{{ currentStep() + 1 }} of {{ steps.length }}</div>
-      @if (currentStep() < steps.length - 1) {
+      <div class="uk-step-progress">{{ currentStep() + 1 }} of {{ steps().length }}</div>
+      @if (currentStep() < steps().length - 1) {
         <button type="button" class="uk-step-btn uk-step-btn-next" (click)="next()">
           Next &#8594;
         </button>

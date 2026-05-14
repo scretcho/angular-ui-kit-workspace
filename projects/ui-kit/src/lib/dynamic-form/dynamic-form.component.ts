@@ -1,9 +1,9 @@
 import {
-  Component, Input, Output, EventEmitter, OnInit, OnChanges,
-  SimpleChanges, ChangeDetectionStrategy, signal, computed
+  Component, input, output, OnInit, effect, untracked,
+  ChangeDetectionStrategy, signal, computed
 } from '@angular/core';
 import {
-  FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidatorFn
+  FormBuilder, FormGroup, ReactiveFormsModule, Validators, ValidatorFn
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DynamicFormField, DynamicValidator } from '../shared/types';
@@ -33,45 +33,56 @@ import { UkTimepickerComponent } from '../timepicker/timepicker.component';
   templateUrl: './dynamic-form.component.html',
   styleUrls: ['./dynamic-form.component.scss']
 })
-export class UkDynamicFormComponent implements OnInit, OnChanges {
-  @Input() fields: (DynamicFormField & { hidden?: boolean; fullWidth?: boolean })[] = [];
-  @Input() columns: 1 | 2 | 3 = 1;
-  @Input() showActions = true;
-  @Input() showReset = true;
-  @Input() submitLabel = 'Submit';
-  @Input() resetLabel = 'Reset';
-  @Input() actionsAlign: 'left' | 'center' | 'right' = 'right';
-  @Input() initialValues: Record<string, unknown> = {};
-  @Output() formSubmit = new EventEmitter<Record<string, unknown>>();
-  @Output() formChange = new EventEmitter<Record<string, unknown>>();
-  @Output() formReset = new EventEmitter<void>();
+export class UkDynamicFormComponent implements OnInit {
+  readonly fields = input<(DynamicFormField & { hidden?: boolean; fullWidth?: boolean })[]>([]);
+  readonly columns = input<1 | 2 | 3>(1);
+  readonly showActions = input(true);
+  readonly showReset = input(true);
+  readonly submitLabel = input('Submit');
+  readonly resetLabel = input('Reset');
+  readonly actionsAlign = input<'left' | 'center' | 'right'>('right');
+  readonly initialValues = input<Record<string, unknown>>({});
+  readonly formSubmit = output<Record<string, unknown>>();
+  readonly formChange = output<Record<string, unknown>>();
+  readonly formReset = output<void>();
 
   form!: FormGroup;
   readonly submitting = signal(false);
 
   readonly sortedFields = computed(() =>
-    [...this.fields].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+    [...this.fields()].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
   );
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    effect(() => {
+      // Read fields signal to track it — rebuild form when fields change (after first render)
+      this.fields();
+      untracked(() => {
+        if (this.form) this.buildForm();
+      });
+    });
+
+    effect(() => {
+      // React to initialValues changes
+      const vals = this.initialValues();
+      untracked(() => {
+        if (this.form) this.form.patchValue(vals);
+      });
+    });
+  }
 
   ngOnInit() { this.buildForm(); }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['fields'] && !changes['fields'].firstChange) this.buildForm();
-    if (changes['initialValues'] && this.form) this.form.patchValue(this.initialValues);
-  }
-
   buildForm() {
     const controls: Record<string, unknown> = {};
-    for (const field of this.fields) {
+    for (const field of this.fields()) {
       const validators: ValidatorFn[] = [];
       if (field.required) validators.push(Validators.required);
       for (const v of field.validators ?? []) {
         const vfn = this.toValidator(v);
         if (vfn) validators.push(vfn);
       }
-      const def = this.initialValues[field.key] ?? field.defaultValue ?? (
+      const def = this.initialValues()[field.key] ?? field.defaultValue ?? (
         field.type === 'checkbox' ? false :
         field.type === 'multiselect' ? [] :
         field.type === 'rating' ? 0 :
@@ -109,7 +120,7 @@ export class UkDynamicFormComponent implements OnInit, OnChanges {
   getError(key: string): string {
     const ctrl = this.form?.get(key);
     if (!ctrl || !ctrl.touched || !ctrl.errors) return '';
-    const field = this.fields.find(f => f.key === key);
+    const field = this.fields().find(f => f.key === key);
     const errors = ctrl.errors;
 
     if (errors['required']) return `${field?.label || key} is required`;

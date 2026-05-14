@@ -35,8 +35,10 @@ import {
   UkAccordionComponent,
   UkAccordionItemComponent,
   UkChartComponent,
+  UkTabsComponent,
+  UkDialogService,
   StepperStep, DynamicFormField, TableConfig,
-  NavItem, HeaderAction, LayoutUser, ChartConfig,
+  NavItem, HeaderAction, LayoutUser, ChartConfig, TabItem,
 } from 'ui-kit';
 
 const PEOPLE = Array.from({ length: 32 }, (_, i) => ({
@@ -71,13 +73,15 @@ const PEOPLE = Array.from({ length: 32 }, (_, i) => ({
     UkAlertComponent,
     UkAccordionComponent, UkAccordionItemComponent,
     UkChartComponent,
+    UkTabsComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App {
 
-  readonly toastService = inject(UkToastService);
+  readonly toastService  = inject(UkToastService);
+  readonly dialogService = inject(UkDialogService);
 
   /* ── App shell navigation (drives uk-layout) ── */
   readonly activeSection = signal('layout');
@@ -110,6 +114,8 @@ export class App {
     { id: 'alert',       label: 'Alert',         icon: 'exclamation-triangle' },
     { id: 'accordion',   label: 'Accordion',     icon: 'chevron-bar-expand' },
     { id: 'chart',       label: 'Chart',         icon: 'graph-up-arrow' },
+    { id: 'tabs',        label: 'Tabs',          icon: 'layout-tabs' },
+    { id: 'dialog',      label: 'Dialog',        icon: 'chat-square-text', dividerBefore: true },
   ];
 
   /* Items used in the Layout preview — mix of routed and non-routed */
@@ -308,6 +314,47 @@ export class App {
     labels: ['Desktop', 'Mobile', 'Tablet'],
     datasets: [{ label: 'Sessions', data: [54, 36, 10] }],
   };
+
+  /* ── Tabs ── */
+  readonly demoTabs: TabItem[] = [
+    { id: 'overview',  label: 'Overview',  icon: 'house' },
+    { id: 'features',  label: 'Features',  icon: 'stars' },
+    { id: 'usage',     label: 'Usage',     icon: 'code-slash' },
+    { id: 'disabled',  label: 'Disabled',  icon: 'slash-circle', disabled: true },
+    { id: 'badge',     label: 'Releases',  badge: 3 },
+  ];
+  activeTab = signal('overview');
+
+  /* ── Dialog ── */
+  dialogResult = signal<string>('');
+
+  async showInfo()    { await this.dialogService.info('Your request has been received and is being processed.', { title: 'Information' }); this.dialogResult.set('info closed'); }
+  async showSuccess() { await this.dialogService.success('Your changes have been saved successfully!', { title: 'Saved' }); this.dialogResult.set('success closed'); }
+  async showError()   { await this.dialogService.error('Something went wrong. Please try again later.', { title: 'Error', button: 'Dismiss' }); this.dialogResult.set('error closed'); }
+  async showWarning() { await this.dialogService.warning('This action may have unintended side effects.', { title: 'Warning', button: 'Got it' }); this.dialogResult.set('warning closed'); }
+
+  async showConfirm() {
+    const ok = await this.dialogService.confirm({
+      header: 'Delete Item',
+      message: 'Are you sure you want to delete this record?',
+      subMessage: 'This action cannot be undone.',
+      data: { id: 42, name: 'Sample Record' },
+      cancelButton: 'No, keep it',
+      confirmButton: 'Yes, delete',
+      confirmVariant: 'danger',
+    });
+    this.dialogResult.set(ok ? 'confirmed ✓' : 'cancelled ✗');
+  }
+
+  async showConfirmNoCancel() {
+    const ok = await this.dialogService.confirm({
+      header: 'Publish Now?',
+      message: 'This will make the post publicly visible.',
+      confirmButton: 'Publish',
+      cancelButton: false,
+    });
+    this.dialogResult.set(ok ? 'published ✓' : 'dismissed ✗');
+  }
 
   /* ── Offcanvas ── */
   ocFormOpen = false;

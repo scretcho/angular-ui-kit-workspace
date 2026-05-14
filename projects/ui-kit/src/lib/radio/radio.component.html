@@ -1,12 +1,12 @@
 <div class="uk-rg-wrapper">
-  @if (label) {
+  @if (label()) {
     <span class="uk-label">
-      {{ label }}
-      @if (required) { <span class="uk-required">*</span> }
+      {{ label() }}
+      @if (required()) { <span class="uk-required">*</span> }
     </span>
   }
-  <div class="uk-rg-options" [class.horizontal]="direction === 'horizontal'">
-    @for (opt of options; track opt.value) {
+  <div class="uk-rg-options" [class.horizontal]="direction() === 'horizontal'">
+    @for (opt of options(); track opt.value) {
       <label
         class="uk-radio-label"
         [class.disabled]="isDisabled() || opt.disabled"
@@ -30,6 +30,6 @@
       </label>
     }
   </div>
-  @if (hint && !errorMessage) { <span class="uk-hint">{{ hint }}</span> }
-  @if (errorMessage) { <span class="uk-error">{{ errorMessage }}</span> }
+  @if (hint() && !errorMessage()) { <span class="uk-hint">{{ hint() }}</span> }
+  @if (errorMessage()) { <span class="uk-error">{{ errorMessage() }}</span> }
 </div>

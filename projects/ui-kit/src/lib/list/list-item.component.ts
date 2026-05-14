@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -10,16 +10,16 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UkListItemComponent {
-  @Input() icon?: string;
-  @Input() active = false;
-  @Input() disabled = false;
-  @Input() badge?: string | number;
-  @Input() badgeVariant = 'primary';
-  @Input() action = false;
+  readonly icon = input<string>();
+  readonly active = input(false);
+  readonly disabled = input(false);
+  readonly badge = input<string | number>();
+  readonly badgeVariant = input('primary');
+  readonly action = input(false);
 
-  @Output() itemClick = new EventEmitter<void>();
+  readonly itemClick = output<void>();
 
   onClick(): void {
-    if (this.action && !this.disabled) this.itemClick.emit();
+    if (this.action() && !this.disabled()) this.itemClick.emit();
   }
 }

@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter, ContentChildren, QueryList,
+  Component, input, output, ContentChildren, QueryList,
   ChangeDetectionStrategy, signal, Directive, TemplateRef
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -13,7 +13,7 @@ export interface StepperStep {
 
 @Directive({ selector: '[ukStepContent]', standalone: true })
 export class UkStepContentDirective {
-  @Input('ukStepContent') stepIndex = 0;
+  readonly stepIndex = input(0, { alias: 'ukStepContent' });
   constructor(public templateRef: TemplateRef<unknown>) {}
 }
 
@@ -26,12 +26,12 @@ export class UkStepContentDirective {
   styleUrls: ['./stepper.component.scss']
 })
 export class UkStepperComponent {
-  @Input() steps: StepperStep[] = [];
-  @Input() direction: 'horizontal' | 'vertical' = 'horizontal';
-  @Input() showNavigation = true;
-  @Input() allowNavigation = false;
-  @Output() stepChange = new EventEmitter<number>();
-  @Output() finished = new EventEmitter<void>();
+  readonly steps = input<StepperStep[]>([]);
+  readonly direction = input<'horizontal' | 'vertical'>('horizontal');
+  readonly showNavigation = input(true);
+  readonly allowNavigation = input(false);
+  readonly stepChange = output<number>();
+  readonly finished = output<void>();
 
   @ContentChildren(UkStepContentDirective) stepTemplates!: QueryList<UkStepContentDirective>;
 
@@ -43,7 +43,7 @@ export class UkStepperComponent {
   }
 
   next() {
-    if (this.currentStep() < this.steps.length - 1) {
+    if (this.currentStep() < this.steps().length - 1) {
       this.currentStep.update(s => s + 1);
       this.stepChange.emit(this.currentStep());
     }

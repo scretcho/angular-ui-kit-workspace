@@ -38,3 +38,7 @@ export * from './lib/accordion/accordion-host';
 export * from './lib/accordion/accordion.component';
 export * from './lib/accordion/accordion-item.component';
 export * from './lib/chart/chart.component';
+export * from './lib/tab/tab.component';
+export * from './lib/dialog/alert-dialog.component';
+export * from './lib/dialog/confirm-dialog.component';
+export * from './lib/dialog/dialog.service';

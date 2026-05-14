@@ -112,6 +112,35 @@ export interface LayoutUser {
   menuItems?: Array<{ id: string; label: string; icon?: string }>;
 }
 
+export type DialogVariant = 'info' | 'success' | 'error' | 'warning';
+
+export interface AlertDialogConfig {
+  variant?: DialogVariant;
+  title?: string;
+  message: string;
+  button?: string;
+  closeOnBackdrop?: boolean;
+}
+
+export interface ConfirmDialogConfig {
+  header?: string;
+  message: string;
+  subMessage?: string;
+  data?: unknown;
+  cancelButton?: string | false;
+  confirmButton?: string;
+  confirmVariant?: 'primary' | 'danger' | 'warning' | 'success';
+  closeOnBackdrop?: boolean;
+}
+
+export interface TabItem {
+  id: string;
+  label: string;
+  icon?: string;
+  disabled?: boolean;
+  badge?: string | number;
+}
+
 export interface DateRange {
   start: Date | null;
   end: Date | null;

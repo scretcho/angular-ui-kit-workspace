@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter, OnInit,
+  Component, input, output, OnInit,
   ChangeDetectionStrategy, signal
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -16,22 +16,21 @@ import { UkSidebarComponent } from '../sidebar/sidebar.component';
   styleUrls: ['./layout.component.scss'],
 })
 export class UkLayoutComponent implements OnInit {
-  @Input() title = '';
-  @Input() logo?: string;
-  @Input() brandRoute?: string;
-  @Input() navItems: NavItem[] = [];
-  @Input() headerActions: HeaderAction[] = [];
-  @Input() user?: LayoutUser;
-  @Input() activeNavId = '';
-  @Input() defaultCollapsed = false;
-  @Output() navItemClick = new EventEmitter<NavItem>();
-  @Output() headerActionClick = new EventEmitter<string>();
-  @Output() userMenuClick = new EventEmitter<string>();
+  readonly title = input('');
+  readonly logo = input<string>();
+  readonly brandRoute = input<string>();
+  readonly navItems = input<NavItem[]>([]);
+  readonly headerActions = input<HeaderAction[]>([]);
+  readonly user = input<LayoutUser>();
+  readonly activeNavId = input('');
+  readonly defaultCollapsed = input(false);
+  readonly navItemClick = output<NavItem>();
+  readonly headerActionClick = output<string>();
+  readonly userMenuClick = output<string>();
 
   readonly sidebarCollapsed = signal(false);
 
-
-  ngOnInit() { this.sidebarCollapsed.set(this.defaultCollapsed); }
+  ngOnInit() { this.sidebarCollapsed.set(this.defaultCollapsed()); }
 
   toggleSidebar() { this.sidebarCollapsed.update(v => !v); }
 }
